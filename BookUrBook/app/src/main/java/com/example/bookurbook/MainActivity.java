@@ -1,4 +1,4 @@
-package com.example.bookurbook;
+package main.java.com.example.bookurbook;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +10,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //test time
+
         //Hello, World!
+
     }
 }
