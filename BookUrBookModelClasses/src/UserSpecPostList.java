@@ -6,13 +6,15 @@ public class UserSpecPostList extends PostList
 	//instance variables
 	private User owner;
 
-	public UserSpecPostList(User owner) {
-		throw new UnsupportedOperationException("The method is not implemented yet.");
+	//constructor
+	public UserSpecPostList(User owner)
+	{
+		this.owner = owner;
 	}
 
 	public void updateUserSpecPostList(PostList postList)
 	{
-		throw new UnsupportedOperationException("The method is not implemented yet.");
+		setPostArray(postList.filterByOwner(owner));
 	}
 
 }

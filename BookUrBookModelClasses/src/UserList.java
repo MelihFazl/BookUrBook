@@ -14,14 +14,28 @@ public class UserList
 		userArray = new ArrayList<>();
 	}
 
-	public void createUser(String username, String email, String password, Image avatar, boolean isAdmin)
+	public void createUser(String username, String email, Image avatar, boolean isAdmin)//!!!!PASSWORD AS PARAMETER - DATABASE?
 	{
-		User user = new User()
+		if(isAdmin)
+		{
+			Admin admin = new Admin(username, email, avatar);
+			addUser(admin);
+		}
+		else
+		{
+			RegularUser regUser = new RegularUser(username, email, avatar);
+			addUser(regUser);
+		}
 	}
 
 	public User findUserByUsername(String username)
 	{
-		throw new UnsupportedOperationException("The method is not implemented yet.");
+		for(User user: userArray)
+		{
+			if(user.getUsername().equals(username));
+				return user;
+		}
+		return null;
 	}
 
 	public void addUser(User user)

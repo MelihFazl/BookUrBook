@@ -87,7 +87,6 @@ public class Post implements Reportable
 		return reports;
 	}
 
-
 	//setters
 	public void setDescription(String description)
 	{
