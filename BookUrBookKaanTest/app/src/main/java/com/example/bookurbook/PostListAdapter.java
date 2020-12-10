@@ -70,7 +70,6 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
     public void sort(View v)               // used COMPARABLE
     {
         ArrayList<Post> filteredList = new ArrayList<>(postListHolderFull);
-
         if (v.getId() == R.id.AtoZ_button) {
             Collections.sort(filteredList, Post.Comparators.descAtoZ);
         }
@@ -125,7 +124,6 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
             notifyDataSetChanged();
         }
     };
-
 
 
     // inner class for a view holder
