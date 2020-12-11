@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">BookUrBook</string>
+    
+    <string-array name="postsList">
+        <item>post1</item>
+        <item>post2</item>
+        <item>post3</item>
+        <item>post4</item>
+        <item>post5</item>
+        <item>post6</item>
+        <item>post7</item>
+        <item>post8</item>
+    </string-array>
+
+</resources>
