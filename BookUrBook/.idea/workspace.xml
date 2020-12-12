@@ -7,33 +7,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="baaa80f9-7db4-4f87-a14a-1f0700dbb816" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/app/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/.idea/gradle.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/bookurbook/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/bookurbook/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BookUrBookKaanTest/app/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BookUrBookKaanTest/app/.idea/gradle.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BookUrBookKaanTest/app/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BookUrBookKaanTest/app/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BookUrBookKaanTest/app/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BookUrBookKaanTest/app/local.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BookUrBookKaanTest/app/src/main/java/com/example/ModelClasses/Admin.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BookUrBookKaanTest/app/src/main/java/com/example/ModelClasses/Feedback.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BookUrBookKaanTest/app/src/main/java/com/example/ModelClasses/Filterable.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BookUrBookKaanTest/app/src/main/java/com/example/ModelClasses/ModelClassTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BookUrBookKaanTest/app/src/main/java/com/example/ModelClasses/Post.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BookUrBookKaanTest/app/src/main/java/com/example/ModelClasses/PostList.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BookUrBookKaanTest/app/src/main/java/com/example/ModelClasses/PostTitleComparator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BookUrBookKaanTest/app/src/main/java/com/example/ModelClasses/RegularUser.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BookUrBookKaanTest/app/src/main/java/com/example/ModelClasses/Report.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BookUrBookKaanTest/app/src/main/java/com/example/ModelClasses/Reportable.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BookUrBookKaanTest/app/src/main/java/com/example/ModelClasses/Sortable.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BookUrBookKaanTest/app/src/main/java/com/example/ModelClasses/User.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BookUrBookKaanTest/app/src/main/java/com/example/ModelClasses/UserList.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BookUrBookKaanTest/app/src/main/java/com/example/ModelClasses/UserSpecPostList.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BookUrBookKaanTest/app/src/main/java/com/example/ModelClasses/WishList.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/bookurbook/model/Admin.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/bookurbook/model/Admin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/bookurbook/model/Feedback.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/bookurbook/model/Feedback.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/bookurbook/model/ModelClassTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/bookurbook/model/ModelClassTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/bookurbook/model/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/bookurbook/model/Post.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/bookurbook/model/PostList.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/bookurbook/model/PostList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/bookurbook/model/RegularUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/bookurbook/model/RegularUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/bookurbook/model/Report.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/bookurbook/model/Report.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/bookurbook/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/bookurbook/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/bookurbook/model/UserList.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/bookurbook/model/UserList.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,8 +53,9 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/app/src/main/java" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.ModelClassTest">
     <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
       <option name="TEST_OBJECT" value="class" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
@@ -136,6 +120,24 @@
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="ModelClassTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.example.bookurbook.model.ModelClassTest" />
+      <module name="BookUrBook.app" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.bookurbook.model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.ModelClassTest" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -151,6 +153,26 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
+    <state width="1491" height="138" key="GridCell.Tab.0.bottom" timestamp="1607793311530">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1491" height="138" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1607793311530" />
+    <state width="1491" height="138" key="GridCell.Tab.0.center" timestamp="1607793311529">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1491" height="138" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1607793311529" />
+    <state width="1491" height="138" key="GridCell.Tab.0.left" timestamp="1607793311529">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1491" height="138" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1607793311529" />
+    <state width="1491" height="138" key="GridCell.Tab.0.right" timestamp="1607793311529">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1491" height="138" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1607793311529" />
+    <state x="277" y="57" key="SettingsEditor" timestamp="1607789116006">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="277" y="57" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1607789116006" />
     <state x="584" y="190" key="chooseDestDirectoryDialog" timestamp="1607777134271">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
