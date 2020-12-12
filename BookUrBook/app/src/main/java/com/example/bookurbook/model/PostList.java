@@ -1,6 +1,5 @@
 package com.example.bookurbook.model;
-import android.media.Image;
-
+import android.widget.ImageView;
 import java.awt.*;
 import java.io.*;
 import java.util.*;
@@ -19,7 +18,7 @@ public class PostList implements Filterable, Sortable
     //get methods
     public ArrayList<Post> getPostArray()
     {
-        throw new UnsupportedOperationException("The method is not implemented yet.");
+        return postArray;
     }
 
     //set methods
@@ -64,11 +63,14 @@ public class PostList implements Filterable, Sortable
      * @param avatar .
      * @param owner .
      */
-    public void createPost(String description, String title, String university, String course, double price, Image avatar, User owner)
+    public void createPost(String description, String title, String university, String course, double price, ImageView avatar, User owner)
     {
-        Post post = new Post(description,title,university,course,price,avatar,owner);
-        this.addPost(post);
-        owner.getUserPostList().addPost(post);
+        if(!owner.isBanned())
+        {
+            Post post = new Post(description, title, university, course, price, avatar, owner);
+            this.addPost(post);
+            owner.getUserPostList().addPost(post);
+        }
     }
 
     /**

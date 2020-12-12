@@ -1,7 +1,6 @@
 package com.example.bookurbook.model;
 
-import android.media.Image;
-
+import android.widget.ImageView;
 import java.awt.*;
 import java.io.*;
 import java.util.*;
@@ -9,7 +8,7 @@ import java.util.*;
 public class RegularUser extends User
 {
     //constructor
-    public RegularUser(String username, String email, Image avatar)
+    public RegularUser(String username, String email, ImageView avatar)
     {
         super(username,email,avatar);
     }

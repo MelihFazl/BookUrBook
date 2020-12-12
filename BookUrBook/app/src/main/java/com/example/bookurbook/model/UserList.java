@@ -1,23 +1,24 @@
 package com.example.bookurbook.model;
 
-import android.media.Image;
+import android.widget.ImageView;
 import java.awt.*;
 import java.io.*;
 import java.util.*;
 
 public class UserList
 {
-
+    //instance variables
     private ArrayList<User> userArray;
     //!!!!!!!!private FirebaseFirestore database;
     //!!!!!!!!!private FirebaseAuth auth;
 
+    //constructors
     public UserList()
     {
         userArray = new ArrayList<>();
     }
 
-    public void createUser(String username, String email, Image avatar, boolean isAdmin)//!!!!PASSWORD AS PARAMETER - DATABASE?
+    public void createUser(String username, String email, ImageView avatar, boolean isAdmin)//!!!!PASSWORD AS PARAMETER - DATABASE?
     {
         if(isAdmin)
         {
@@ -43,12 +44,16 @@ public class UserList
 
     public void addUser(User user)
     {
-        throw new UnsupportedOperationException("The method is not implemented yet.");
+        userArray.add(user);
     }
 
     public void deleteUser(User user)
     {
-        throw new UnsupportedOperationException("The method is not implemented yet.");
+        for(int i = 0; i < userArray.size(); i++)
+        {
+            if(user.getEmail().equals(userArray.get(i).getEmail()));
+            userArray.remove(i);
+        }
     }
 
 }

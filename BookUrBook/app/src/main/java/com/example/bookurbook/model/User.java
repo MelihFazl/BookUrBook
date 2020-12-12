@@ -1,8 +1,5 @@
 package com.example.bookurbook.model;
-
-
-import android.media.Image;
-import java.awt.*;
+import android.widget.ImageView;
 import java.io.*;
 import java.util.*;
 
@@ -13,14 +10,14 @@ public abstract class User implements Reportable
     private String email;
     private boolean banned;
     private ArrayList<Report> reports;
-    //!!!!private FirebaseAuth auth;!!!!!!!!!!!!!!!!!!!
-    //!!!!private FirebaseFirestore database;!!!!!!!!!
-    private Image avatar;
+    private ImageView avatar;
     private UserSpecPostList userPostList;
     private UserList blockedUsers;
+    /*private FirebaseAuth auth;!!!!!!!!!!!!!!!!!!!*/
+    /*private FirebaseFirestore database;!!!!!!!!!*/
 
     //constructor
-    public User(String username, String email, Image avatar)///PASSWORD AS PARAMETER-DATABASE??
+    public User(String username, String email, ImageView avatar)///PASSWORD AS PARAMETER-DATABASE??
     {
         this.username = username;
         this.email = email;
@@ -71,34 +68,12 @@ public abstract class User implements Reportable
         this.reports = reports;
     }
 
-    /**public FirebaseAuth getAuth()
-     {
-     return auth;
-     }
-
-     public void setAuth(FirebaseAuth auth)
-     {
-     this.auth = auth;
-     }
-
-     public FirebaseFirestore getDatabase()
-     {
-     return database;
-     }
-
-
-     public void setDatabase(FirebaseFirestore database)
-     {
-     this.database = database;
-     }
-     */
-
-    public Image getAvatar()
+    public ImageView getAvatar()
     {
         return avatar;
     }
 
-    public void setAvatar(Image avatar)
+    public void setAvatar(ImageView avatar)
     {
         this.avatar = avatar;
     }
@@ -123,6 +98,28 @@ public abstract class User implements Reportable
         this.blockedUsers = blockedUsers;
     }
 
+    /**public FirebaseAuth getAuth()
+     {
+     return auth;
+     }
+
+     public void setAuth(FirebaseAuth auth)
+     {
+     this.auth = auth;
+     }
+
+     public FirebaseFirestore getDatabase()
+     {
+     return database;
+     }
+
+
+     public void setDatabase(FirebaseFirestore database)
+     {
+     this.database = database;
+     }
+     */
+
     /**
      public void changePassword()
      {
@@ -132,7 +129,7 @@ public abstract class User implements Reportable
 
     public void blockUser(User user)
     {
-        blockedUsers.addUser(user);
+            blockedUsers.addUser(user);
     }
 
     @Override
@@ -140,5 +137,13 @@ public abstract class User implements Reportable
     {
         Report report = new Report(description, category, this);
         reports.add(report);
+    }
+
+    /**
+     * This method will get called whenever an Admin bans a user. The method will set take the necesarry
+     * actions such as deleting posts from PostList... in order to prevent the banned user from accessing the app.
+     */
+    public void updateBannedUser()
+    {
     }
 }

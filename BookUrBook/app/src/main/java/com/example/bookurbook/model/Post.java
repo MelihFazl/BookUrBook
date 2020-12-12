@@ -1,9 +1,7 @@
 package com.example.bookurbook.model;
-
-import android.media.Image;
-import java.awt.*;
 import java.io.*;
 import java.util.*;
+import android.widget.ImageView;
 
 public class Post implements Reportable
 {
@@ -13,25 +11,13 @@ public class Post implements Reportable
     private String university;
     private String course;
     private double price;
-    private Image picture;
+    private ImageView picture;
     private User owner;
     private boolean sold;
     private ArrayList<Report> reports;
 
     //constructors
-    public Post()
-    {
-        description = "";
-        title = "";
-        university = "";
-        course = "";
-        price = 0;
-        sold = false;
-        picture = null;
-        owner = null;
-        reports = new ArrayList<>();
-    }
-    public Post(String description, String title, String university, String course, double price, Image picture, User owner)
+    public Post(String description, String title, String university, String course, double price, ImageView picture, User owner)
     {
         this.description = description;
         this.title = title;
@@ -70,7 +56,7 @@ public class Post implements Reportable
         return price;
     }
 
-    public Image getPicture()
+    public ImageView getPicture()
     {
         return picture;
     }
@@ -116,7 +102,7 @@ public class Post implements Reportable
         this.price = price;
     }
 
-    public void setPicture(Image picture)
+    public void setPicture(ImageView picture)
     {
         this.picture = picture;
     }
@@ -146,7 +132,7 @@ public class Post implements Reportable
      * @param price price
      * @param picture picture
      */
-    public void editPost(String description, String title, String university, String course, double price, Image picture)
+    public void editPost(String description, String title, String university, String course, double price, ImageView picture)
     {
         if (!description.replaceAll("\\s+","").equals(""))
             this.description = description;
@@ -157,8 +143,7 @@ public class Post implements Reportable
         if (!course.replaceAll("\\s+","").equals(""))
             this.description = description;
         this.price = price;
-        if (this.picture.getSource() != this.picture.getSource())////Problem due to changing from changing the import from java.awt to android.media.Image
-            this.picture = picture;
+        this.picture = picture;
     }
 
     @Override
