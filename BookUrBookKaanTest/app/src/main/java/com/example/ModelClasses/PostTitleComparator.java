@@ -1,3 +1,4 @@
+package com.example.ModelClasses;
 import java.util.Comparator;
 
 public class PostTitleComparator implements Comparator<Post>

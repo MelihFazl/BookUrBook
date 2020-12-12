@@ -1,3 +1,5 @@
+package com.example.ModelClasses;
+import android.media.Image;
 
 import java.awt.*;
 import java.io.*;
@@ -15,6 +17,7 @@ public abstract class User implements Reportable
 	private Image avatar;
 	private UserSpecPostList userPostList;
 	private UserList blockedUsers;
+	private WishList userWishList;
 
 	//constructor
 	public User(String username, String email, Image avatar)///PASSWORD AS PARAMETER-DATABASE??
@@ -26,6 +29,7 @@ public abstract class User implements Reportable
 		reports = new ArrayList<>();
 		userPostList = new UserSpecPostList(this);
 		blockedUsers = new UserList();
+		userWishList = new WishList(this);
 	}
 
 	public String getUsername()
@@ -61,6 +65,10 @@ public abstract class User implements Reportable
 	public ArrayList<Report> getReports()
 	{
 		return reports;
+	}
+
+	public WishList getWishList() {
+		return userWishList;
 	}
 
 	public void setReports(ArrayList<Report> reports)

@@ -1,3 +1,4 @@
+package com.example.ModelClasses;
 import java.io.*;
 import java.util.*;
 
