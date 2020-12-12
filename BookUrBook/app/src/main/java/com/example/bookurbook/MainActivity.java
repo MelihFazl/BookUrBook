@@ -1,4 +1,4 @@
-package main.java.com.example.bookurbook;
+package com.example.bookurbook;
 
 import androidx.appcompat.app.AppCompatActivity;
 

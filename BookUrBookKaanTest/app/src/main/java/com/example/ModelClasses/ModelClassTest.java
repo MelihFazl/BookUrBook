@@ -1,3 +1,5 @@
+package com.example.ModelClasses;
+
 /**
  * This method is created in order to test the model class
  * @author Kerem ŞAHİN
@@ -9,6 +11,6 @@ public class ModelClassTest
     public static void main(String[] args)
     {
 
-        Post post = new Post("nice item","Math Book","Bilkent University","Math",55,)
+        Post post = new Post("nice item","Math Book","Bilkent University","Math",55,  );
     }
 }

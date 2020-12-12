@@ -1,7 +1,10 @@
+package com.example.ModelClasses;
+import android.media.Image;
+
 import java.awt.*;
 import java.io.*;
 import java.util.*;
-package com.example.ModelClasses;
+
 
 public class Post implements Reportable
 {
@@ -15,6 +18,7 @@ public class Post implements Reportable
 	private User owner;
 	private boolean sold;
 	private ArrayList<Report> reports;
+	private ArrayList<User> usersWishingPost;
 
 	//constructors
 	public Post()
@@ -40,6 +44,8 @@ public class Post implements Reportable
 		this.owner = owner;
 		sold = false;
 		reports = new ArrayList<>();
+		usersWishingPost = new ArrayList<User>();
+
 	}
 
 	//getters
@@ -139,7 +145,7 @@ public class Post implements Reportable
 	 * This method is put in order to edit wanted post variables
 	 * @param description description
 	 * @param title title
-	 * @param university Univeristy
+	 * @param university University
 	 * @param course course
 	 * @param price price
 	 * @param picture picture
@@ -157,6 +163,8 @@ public class Post implements Reportable
 		this.price = price;
 		if (this.picture.getSource() != this.picture.getSource())
 			this.picture = picture;
+
+		updateWishList();
 	}
 
 	@Override
@@ -165,5 +173,20 @@ public class Post implements Reportable
 		Report report = new Report(description, category, owner);
 		reports.add(report);
 		owner.getReports().add(report);
+	}
+	public void addUser(User user) {
+		usersWishingPost.add(user);
+	}
+
+	public void updateWishList() {
+
+		for(User user: usersWishingPost)
+		{
+			user.getWishList().sendNotification(this);
+		}
+	}
+
+	public void deleteUser(User user) {
+		usersWishingPost.remove(user);
 	}
 }

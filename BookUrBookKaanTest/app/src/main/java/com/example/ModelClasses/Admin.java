@@ -1,3 +1,7 @@
+package com.example.ModelClasses;
+
+import android.media.Image;
+
 import java.awt.*;
 import java.io.*;
 import java.util.*;
