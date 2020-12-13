@@ -1,5 +1,16 @@
 package com.example.bookurbook.models;
+import android.provider.ContactsContract;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.io.*;
 import java.util.*;
 
@@ -13,11 +24,12 @@ public abstract class User implements Reportable
     private ImageView avatar;
     private UserSpecPostList userPostList;
     private UserList blockedUsers;
-    /*private FirebaseAuth auth;!!!!!!!!!!!!!!!!!!!*/
-    /*private FirebaseFirestore database;!!!!!!!!!*/
+    private FirebaseAuth auth;
+    private DatabaseReference db;
+
 
     //constructor
-    public User(String username, String email, ImageView avatar)///PASSWORD AS PARAMETER-DATABASE??
+    public User(String username, String email, ImageView avatar)///PASSWORD AS PARAMETER-DATABASE?? //yes of course!.
     {
         this.username = username;
         this.email = email;
@@ -27,7 +39,6 @@ public abstract class User implements Reportable
         userPostList = new UserSpecPostList(this);
         blockedUsers = new UserList();
     }
-
     public String getUsername()
     {
         return username;
@@ -140,10 +151,27 @@ public abstract class User implements Reportable
     }
 
     /**
-     * This method will get called whenever an Admin bans a user. The method will set take the necesarry
+     * This method will get called whenever an Admin bans a user. The method will set take the necessary
      * actions such as deleting posts from PostList... in order to prevent the banned user from accessing the app.
      */
     public void updateBannedUser()
     {
     }
+
+    private class RegisterCompleteListener<AuthResult> implements OnCompleteListener
+    {
+        @Override
+        public void onComplete(@NonNull Task task)
+        {
+
+        }
+    }
+
+
+
+
+
 }
+
+
+
