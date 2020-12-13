@@ -1,8 +1,10 @@
-package com.example.bookurbook;
+package com.example.bookurbook.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.bookurbook.R;
 
 public class MainActivity extends AppCompatActivity {
 
