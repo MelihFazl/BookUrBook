@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/BookUrBook.iml" filepath="$PROJECT_DIR$/.idea/modules/BookUrBook.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/BookUrBook.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/BookUrBook.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/BokUrBook.iml" filepath="$PROJECT_DIR$/.idea/modules/BokUrBook.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/BokUrBook.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/BokUrBook.app.iml" />
     </modules>
   </component>
 </project>
