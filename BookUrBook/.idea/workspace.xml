@@ -4,6 +4,7 @@
     <shared>
       <config />
     </shared>
+<<<<<<< Updated upstream
   </component>
   <component name="ChangeListManager">
     <list default="true" id="45b4892c-60cb-40a5-af89-ef53567fe55c" name="Default Changelist" comment="">
@@ -24,6 +25,16 @@
       <change beforePath="$PROJECT_DIR$/app/src/main/res/values/themes.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/themes.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
+=======
+  </component>
+  <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="9764f148-534c-49e3-81ae-13bba8fa4a7e" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/bookurbook/views/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/bookurbook/views/MainActivity.java" afterDir="false" />
+>>>>>>> Stashed changes
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -147,6 +158,14 @@
     <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1607886284934">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
+<<<<<<< Updated upstream
     <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1607886284934" />
+=======
+    <state width="1491" height="168" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1607883885823" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1607885092065">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1607885092065" />
+>>>>>>> Stashed changes
   </component>
 </project>
