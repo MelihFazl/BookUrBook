@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.bookurbook.models.User;
+
 public class MainMenuActivity extends AppCompatActivity {
 
     private View topleft;
@@ -15,13 +17,16 @@ public class MainMenuActivity extends AppCompatActivity {
     private View botleft;
     private View botright;
     private ImageView wishlist;
+    private User currentUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
         getSupportActionBar().hide();
         init();
-
+        //currentUser = (User) getIntent().getSerializableExtra ("user");
+        //System.out.println("FERHATCIM");
+        //System.out.println(currentUser.getEmail() + "WAAY BILKENT");
     }
     public void init()
     {
