@@ -1,5 +1,6 @@
 package com.example.bookurbook.models;
 import android.widget.ImageView;
+
 import com.example.bookurbook.controllers.UserDatabaseConnection;
 
 import java.io.Serializable;
@@ -15,15 +16,18 @@ public abstract class User implements Reportable, Serializable
     private ImageView avatar;
     private UserSpecPostList userPostList;
     private UserList blockedUsers;
-    public UserDatabaseConnection udb;
+    //public UserDatabaseConnection udb;
 
     //constructor
     public User(String username, String email, ImageView avatar)///PASSWORD AS PARAMETER-DATABASE?? //yes of course!.
     {
-        udb = new UserDatabaseConnection(this);
+        this.username = username;
+        this.email = email;
+        this.avatar = null;
         reports = new ArrayList<Report>();
         userPostList = new UserSpecPostList(this);
         blockedUsers = new UserList();
+        System.out.println(this.username);
     }
     public String getUsername()
     {
@@ -32,6 +36,7 @@ public abstract class User implements Reportable, Serializable
     public void setUsername(String username)
     {
         this.username = username;
+
     }
 
     public String getEmail()
@@ -39,9 +44,9 @@ public abstract class User implements Reportable, Serializable
         return email;
     }
 
-    public UserDatabaseConnection getUdb() {
-        return udb;
-    }
+    //public UserDatabaseConnection getUdb() {
+      //  return udb;
+    //}
 
     public void setEmail(String email)
     {

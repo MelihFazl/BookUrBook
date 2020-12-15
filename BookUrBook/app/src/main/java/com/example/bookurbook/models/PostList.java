@@ -1,8 +1,10 @@
 package com.example.bookurbook.models;
 import android.widget.ImageView;
+
+import java.io.Serializable;
 import java.util.*;
 
-public class PostList implements Filterable, Sortable
+public class PostList implements Filterable, Sortable, Serializable
 {
     //instance variables
     private ArrayList<Post> postArray;

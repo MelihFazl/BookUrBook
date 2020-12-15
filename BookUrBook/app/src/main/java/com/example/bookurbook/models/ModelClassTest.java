@@ -1,10 +1,13 @@
 package com.example.bookurbook.models;
+
+import java.io.Serializable;
+
 /**
  * This method is created in order to test the model class
  * @author Kerem ŞAHİN
  * @version 1
  */
-public class ModelClassTest
+public class ModelClassTest implements Serializable
 {
     public static void main(String[] args)
     {

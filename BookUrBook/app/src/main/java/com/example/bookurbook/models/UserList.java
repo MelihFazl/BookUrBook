@@ -1,9 +1,11 @@
 package com.example.bookurbook.models;
 
 import android.widget.ImageView;
+
+import java.io.Serializable;
 import java.util.*;
 
-public class UserList
+public class UserList implements Serializable
 {
     //instance variables
     private ArrayList<User> userArray;

@@ -10,8 +10,12 @@ import android.os.Parcelable;
 import android.widget.ImageView;
 
 
+import com.example.bookurbook.models.Admin;
+import com.example.bookurbook.models.RegularUser;
 import com.example.bookurbook.models.User;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 
@@ -30,6 +34,19 @@ public class WelcomeActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+        if(auth.getCurrentUser() != null)
+        {
+            db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    if(documentSnapshot.getBoolean("admin"))
+                        currentUser = new Admin(documentSnapshot.getString("username"), documentSnapshot.getString("email"), null);
+                    else
+                        currentUser = new RegularUser(documentSnapshot.getString("username"), documentSnapshot.getString("email"), null);
+
+                }
+            });
+        }
 
         new CountDownTimer(4444, 1111)
         {
@@ -38,15 +55,13 @@ public class WelcomeActivity extends AppCompatActivity {
             {
                 if (auth.getCurrentUser() == null)
                 {
-                    startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
+                    Intent pass = new Intent(WelcomeActivity.this, LoginActivity.class);
+                    startActivity(pass);
                 }
                 else
                 {
                     Intent pass = new Intent(WelcomeActivity.this, MainMenuActivity.class);
-
-                    //System.out.println("NOLUYOLAN");
-                    //System.out.println(currentUser.getUsername());
-                    //pass.putExtra("user", currentUser);
+                    pass.putExtra("user", currentUser);
                     startActivity(pass);
                 }
 

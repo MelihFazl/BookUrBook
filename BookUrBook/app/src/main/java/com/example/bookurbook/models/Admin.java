@@ -1,7 +1,9 @@
 package com.example.bookurbook.models;
 import android.widget.ImageView;
 
-public class Admin extends User
+import java.io.Serializable;
+
+public class Admin extends User implements Serializable
 {
     //instance variables
     public Admin(String username, String email, ImageView avatar)
