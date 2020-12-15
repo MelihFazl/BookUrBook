@@ -1,20 +1,11 @@
 package com.example.bookurbook.models;
-import android.provider.ContactsContract;
 import android.widget.ImageView;
+import com.example.bookurbook.controllers.UserDatabaseConnection;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.io.*;
+import java.io.Serializable;
 import java.util.*;
 
-public abstract class User implements Reportable
+public abstract class User implements Reportable, Serializable
 {
     //instance variables
     private String username;
@@ -24,18 +15,13 @@ public abstract class User implements Reportable
     private ImageView avatar;
     private UserSpecPostList userPostList;
     private UserList blockedUsers;
-    private FirebaseAuth auth;
-    private DatabaseReference db;
-
+    public UserDatabaseConnection udb;
 
     //constructor
     public User(String username, String email, ImageView avatar)///PASSWORD AS PARAMETER-DATABASE?? //yes of course!.
     {
-        this.username = username;
-        this.email = email;
-        this.avatar = avatar;
-        banned = false;
-        reports = new ArrayList<>();
+        udb = new UserDatabaseConnection(this);
+        reports = new ArrayList<Report>();
         userPostList = new UserSpecPostList(this);
         blockedUsers = new UserList();
     }
@@ -43,7 +29,6 @@ public abstract class User implements Reportable
     {
         return username;
     }
-
     public void setUsername(String username)
     {
         this.username = username;
@@ -52,6 +37,10 @@ public abstract class User implements Reportable
     public String getEmail()
     {
         return email;
+    }
+
+    public UserDatabaseConnection getUdb() {
+        return udb;
     }
 
     public void setEmail(String email)
@@ -158,14 +147,7 @@ public abstract class User implements Reportable
     {
     }
 
-    private class RegisterCompleteListener<AuthResult> implements OnCompleteListener
-    {
-        @Override
-        public void onComplete(@NonNull Task task)
-        {
 
-        }
-    }
 
 
 

@@ -15,9 +15,9 @@ public class ModelClassTest
         //test code
         list = new UserList();
         list2 = new PostList();
-        list.createUser("Ahmet","ahmet@gmail.com",null,false);
-        list.createUser("Mehmet","mehmet@gmail.com",null,true);
-        list2.createPost("enfes ürün","Bakarlar","Bilkent","Math",22,null,list.findUserByUsername("Ahmet"));
+        //list.createUser("Ahmet","ahmet@gmail.com",null,false);
+        //list.createUser("Mehmet","mehmet@gmail.com",null,true);
+        //list2.createPost("enfes ürün","Bakarlar","Bilkent","Math",22,null,list.findUserByUsername("Ahmet"));
     }
 }
 

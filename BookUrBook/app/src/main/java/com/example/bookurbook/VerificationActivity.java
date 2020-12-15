@@ -13,18 +13,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bookurbook.MailAPISource.JavaMailAPI;
+import com.example.bookurbook.models.Admin;
+import com.example.bookurbook.models.RegularUser;
+import com.example.bookurbook.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
-import java.util.Map;
+
+import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 public class VerificationActivity extends AppCompatActivity {
 
@@ -33,7 +34,8 @@ public class VerificationActivity extends AppCompatActivity {
     private Button verify;
     private TextView resend;
     private FirebaseAuth auth;
-    private DatabaseReference db;
+    private FirebaseFirestore db;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +50,7 @@ public class VerificationActivity extends AppCompatActivity {
         verify = findViewById(R.id.verifybutton);
         resend = findViewById(R.id.resend);
         auth = FirebaseAuth.getInstance();
-        db = FirebaseDatabase.getInstance().getReference();
+        db = FirebaseFirestore.getInstance();
         Bundle bundle = getIntent().getExtras();
         new CountDownTimer(60000, 1000)
         {
@@ -69,33 +71,37 @@ public class VerificationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(verification.getText().toString().equals(code))
                 {
-                   auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                   auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                        @Override
-                       public void onComplete(@NonNull Task<AuthResult> task) {
+                       public void onComplete(@NonNull Task<AuthResult> task)
+                       {
                            if(task.isSuccessful())
                            {
-                               Toast successful = Toast.makeText(VerificationActivity.this, "Account is created. You are being taken to the login screen.", Toast.LENGTH_LONG);
-                               successful.show();
-                               Map<String, Object> user = new HashMap<>();
-                               user.put("mail", email);
-                               user.put("username", username);
-                               
+                               Toast.makeText(VerificationActivity.this, "Your account has been created. You are being taken to the main menu.", Toast.LENGTH_LONG).show();
+
+                               HashMap<String, Object> newUserData = new HashMap<>();
+                               HashMap<String, Object> topUserInfo = new HashMap<>();
+                               newUserData.put("username", username);
+                               newUserData.put("email", email);
+                               newUserData.put("banned", false);
+                               newUserData.put("admin", false);
+                               db.collection("users").document(auth.getCurrentUser().getUid()).set(newUserData);
+                               RegularUser a = new RegularUser("", "",  null);
+
+
+
                                new CountDownTimer(2000, 1000)
                                {
                                    public void onTick(long millisUntilFinished){}
                                    public void onFinish()
                                    {
-                                       Intent pass = new Intent(VerificationActivity.this, LoginActivity.class);
-                                       startActivity(pass);
-                                 }
+                                       startActivity(new Intent(VerificationActivity.this, MainMenuActivity.class));
+                                   }
                                } .start();
                            }
                            else
-                           {
-                               Toast unsuccessful = Toast.makeText(VerificationActivity.this,
-                                       "Something is wrong. Admins are notified. Your verification code is correct. Check your internet connection", Toast.LENGTH_LONG);
-                               unsuccessful.show();
-                           }
+                               Toast.makeText(getApplicationContext(), "Error occurred.", Toast.LENGTH_LONG).show();
+
                        }
                    });
                 }

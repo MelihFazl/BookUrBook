@@ -16,11 +16,11 @@ public class UserList
         userArray = new ArrayList<>();
     }
 
-    public void createUser(String username, String email, ImageView avatar, boolean isAdmin)//!!!!PASSWORD AS PARAMETER - DATABASE?
+    public void createUser(String username, String email, String password,ImageView avatar, boolean isAdmin)//!!!!PASSWORD AS PARAMETER - DATABASE?
     {
         if(isAdmin)
         {
-            Admin admin = new Admin(username, email, avatar);
+            Admin admin = new Admin(username, email,  avatar);
             addUser(admin);
         }
         else
