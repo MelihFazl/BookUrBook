@@ -2,43 +2,42 @@ package com.example.bookurbook.controllers;
 
 import androidx.annotation.NonNull;
 
-import com.example.bookurbook.models.Admin;
+import com.example.bookurbook.models.RegularUser;
 import com.example.bookurbook.models.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class UserDatabaseConnection
 {
     private User user;
-    private DatabaseReference db;
     private FirebaseAuth auth;
+    private FirebaseFirestore db;
+    private DocumentReference docRef;
+    private String a;
     public UserDatabaseConnection(User user)
     {
-        db = FirebaseDatabase.getInstance().getReference( );
-        auth = FirebaseAuth.getInstance();
         this.user = user;
-        db.addValueEventListener(new ValueEventListener()
-        {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot)
-                {
-                    if(snapshot.hasChild("/users/" + auth.getCurrentUser().getUid()))
-                    {
-                        user.setUsername(snapshot.child("/users/" + auth.getCurrentUser().getUid() +"/username").getValue(String.class));
-                        user.setEmail(snapshot.child("/users/" + auth.getCurrentUser().getUid() +"/email").getValue(String.class));
-                        user.setBanned(snapshot.child("/users/" + auth.getCurrentUser().getUid() +"/banned").getValue(Boolean.class));
-                    }
-                }
+        auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        docRef = db.collection("users").document(auth.getCurrentUser().getUid());
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                UserDatabaseConnection.this.user.setEmail((String)documentSnapshot.get("email"));
+                UserDatabaseConnection.this.user.setBanned((boolean)documentSnapshot.get("banned"));
+                UserDatabaseConnection.this.user.setUsername((String)documentSnapshot.get("username"));
+                a = (String)documentSnapshot.get("username");
+                System.out.println(a + "iç");
+            }
+        });
+                System.out.println(a + "DIŞ");
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-        }
     }
+
+}
 

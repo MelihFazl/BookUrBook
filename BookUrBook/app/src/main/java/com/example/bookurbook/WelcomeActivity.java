@@ -9,22 +9,17 @@ import android.os.CountDownTimer;
 import android.os.Parcelable;
 import android.widget.ImageView;
 
-import com.example.bookurbook.models.Admin;
-import com.example.bookurbook.models.RegularUser;
+
 import com.example.bookurbook.models.User;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.io.Serializable;
 
 public class WelcomeActivity extends AppCompatActivity {
     private FirebaseAuth auth;
-    private DatabaseReference db;
+    private FirebaseFirestore db;
     User currentUser;
 
 
@@ -34,7 +29,7 @@ public class WelcomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_welcome);
         getSupportActionBar().hide();
         auth = FirebaseAuth.getInstance();
-        db = FirebaseDatabase.getInstance().getReference();
+        db = FirebaseFirestore.getInstance();
 
         new CountDownTimer(4444, 1111)
         {
@@ -48,9 +43,9 @@ public class WelcomeActivity extends AppCompatActivity {
                 else
                 {
                     Intent pass = new Intent(WelcomeActivity.this, MainMenuActivity.class);
-                    currentUser = new RegularUser(null, null, null);
-                    System.out.println("NOLUYOLAN");
-                    System.out.println(currentUser.getUsername());
+
+                    //System.out.println("NOLUYOLAN");
+                    //System.out.println(currentUser.getUsername());
                     //pass.putExtra("user", currentUser);
                     startActivity(pass);
                 }

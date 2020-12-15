@@ -20,8 +20,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 
@@ -34,7 +34,7 @@ public class VerificationActivity extends AppCompatActivity {
     private Button verify;
     private TextView resend;
     private FirebaseAuth auth;
-    private DatabaseReference db;
+    private FirebaseFirestore db;
 
 
     @Override
@@ -50,7 +50,7 @@ public class VerificationActivity extends AppCompatActivity {
         verify = findViewById(R.id.verifybutton);
         resend = findViewById(R.id.resend);
         auth = FirebaseAuth.getInstance();
-        db = FirebaseDatabase.getInstance().getReference();
+        db = FirebaseFirestore.getInstance();
         Bundle bundle = getIntent().getExtras();
         new CountDownTimer(60000, 1000)
         {
@@ -85,25 +85,19 @@ public class VerificationActivity extends AppCompatActivity {
                                newUserData.put("email", email);
                                newUserData.put("banned", false);
                                newUserData.put("admin", false);
-                               //newUserData.put("blocked users", new String[1] );
-                               topUserInfo.put("/users/" + auth.getCurrentUser().getUid(), newUserData);
-                               db.updateChildren(topUserInfo);
-                               RegularUser a = new RegularUser(username, email,  null);
-                               System.out.println("BOKTULLAH");
-                               System.out.println("BURAYA BAKARLAR");
-                               System.out.println(a.getUsername() + "ALLAH YOK");
-                               System.out.println(a.getEmail() + "ALLAH VAR");
-                               System.out.println("BAKMA LAN");
+                               db.collection("users").document(auth.getCurrentUser().getUid()).set(newUserData);
+                               RegularUser a = new RegularUser("", "",  null);
 
 
-                               /*new CountDownTimer(2000, 1000)
+
+                               new CountDownTimer(2000, 1000)
                                {
                                    public void onTick(long millisUntilFinished){}
                                    public void onFinish()
                                    {
-                                       //startActivity(new Intent(VerificationActivity.this, MainMenuActivity.class));
+                                       startActivity(new Intent(VerificationActivity.this, MainMenuActivity.class));
                                    }
-                               } .start();*/
+                               } .start();
                            }
                            else
                                Toast.makeText(getApplicationContext(), "Error occurred.", Toast.LENGTH_LONG).show();

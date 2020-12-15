@@ -15,20 +15,15 @@ public abstract class User implements Reportable, Serializable
     private ImageView avatar;
     private UserSpecPostList userPostList;
     private UserList blockedUsers;
-    private UserDatabaseConnection udb;
+    public UserDatabaseConnection udb;
 
     //constructor
     public User(String username, String email, ImageView avatar)///PASSWORD AS PARAMETER-DATABASE?? //yes of course!.
     {
-        this.username = username;
-        this.email = email;
-        this.avatar = avatar;
         udb = new UserDatabaseConnection(this);
-        banned = false;
         reports = new ArrayList<Report>();
         userPostList = new UserSpecPostList(this);
         blockedUsers = new UserList();
-
     }
     public String getUsername()
     {
@@ -42,6 +37,10 @@ public abstract class User implements Reportable, Serializable
     public String getEmail()
     {
         return email;
+    }
+
+    public UserDatabaseConnection getUdb() {
+        return udb;
     }
 
     public void setEmail(String email)
