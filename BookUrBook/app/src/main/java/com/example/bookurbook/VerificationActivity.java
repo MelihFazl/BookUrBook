@@ -86,8 +86,6 @@ public class VerificationActivity extends AppCompatActivity {
                                newUserData.put("banned", false);
                                newUserData.put("admin", false);
                                db.collection("users").document(auth.getCurrentUser().getUid()).set(newUserData);
-                               RegularUser a = new RegularUser("", "",  null);
-
 
 
                                new CountDownTimer(2000, 1000)
@@ -95,7 +93,8 @@ public class VerificationActivity extends AppCompatActivity {
                                    public void onTick(long millisUntilFinished){}
                                    public void onFinish()
                                    {
-                                       startActivity(new Intent(VerificationActivity.this, MainMenuActivity.class));
+                                       auth.signOut();
+                                       startActivity(new Intent(VerificationActivity.this, LoginActivity.class));
                                    }
                                } .start();
                            }
