@@ -1,9 +1,12 @@
 package com.example.bookurbook.models;
 
+import android.net.Uri;
 import android.widget.ImageView;
+
+import java.io.Serializable;
 import java.util.*;
 
-public class UserList
+public class UserList implements Serializable
 {
     //instance variables
     private ArrayList<User> userArray;
@@ -16,7 +19,7 @@ public class UserList
         userArray = new ArrayList<>();
     }
 
-    public void createUser(String username, String email, ImageView avatar, boolean isAdmin)//!!!!PASSWORD AS PARAMETER - DATABASE?
+    public void createUser(String username, String email, String password, String avatar, boolean isAdmin)//!!!!PASSWORD AS PARAMETER - DATABASE?
     {
         if(isAdmin)
         {

@@ -34,4 +34,7 @@
         <item>HIST</item>
 
     </string-array>
+
+    <string name="app_name">BookUrBook</string>
+
 </resources>

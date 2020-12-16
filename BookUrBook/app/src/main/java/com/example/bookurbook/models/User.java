@@ -1,47 +1,52 @@
 package com.example.bookurbook.models;
+import android.net.Uri;
 import android.widget.ImageView;
-import java.io.*;
+
+
+import java.io.Serializable;
 import java.util.*;
 
-public abstract class User implements Reportable
+public abstract class User implements Reportable, Serializable
 {
     //instance variables
     private String username;
     private String email;
     private boolean banned;
     private ArrayList<Report> reports;
-    private ImageView avatar;
+    private String avatar;
     private UserSpecPostList userPostList;
     private UserList blockedUsers;
-    /*private FirebaseAuth auth;!!!!!!!!!!!!!!!!!!!*/
-    /*private FirebaseFirestore database;!!!!!!!!!*/
 
     //constructor
-    public User(String username, String email, ImageView avatar)///PASSWORD AS PARAMETER-DATABASE??
+    public User(String username, String email, String avatar)///PASSWORD AS PARAMETER-DATABASE?? //yes of course!.
     {
         this.username = username;
         this.email = email;
         this.avatar = avatar;
-        banned = false;
-        reports = new ArrayList<>();
+        reports = new ArrayList<Report>();
         userPostList = new UserSpecPostList(this);
         blockedUsers = new UserList();
-    }
+        System.out.println(this.username);
 
+    }
     public String getUsername()
     {
         return username;
     }
-
     public void setUsername(String username)
     {
         this.username = username;
+
     }
 
     public String getEmail()
     {
         return email;
     }
+
+    //public UserDatabaseConnection getUdb() {
+      //  return udb;
+    //}
 
     public void setEmail(String email)
     {
@@ -68,12 +73,12 @@ public abstract class User implements Reportable
         this.reports = reports;
     }
 
-    public ImageView getAvatar()
+    public String getAvatar()
     {
         return avatar;
     }
 
-    public void setAvatar(ImageView avatar)
+    public void setAvatar(String avatar)
     {
         this.avatar = avatar;
     }
@@ -140,10 +145,20 @@ public abstract class User implements Reportable
     }
 
     /**
-     * This method will get called whenever an Admin bans a user. The method will set take the necesarry
+     * This method will get called whenever an Admin bans a user. The method will set take the necessary
      * actions such as deleting posts from PostList... in order to prevent the banned user from accessing the app.
      */
     public void updateBannedUser()
     {
     }
+
+
+
+
+
+
+
 }
+
+
+
