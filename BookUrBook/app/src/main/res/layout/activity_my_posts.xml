@@ -127,3 +127,7 @@
 
 
 
+
+    tools:context=".MyPostsActivity">
+
+</androidx.constraintlayout.widget.ConstraintLayout>
