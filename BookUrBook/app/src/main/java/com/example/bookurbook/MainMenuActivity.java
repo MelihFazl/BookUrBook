@@ -34,7 +34,7 @@ public class MainMenuActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
 
-       if(getIntent().getSerializableExtra("user") instanceof Admin)
+        if(getIntent().getSerializableExtra("user") instanceof Admin)
             currentUser = (Admin)getIntent().getSerializableExtra("user");
         else
             currentUser = (RegularUser)getIntent().getSerializableExtra("user");
@@ -60,7 +60,9 @@ public class MainMenuActivity extends AppCompatActivity {
         topright.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainMenuActivity.this, MyChatsActivity.class));
+                Intent pass = new Intent(MainMenuActivity.this, MyChatsActivity.class);
+                pass.putExtra("user", currentUser);
+                startActivity(pass);
             }
         });
 
