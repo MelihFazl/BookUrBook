@@ -2,7 +2,7 @@ package com.example.bookurbook.models;
 import java.io.*;
 import java.util.*;
 
-public class Report
+public class Report implements Serializable
 {
     //instance variables
     private String description;

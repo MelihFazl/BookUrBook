@@ -8,7 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.example.bookurbook.MailAPISource.JavaMailAPI;
+
 import java.util.Random;
 
 public class RegisterActivity extends AppCompatActivity {
