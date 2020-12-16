@@ -13,6 +13,7 @@ import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bookurbook.models.Admin;
@@ -22,25 +23,30 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.net.URL;
+import java.util.HashMap;
 
 public class SettingsActivity extends AppCompatActivity {
 
 
     private Button logout;
     private Button select;
-    private Button upload;
+    private TextView userDetails;
     private ImageView profilePic;
     private Uri imageUri;
     private User currentUser;
     private FirebaseStorage storage;
     private StorageReference storageReference;
     private FirebaseAuth auth;
+    private FirebaseFirestore db;
+    private Intent pass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +59,11 @@ public class SettingsActivity extends AppCompatActivity {
         logout = findViewById(R.id.logout);
         select = findViewById(R.id.selectImage);
         profilePic = findViewById(R.id.profilepic);
+        userDetails = findViewById(R.id.userdetails);
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
         auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         if(getIntent().getSerializableExtra("user") instanceof Admin)
             currentUser = (Admin)getIntent().getSerializableExtra("user");
@@ -64,6 +72,10 @@ public class SettingsActivity extends AppCompatActivity {
         System.out.println("SETTINGSDEYIZ ABI " + currentUser.getEmail());
         System.out.println("avatarimiz :aSDSADA " + currentUser.getAvatar());
         Picasso.get().load(currentUser.getAvatar()).into(profilePic);
+        if(currentUser instanceof Admin)
+            userDetails.setText(currentUser.getUsername()+ "\n" + "Admin User");
+        else
+            userDetails.setText(currentUser.getUsername());
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,7 +107,6 @@ public class SettingsActivity extends AppCompatActivity {
         if(requestCode == 1 && resultCode == RESULT_OK && data != null)
         {
             imageUri = data.getData();
-            System.out.println("OLMASI GEREKEN " + imageUri.toString());
             uploadPic();
         }
 
@@ -111,8 +122,16 @@ public class SettingsActivity extends AppCompatActivity {
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         // Get a URL to the uploaded content
                         Toast.makeText(getApplicationContext(), "BRUH", Toast.LENGTH_LONG).show();
-                        Picasso.get().load(imageUri).into(profilePic);
-                        currentUser.setAvatar(imageUri.toString());
+                        picRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                Picasso.get().load(uri).into(profilePic);
+                                HashMap<String, Object> newData = new HashMap();
+                                newData.put("avatar", uri.toString());
+                                currentUser.setAvatar(uri.toString());
+                                db.collection("users").document(auth.getCurrentUser().getUid()).set(newData, SetOptions.merge());
+                            }
+                        });
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -124,19 +143,10 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        new CountDownTimer(2500, 1000)
-        {
-            public void onTick(long millisUntilFinished) { }
-
-            public void onFinish()
-            {
-                Intent pass = new Intent(SettingsActivity.this, MainMenuActivity.class);
-                pass.putExtra("user", currentUser);
-                startActivity(pass);
-            }
-        }.start();
-
-
+    public void onBackPressed()
+    {
+        pass = new Intent(SettingsActivity.this, MainMenuActivity.class);
+        pass.putExtra("user", currentUser);
+        startActivity(pass);
     }
 }
