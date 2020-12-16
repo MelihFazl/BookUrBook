@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BokUrBook</string>
+    <string name="app_name">BookUrBook</string>
     <string name="descriptionTextView">TextView</string>
     <string name="postTitleTextView">TextView</string>
 
@@ -34,7 +34,5 @@
         <item>HIST</item>
 
     </string-array>
-
-    <string name="app_name">BookUrBook</string>
 
 </resources>
