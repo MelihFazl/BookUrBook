@@ -17,7 +17,7 @@ import com.example.bookurbook.models.Post;
 import com.example.bookurbook.models.PostList;
 import com.example.bookurbook.models.RegularUser;
 
-public class EditPostScreen extends AppCompatActivity {
+public class EditPostActivity extends AppCompatActivity {
     //instance variables
     private Post post;
     private PostList list;
@@ -46,7 +46,7 @@ public class EditPostScreen extends AppCompatActivity {
         list.addPost(post);
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_post_screen);
+        setContentView(R.layout.activity_edit_post);
 
         toolbar = findViewById(R.id.toolbar_with_trashcan);
         setSupportActionBar(toolbar);
@@ -56,7 +56,7 @@ public class EditPostScreen extends AppCompatActivity {
 
         postTitleEditText = findViewById(R.id.postTitleEditText);
         spinner = findViewById(R.id.spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(EditPostScreen.this, R.array.Universities, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(EditPostActivity.this, R.array.Universities, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         for(int i = 0; i < spinner.getCount(); i++) {
@@ -64,7 +64,7 @@ public class EditPostScreen extends AppCompatActivity {
                 spinner.setSelection(i);
         }
         spinner2 = findViewById(R.id.spinner2);
-        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(EditPostScreen.this, R.array.Courses, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(EditPostActivity.this, R.array.Courses, android.R.layout.simple_spinner_item);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner2.setAdapter(adapter2);
         for(int i = 0; i < spinner2.getCount(); i++) {
@@ -99,7 +99,7 @@ public class EditPostScreen extends AppCompatActivity {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(EditPostScreen.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(EditPostActivity.this);
 
                 builder.setTitle("Confirm");
                 builder.setMessage("Are you sure that you want to delete the Post?");
@@ -110,7 +110,7 @@ public class EditPostScreen extends AppCompatActivity {
 
                         list.deletePost(post);
                         dialog.dismiss();
-                        Toast.makeText(EditPostScreen.this, "You have successfully deleted your Post!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(EditPostActivity.this, "You have successfully deleted your Post!", Toast.LENGTH_LONG).show();
                         //Then it will close the screen automatically!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                     }
                 });
@@ -132,7 +132,7 @@ public class EditPostScreen extends AppCompatActivity {
         applyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(EditPostScreen.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(EditPostActivity.this);
 
                 builder.setTitle("Confirm");
                 builder.setMessage("Are you sure that you want to apply the changes?");
@@ -140,11 +140,11 @@ public class EditPostScreen extends AppCompatActivity {
                 builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         if(postTitleEditText.getText().toString().equals("")) {
-                            Toast.makeText(EditPostScreen.this, "You need to enter a title!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(EditPostActivity.this, "You need to enter a title!", Toast.LENGTH_LONG).show();
                             dialog.dismiss();
                         }
                         else if (postPrice.getText().toString().equals("")){
-                            Toast.makeText(EditPostScreen.this, "You need to enter the price!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(EditPostActivity.this, "You need to enter the price!", Toast.LENGTH_LONG).show();
                             dialog.dismiss();
                         }
                         else {
@@ -153,7 +153,7 @@ public class EditPostScreen extends AppCompatActivity {
                             post.setUniversity(spinner.getSelectedItem().toString());
                             post.setCourse(spinner2.getSelectedItem().toString());
                             post.setPrice(Double.parseDouble(postPrice.getText().toString()));
-                            Toast.makeText(EditPostScreen.this, "You have successfully applied your changes!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(EditPostActivity.this, "You have successfully applied your changes!", Toast.LENGTH_LONG).show();
                             dialog.dismiss();
                         }
                     }
