@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.bookurbook">
-
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,6 +12,19 @@
         <activity android:name=".RegisterActivity"></activity>
         <activity android:name=".LoginActivity"></activity>
         <activity android:name=".VerificationActivity"></activity>
+        <activity android:name=".MainMenuActivity"></activity>
+        <activity android:name=".SettingsActivity"></activity>
+        <activity android:name=".PostListActivity"></activity>
+        <activity android:name=".WishlistActivity"></activity>
+        <activity android:name=".ForgottenPasswordActivity"></activity>
+        <activity android:name=".MyPostsActivity"></activity>
+        <activity android:name=".MyChatsActivity"></activity>
+        <activity android:name=".CreatePostActivity"></activity>
+        <activity android:name=".EditPostActivity"></activity>
+        <activity android:name=".PostActivity"></activity>
+        <activity android:name=".MyBlockListActivity"></activity>
+
+
         <activity
             android:name=".WelcomeActivity"
             android:label="@string/app_name">

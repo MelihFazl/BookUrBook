@@ -1,10 +1,13 @@
 package com.example.bookurbook.models;
+
+import java.io.Serializable;
+
 /**
  * This method is created in order to test the model class
  * @author Kerem ŞAHİN
  * @version 1
  */
-public class ModelClassTest
+public class ModelClassTest implements Serializable
 {
     public static void main(String[] args)
     {
@@ -15,9 +18,9 @@ public class ModelClassTest
         //test code
         list = new UserList();
         list2 = new PostList();
-        list.createUser("Ahmet","ahmet@gmail.com",null,false);
-        list.createUser("Mehmet","mehmet@gmail.com",null,true);
-        list2.createPost("enfes ürün","Bakarlar","Bilkent","Math",22,null,list.findUserByUsername("Ahmet"));
+        //list.createUser("Ahmet","ahmet@gmail.com",null,false);
+        //list.createUser("Mehmet","mehmet@gmail.com",null,true);
+        //list2.createPost("enfes ürün","Bakarlar","Bilkent","Math",22,null,list.findUserByUsername("Ahmet"));
     }
 }
 

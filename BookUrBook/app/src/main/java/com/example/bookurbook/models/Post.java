@@ -3,7 +3,7 @@ import java.io.*;
 import java.util.*;
 import android.widget.ImageView;
 
-public class Post implements Reportable
+public class Post implements Reportable, Serializable
 {
     //instance variables
     private String description;
