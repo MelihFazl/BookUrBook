@@ -1,8 +1,9 @@
 package com.example.bookurbook.models;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 
-public class Message
+public class Message implements Serializable
 {
     //variables
     SimpleDateFormat messageDate;

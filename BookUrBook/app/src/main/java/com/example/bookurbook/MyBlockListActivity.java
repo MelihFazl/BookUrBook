@@ -1,4 +1,4 @@
-package com.example.bookurbook.views;
+package com.example.bookurbook;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,7 +15,7 @@ import com.example.bookurbook.models.User;
 
 import java.util.ArrayList;
 
-public class MyBlockList extends AppCompatActivity {
+public class MyBlockListActivity extends AppCompatActivity {
     private User currentUser;
     private RecyclerView blockList;
     private TextView username;

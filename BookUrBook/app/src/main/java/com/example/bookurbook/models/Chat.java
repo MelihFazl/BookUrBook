@@ -1,24 +1,23 @@
 package com.example.bookurbook.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
-public class Chat
+public class Chat implements Serializable
 {
     //variables
     User user1;
     User user2;
     ArrayList<Message> messages;
-    boolean user1Blocked;
-    boolean user2Blocked;
+    String lastMessageContentInDB;
 
     //constructor
-    public Chat(User user1, User user2, boolean user1Blocked, boolean user2Blocked)
+    public Chat(User user1, User user2)
     {
         this.user1 = user1;
         this.user2 = user2;
         messages = new ArrayList<Message>();
-        this.user1Blocked = user1Blocked;
-        this.user2Blocked = user2Blocked;
     }
 
     //methods
@@ -65,16 +64,6 @@ public class Chat
         }
     }
 
-    public boolean isUser1Blocked()
-    {
-        return user1Blocked;
-    }
-
-    public boolean isUser2Blocked()
-    {
-        return user2Blocked;
-    }
-
     public User getUser1()
     {
         return user1;
@@ -84,4 +73,15 @@ public class Chat
     {
         return user2;
     }
+
+    public void setLastMessageContentInDB(String lastMessageContentInDB)
+    {
+        this.lastMessageContentInDB = lastMessageContentInDB;
+    }
+
+    public String getLastMessageInFromDB()
+    {
+        return lastMessageContentInDB;
+    }
+
 }

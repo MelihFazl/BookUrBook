@@ -18,7 +18,7 @@ import com.example.bookurbook.models.PostList;
 import com.example.bookurbook.models.RegularUser;
 import com.example.bookurbook.models.User;
 
-public class CreatePostScreen extends AppCompatActivity {
+public class CreatePostActivity extends AppCompatActivity {
     //instance variables
     private Post post;
     private PostList list;
@@ -46,7 +46,7 @@ public class CreatePostScreen extends AppCompatActivity {
         list = new PostList();
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_post_screen);
+        setContentView(R.layout.activity_create_post);
 
         toolbar = findViewById(R.id.toolbar_without_report);
         setSupportActionBar(toolbar);
@@ -56,11 +56,11 @@ public class CreatePostScreen extends AppCompatActivity {
 
         postTitleCreatePost = findViewById(R.id.postTitleCreatePost);
         spinner = findViewById(R.id.createPostSpinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(CreatePostScreen.this, R.array.Universities, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(CreatePostActivity.this, R.array.Universities, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner2 = findViewById(R.id.createPostSpinner2);
-        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(CreatePostScreen.this, R.array.Courses, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(CreatePostActivity.this, R.array.Courses, android.R.layout.simple_spinner_item);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner2.setAdapter(adapter2);
         photoUpload = findViewById(R.id.photoUpload);
@@ -86,7 +86,7 @@ public class CreatePostScreen extends AppCompatActivity {
         applyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(CreatePostScreen.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(CreatePostActivity.this);
 
                 builder.setTitle("Confirm");
                 builder.setMessage("Are you sure that you want to create the Post?");
@@ -95,11 +95,11 @@ public class CreatePostScreen extends AppCompatActivity {
 
                     public void onClick(DialogInterface dialog, int which) {
                         if(postTitleCreatePost.getText().toString().equals("")) {
-                            Toast.makeText(CreatePostScreen.this, "You need to enter a title!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(CreatePostActivity.this, "You need to enter a title!", Toast.LENGTH_LONG).show();
                             dialog.dismiss();
                         }
                         else if (postPrice.getText().toString().equals("")){
-                            Toast.makeText(CreatePostScreen.this, "You need to enter the price!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(CreatePostActivity.this, "You need to enter the price!", Toast.LENGTH_LONG).show();
                             dialog.dismiss();
                         }
                         else {
@@ -107,7 +107,7 @@ public class CreatePostScreen extends AppCompatActivity {
                                     , spinner.getSelectedItem().toString(), spinner2.getSelectedItem().toString(), Double.parseDouble(postPrice.getText().toString())
                                     , null, user);
                             list.addPost(post);
-                            Toast.makeText(CreatePostScreen.this, "You have successfully created the post!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(CreatePostActivity.this, "You have successfully created the post!", Toast.LENGTH_LONG).show();
                             dialog.dismiss();
                         }
                     }

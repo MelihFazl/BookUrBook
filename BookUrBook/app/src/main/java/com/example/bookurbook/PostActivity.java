@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.example.bookurbook.models.Post;
 import com.example.bookurbook.models.RegularUser;
 
-public class PostScreen extends AppCompatActivity implements ReportPostDialogListener {
+public class PostActivity extends AppCompatActivity implements ReportPostDialogListener {
     //instance variables
     private Post post;
 
@@ -29,7 +29,7 @@ public class PostScreen extends AppCompatActivity implements ReportPostDialogLis
 
         //method code
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post_screen);
+        setContentView(R.layout.activity_post);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -82,7 +82,7 @@ public class PostScreen extends AppCompatActivity implements ReportPostDialogLis
     @Override
     public void applyTexts(String description, String category) {
         post.report(description, category);
-        System.out.println(post.getReports().get(0).getDescription());
-        System.out.println(post.getReports().get(0).getCategory());
+        //System.out.println(post.getReports().get(0).getDescription());
+        //System.out.println(post.getReports().get(0).getCategory());
     }
 }

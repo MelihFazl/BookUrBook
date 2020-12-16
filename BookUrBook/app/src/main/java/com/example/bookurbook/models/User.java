@@ -26,8 +26,6 @@ public abstract class User implements Reportable, Serializable
         reports = new ArrayList<Report>();
         userPostList = new UserSpecPostList(this);
         blockedUsers = new UserList();
-        System.out.println(this.username);
-
     }
     public String getUsername()
     {

@@ -1,4 +1,4 @@
-package com.example.bookurbook.views;
+package com.example.bookurbook;
 
 import android.content.Context;
 import android.view.LayoutInflater;
