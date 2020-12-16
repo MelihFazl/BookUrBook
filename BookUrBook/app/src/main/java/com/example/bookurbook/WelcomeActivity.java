@@ -21,14 +21,13 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 
+import java.io.File;
 import java.io.Serializable;
 
 public class WelcomeActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseFirestore db;
-    private FirebaseStorage storage;
     private User currentUser;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +36,6 @@ public class WelcomeActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        storage = FirebaseStorage.getInstance();
 
         if(auth.getCurrentUser() != null)
         {
@@ -48,36 +46,15 @@ public class WelcomeActivity extends AppCompatActivity {
                         currentUser = new Admin(documentSnapshot.getString("username"), documentSnapshot.getString("email"), null);
                     else
                         currentUser = new RegularUser(documentSnapshot.getString("username"), documentSnapshot.getString("email"), null);
-                    System.out.println("currently  " + auth.getCurrentUser().getUid());
-                    storage.getReference().child("images/profile_pictures/" + auth.getCurrentUser().getUid()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            System.out.println(currentUser.getEmail() + "USER YARATILDI WALLA");
-                            currentUser.setAvatar(uri.toString());
-                            System.out.println("GELIYOO");
-                            System.out.println("LINK  " + uri.toString());
-                            Intent pass = new Intent(WelcomeActivity.this, MainMenuActivity.class);
-                            pass.putExtra("user", currentUser);
-                            startActivity(pass);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            storage.getReference().child("images/profile_pictures/default.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    System.out.println(currentUser.getEmail() + "USER YARATILDI WALLA");
-                                    currentUser.setAvatar(uri.toString());
-                                    System.out.println("GELIYOO");
-                                    System.out.println("LINK 2 " + uri);
-                                    Intent pass = new Intent(WelcomeActivity.this, MainMenuActivity.class);
-                                    pass.putExtra("user", currentUser);
-                                    startActivity(pass);
-                                }
-                            });
-                        }
-                    });
-
+                    if(documentSnapshot.getString("avatar") != null)
+                    {
+                        currentUser.setAvatar(documentSnapshot.getString("avatar"));
+                    }
+                    else
+                        currentUser.setAvatar("https://firebasestorage.googleapis.com/v0/b/bookurbook-a02e4.appspot.com/o/images%2Fprofile_pictures%2Fdefault.jpg?alt=media&token=a54505f6-0d24-40cd-a626-e39a655254c6");
+                    Intent pass = new Intent(WelcomeActivity.this, MainMenuActivity.class);
+                    pass.putExtra("user", currentUser);
+                    startActivity(pass);
                 }
             });
         }
