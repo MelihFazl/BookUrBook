@@ -152,7 +152,7 @@ public class EditPostActivity extends AppCompatActivity {
                             post.setTitle(postTitleEditText.getText().toString());
                             post.setUniversity(spinner.getSelectedItem().toString());
                             post.setCourse(spinner2.getSelectedItem().toString());
-                            post.setPrice(Double.parseDouble(postPrice.getText().toString()));
+                            post.setPrice(Integer.parseInt(postPrice.getText().toString()));
                             Toast.makeText(EditPostActivity.this, "You have successfully applied your changes!", Toast.LENGTH_LONG).show();
                             dialog.dismiss();
                         }
