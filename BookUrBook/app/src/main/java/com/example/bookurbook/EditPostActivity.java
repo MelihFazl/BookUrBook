@@ -55,6 +55,7 @@ public class EditPostActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Edit Post");
 
         postTitleEditText = findViewById(R.id.postTitleEditText);
+
         spinner = findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(EditPostActivity.this, R.array.Universities, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -63,6 +64,7 @@ public class EditPostActivity extends AppCompatActivity {
             if ( spinner.getItemAtPosition(i).toString().equals(post.getUniversity()))
                 spinner.setSelection(i);
         }
+
         spinner2 = findViewById(R.id.spinner2);
         ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(EditPostActivity.this, R.array.Courses, android.R.layout.simple_spinner_item);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
