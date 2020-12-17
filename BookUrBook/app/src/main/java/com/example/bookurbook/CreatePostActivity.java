@@ -104,7 +104,7 @@ public class CreatePostActivity extends AppCompatActivity {
                         }
                         else {
                             post = new Post(postDescriptionCreatePost.getText().toString(), postTitleCreatePost.getText().toString()
-                                    , spinner.getSelectedItem().toString(), spinner2.getSelectedItem().toString(), Double.parseDouble(postPrice.getText().toString())
+                                    , spinner.getSelectedItem().toString(), spinner2.getSelectedItem().toString(), Integer.parseInt(postPrice.getText().toString())
                                     , null, user);
                             list.addPost(post);
                             Toast.makeText(CreatePostActivity.this, "You have successfully created the post!", Toast.LENGTH_LONG).show();

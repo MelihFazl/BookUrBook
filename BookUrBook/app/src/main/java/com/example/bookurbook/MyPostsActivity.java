@@ -66,11 +66,11 @@ public class MyPostsActivity extends AppCompatActivity {
     {
         user = new RegularUser("mirayayerdem","miray.ayerdem@ug.bilkent.edu.tr","https://firebasestorage.googleapis.com/v0/b/bookurbook-a02e4.appspot.com/o/images%2Fprofile_pictures%2F8zD7ahsNJUhACYe9YZlSAgxOqmr2?alt=media&token=2fc17f75-c28c-43de-b4a5-10159b199bf0");
         postList = new UserSpecPostList(user) ;
-        postList.addPost(new Post("b","BigJava Late Objects", "bilkent", "cs", 100, img, user));
+        /*postList.addPost(new Post("b","BigJava Late Objects", "bilkent", "cs", 100, img, user));
         postList.addPost(new Post("b","Humanity GILGAMIŞ", "ottü", "cs", 30, img,user));
         postList.addPost(new Post("j","Calculus", "ankara", "100", 80, img, user));
         postList.addPost(new Post("aa","discrete math", "boğaziçi", "10", 1000, img, user));
-        postList.addPost(new Post("ı","BigJava Late Objects", "itü", "1000", 200,  img,user));
+        postList.addPost(new Post("ı","BigJava Late Objects", "itü", "1000", 200,  img,user)); */
 
     }
 

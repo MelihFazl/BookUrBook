@@ -63,7 +63,7 @@ public class PostList implements Filterable, Sortable, Serializable
      * @param avatar .
      * @param owner .
      */
-    public void createPost(String description, String title, String university, String course, double price, ImageView avatar, User owner)
+    public void createPost(String description, String title, String university, String course, int price, String avatar, User owner)
     {
         if(!owner.isBanned())
         {
