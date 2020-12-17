@@ -61,6 +61,10 @@ and updating whenever a change occurs in database.
 -> Designed Post List screen in Android Studio and built an adapter for the recycler view.
 -> Designed Filter screen so that the user can filter de Post List results.
 -> Designing My Chats screen in Android Studio and building an adapter for the recycler view.
+-> Designing Chat screen in Android Studio and building an adapter for the recycler view.
+-> Making the connection between the database and the user interface of some classes.
+-> Creating dialog pop up for user interraction.
+
 
 ---Kerem Şahin---
 -> Creating the Model Classes of the application. (Other than Miray)
