@@ -1,6 +1,7 @@
 package com.example.bookurbook;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +10,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookurbook.R;
@@ -35,9 +38,9 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.ViewHold
         //inner class properties
         private TextView title, seller, price;
         private ImageView photo;
-        private ImageView soldPhoto;
+        private ImageView soldPhoto, tickSold;
         private LinearLayout layout;
-        private ImageButton editButton;
+        private ImageButton editButton;;
 
 
         //inner class constructor
@@ -50,6 +53,7 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.ViewHold
             this.soldPhoto = view.findViewById(R.id.soldView);
             this.layout = (LinearLayout) view.findViewById(R.id.singlePostLayout);
             this.editButton = view.findViewById(R.id.edit_button);
+            this.tickSold = view.findViewById(R.id.sold_tick);
         }
     }
 
@@ -73,7 +77,6 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.ViewHold
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, PostActivity.class);
-                //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("post", myPosts.get(position));
                 context.startActivity(intent);
 
@@ -88,12 +91,65 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.ViewHold
                 context.startActivity(intent2);
             }
         });
-        if(myPosts.get(position).isSold())
-           holder.soldPhoto.setVisibility(View.VISIBLE);
-        else
-           holder.soldPhoto.setVisibility(View.INVISIBLE);
+
+        holder.tickSold.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Confirm");
+                if (!myPosts.get(position).isSold()) {
+                    builder.setMessage("Are you sure that you want to mark the Post as sold?");
+                    builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            myPosts.get(position).setSold(true);
+                            holder.soldPhoto.setImageResource(R.drawable.sold);
+                            dialog.dismiss();
+                            Toast.makeText(context, "You have successfully sold your Post!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
+                else
+                {
+                    builder.setMessage("Are you sure that you want to mark the Post as unsold?");
+                    builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            myPosts.get(position).setSold(false);
+                            holder.soldPhoto.setVisibility(View.INVISIBLE);
+                            dialog.dismiss();
+                            Toast.makeText(context, "You have marked your Post as unsold!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+
+                }
+            }
+        });
+
 
     }
+
+
 
     @Override
     public int getItemCount() {
