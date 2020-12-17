@@ -12,6 +12,7 @@ import com.example.bookurbook.models.Post;
 import com.example.bookurbook.models.PostList;
 import com.example.bookurbook.models.RegularUser;
 import com.example.bookurbook.models.UserSpecPostList;
+import com.squareup.picasso.Picasso;
 
 public class MyPostsActivity extends AppCompatActivity {
 
@@ -20,6 +21,7 @@ public class MyPostsActivity extends AppCompatActivity {
     TextView username, userType;
     MyPostsAdapter adp;
     PostList postList;
+    ImageView temp;
     RegularUser user;
 
     @Override
@@ -36,13 +38,14 @@ public class MyPostsActivity extends AppCompatActivity {
         this.username = findViewById(R.id.username);
         this.userType = findViewById(R.id.user_type);
         this.img = findViewById(R.id.profile_image);
+
         recyclerView = findViewById(R.id.recycler_id);
         add();
-        adp = new MyPostsAdapter(getBaseContext(), postList.getPostArray());
+        Picasso.get().load(user.getAvatar()).into(img);
+        adp = new MyPostsAdapter(MyPostsActivity.this, postList.getPostArray());
         recyclerView.setAdapter(adp);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         setElements();
-
 
     }
 
@@ -52,7 +55,7 @@ public class MyPostsActivity extends AppCompatActivity {
     public void setElements()
     {
         username.setText(user.getUsername());
-        //Ferhat will fix img.setImageResource(user.getAvatar());
+        //Picasso.get().load(user.getAvatar()).into(img);
         if(user instanceof RegularUser)
             userType.setText("Regular User");
         else
@@ -61,13 +64,13 @@ public class MyPostsActivity extends AppCompatActivity {
     //for now
     public void add()    // later change this method to add posts from database ???
     {
-        //user = new RegularUser("miray","miray.ayerdem@ug.bilkent.edu.tr",R.drawable.userimg);
-        //postList = new UserSpecPostList(user) ;
-        //postList.addPost(new Post("b","BigJava Objects", "bilkent", "cs", 100, R.drawable.bru4, user));
-        //postList.addPost(new Post("b","BigJava Objects", "ottü", "cs", 100, R.drawable.bru4,user));
-        //postList.addPost(new Post("j","Calculus", "ankara", "100", 80,  R.drawable.bru, user));
-        //postList.addPost(new Post("aa","discrete math", "boğaziçi", "10", 1000,  R.drawable.bru, user));
-        //postList.addPost(new Post("ı","humanity", "itü", "1000", 200,  R.drawable.bru,user));
+        user = new RegularUser("mirayayerdem","miray.ayerdem@ug.bilkent.edu.tr","https://firebasestorage.googleapis.com/v0/b/bookurbook-a02e4.appspot.com/o/images%2Fprofile_pictures%2F8zD7ahsNJUhACYe9YZlSAgxOqmr2?alt=media&token=2fc17f75-c28c-43de-b4a5-10159b199bf0");
+        postList = new UserSpecPostList(user) ;
+        postList.addPost(new Post("b","BigJava Late Objects", "bilkent", "cs", 100, img, user));
+        postList.addPost(new Post("b","Humanity GILGAMIŞ", "ottü", "cs", 30, img,user));
+        postList.addPost(new Post("j","Calculus", "ankara", "100", 80, img, user));
+        postList.addPost(new Post("aa","discrete math", "boğaziçi", "10", 1000, img, user));
+        postList.addPost(new Post("ı","BigJava Late Objects", "itü", "1000", 200,  img,user));
 
     }
 

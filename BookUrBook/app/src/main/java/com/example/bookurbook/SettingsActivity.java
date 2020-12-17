@@ -69,8 +69,8 @@ public class SettingsActivity extends AppCompatActivity {
             currentUser = (Admin)getIntent().getSerializableExtra("user");
         else
             currentUser = (RegularUser)getIntent().getSerializableExtra("user");
-        System.out.println("SETTINGSDEYIZ ABI " + currentUser.getEmail());
-        System.out.println("avatarimiz :aSDSADA " + currentUser.getAvatar());
+        System.out.println("In Settings Current User Email: " + currentUser.getEmail());
+        System.out.println("Current User Avatar: " + currentUser.getAvatar());
         Picasso.get().load(currentUser.getAvatar()).into(profilePic);
         if(currentUser instanceof Admin)
             userDetails.setText(currentUser.getUsername()+ "\n" + "Admin User");
@@ -121,7 +121,7 @@ public class SettingsActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         // Get a URL to the uploaded content
-                        Toast.makeText(getApplicationContext(), "BRUH", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "SUCCESS", Toast.LENGTH_LONG).show();
                         picRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {

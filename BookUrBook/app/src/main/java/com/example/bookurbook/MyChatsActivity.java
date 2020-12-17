@@ -48,7 +48,7 @@ public class MyChatsActivity extends AppCompatActivity {
         else
             currentUser = (RegularUser)getIntent().getSerializableExtra("user");
 
-        System.out.println("CHATTEYİZ ABİ " + currentUser.getEmail());
+        System.out.println("In chat, current user's email: " + currentUser.getEmail());
         db.collection("chats").addSnapshotListener(new EventListener<QuerySnapshot>()
         {
             @Override

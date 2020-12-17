@@ -42,12 +42,12 @@ public class MyBlockListActivity extends AppCompatActivity {
     }
     public void add()
     {
-        currentUser = new RegularUser("miri","miray.ayerdem@ug.bilkent.edu.tr", R.drawable.userimg);
-        currentUser.getBlockedUsers().addUser(new RegularUser("kaan","kaan.tek@ug.bilkent.edu.tr", R.drawable.bru4));
-        currentUser.getBlockedUsers().addUser(new RegularUser("kerem","kerem.sahin@ug.bilkent.edu.tr", R.drawable.bru3));
-        currentUser.getBlockedUsers().addUser(new RegularUser("melih","melih.keskin@ug.bilkent.edu.tr", R.drawable.bru2));
-        currentUser.getBlockedUsers().addUser(new RegularUser("ferhat","ferhat.korkmaz@ug.bilkent.edu.tr", R.drawable.user));
-        blockedUsers = currentUser.getBlockedUsers().getUserArray();
+        currentUser = new RegularUser("miri","miray.ayerdem@ug.bilkent.edu.tr", "https://i.ytimg.com/vi/tIBN6kXHb_I/hqdefault.jpg");
+        currentUser.getBlockedUsers().addUser(new RegularUser("kaan","kaan.tek@ug.bilkent.edu.tr", "https://i.ytimg.com/vi/tIBN6kXHb_I/hqdefault.jpg"));
+        currentUser.getBlockedUsers().addUser(new RegularUser("kerem","kerem.sahin@ug.bilkent.edu.tr", "https://i.ytimg.com/vi/tIBN6kXHb_I/hqdefault.jpg"));
+        currentUser.getBlockedUsers().addUser(new RegularUser("melih","melih.keskin@ug.bilkent.edu.tr", "https://i.ytimg.com/vi/tIBN6kXHb_I/hqdefault.jpg"));
+        currentUser.getBlockedUsers().addUser(new RegularUser("ferhat","ferhat.korkmaz@ug.bilkent.edu.tr", "https://i.ytimg.com/vi/tIBN6kXHb_I/hqdefault.jpg"));
+
     }
 
 }

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookurbook.R;
 import com.example.bookurbook.models.Post;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -66,13 +67,13 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.ViewHold
     public void onBindViewHolder(@NonNull MyPostsAdapter.ViewHolder holder, int position) {
         holder.title.setText(myPosts.get(position).getTitle());
         holder.seller.setText(myPosts.get(position).getOwner().getUsername());
-        holder.photo.setImageResource(myPosts.get(position).getPicture());
+        Picasso.get().load("https://i.ytimg.com/vi/tIBN6kXHb_I/hqdefault.jpg").into(holder.photo);
         holder.price.setText(Double.toString(myPosts.get(position).getPrice()) + "₺");
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, PostActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("post", myPosts.get(position));
                 context.startActivity(intent);
 

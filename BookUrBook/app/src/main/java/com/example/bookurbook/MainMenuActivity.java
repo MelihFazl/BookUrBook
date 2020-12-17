@@ -29,7 +29,6 @@ public class MainMenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
-        getSupportActionBar().hide();
         init();
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
@@ -38,7 +37,7 @@ public class MainMenuActivity extends AppCompatActivity {
             currentUser = (Admin)getIntent().getSerializableExtra("user");
         else
             currentUser = (RegularUser)getIntent().getSerializableExtra("user");
-        System.out.println("MAINDEYİZ ABİ " + currentUser.getEmail());
+        System.out.println("Main Menu Current User email:  " + currentUser.getEmail());
     }
 
 
