@@ -49,6 +49,12 @@ and updating whenever a change occurs in database.
 
 
 --- Miray Ayerdem---
+-> Adding and coding some methods to User and Post Classes
+-> Creating Wishlist Class as a model class and designing Wishlist screen according to feedback
+-> Creating Wishlist screen layout in Android Studio using xml, its adapter and its activity class using Java
+-> Creating My Posts screen layout in Android Studio using xml, its adapter and its activity class using Java
+-> Creating My Blocklist screen layout in Android Studio using xml, its pop-ups, its adapter and its activity class using Java
+
 
 --- Kaan Tek---
 
