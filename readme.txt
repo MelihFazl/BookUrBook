@@ -54,6 +54,7 @@ and updating whenever a change occurs in database.
 -> Creating Wishlist screen layout in Android Studio using xml, its adapter and its activity class using Java
 -> Creating My Posts screen layout in Android Studio using xml, its adapter and its activity class using Java
 -> Creating My Blocklist screen layout and its pop-ups in Android Studio using xml, its adapter and its activity class using Java
+-> Designing Settings screen layout in Android Studio using xml
 
 
 --- Kaan Tek---
@@ -67,9 +68,9 @@ and updating whenever a change occurs in database.
 
 
 ---Kerem Şahin---
--> Creating the Model Classes of the application. (Other than Miray)
--> Implementation of the methods of the Model Classes.
--> Creating the Layout and activity classes of the Post Screen.
--> Creating the Layout and activity classes of the Edit Post Screen.
--> Creating the Layout and activity classes of the Create Post Screen.
--> Creating dialog pop up for user interraction.
+>>Creation of Model Classes and implementation of their methods.
+>>Post Details Screen layout in Android Studio using xml, design and the creation of activi-ty classes.
+>>Create Post Screen layout in Android Studio using xml, design and the creation of activity class.
+>>Edit Post layout in Android Studio using xml, design and the creation of activity classes.
+>>Creation of the report post pop up.
+>>Additions that provide the user-interface interactions (as pop up screens) for the previously mentioned screens. 

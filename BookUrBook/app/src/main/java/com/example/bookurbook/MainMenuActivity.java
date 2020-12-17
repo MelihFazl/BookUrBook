@@ -41,10 +41,10 @@ public class MainMenuActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
 
-        if(getIntent().getSerializableExtra("user") instanceof Admin)
-            currentUser = (Admin)getIntent().getSerializableExtra("user");
+        if(getIntent().getSerializableExtra("currentUser") instanceof Admin)
+            currentUser = (Admin)getIntent().getSerializableExtra("currentUser");
         else
-            currentUser = (RegularUser)getIntent().getSerializableExtra("user");
+            currentUser = (RegularUser)getIntent().getSerializableExtra("currentUser");
         System.out.println("Main Menu Current User email:  " + currentUser.getEmail());
     }
 
@@ -83,11 +83,14 @@ public class MainMenuActivity extends AppCompatActivity {
                                         postList.addPost(new Post(document.getString("description"), document.getString("title"), document.getString("university")
                                                 , document.getString("course"), document.getLong("price").intValue(), document.getString("picture"), currentPostOwner));
                                         Intent pass = new Intent(MainMenuActivity.this, PostListActivity.class);
-                                        pass.putExtra("user", currentUser);
+                                        pass.putExtra("currentUser", currentUser);
                                         pass.putExtra("postlist", postList);
                                         startActivity(pass);
+                                        finish();
                                     }
+
                                 });
+
                             }
                         }
                     }
@@ -99,7 +102,7 @@ public class MainMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent pass = new Intent(MainMenuActivity.this, MyChatsActivity.class);
-                pass.putExtra("user", currentUser);
+                pass.putExtra("currentUser", currentUser);
                 startActivity(pass);
             }
         });
@@ -107,14 +110,49 @@ public class MainMenuActivity extends AppCompatActivity {
         botleft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainMenuActivity.this, MyPostsActivity.class));
+                postList = new PostList();
+                Intent pass = new Intent(MainMenuActivity.this, MyPostsActivity.class);
+                db.collection("posts").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful())
+                        {
+                            for (DocumentSnapshot document : task.getResult())
+                            {
+                                db.collection("users").whereEqualTo("username", document.getString("username")).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        FirebaseFirestore db;
+                                        for(DocumentSnapshot doc: task.getResult())
+                                        {
+                                            currentPostOwner = new RegularUser(doc.getString("username"), doc.getString("email"), doc.getString("avatar"));
+                                        }
+                                        if(document.getString("username").equals(currentUser.getUsername()))
+                                        {
+                                            postList.addPost(new Post(document.getString("description"), document.getString("title"), document.getString("university")
+                                                    , document.getString("course"), document.getLong("price").intValue(), document.getString("picture"), currentPostOwner));
+                                        }
+                                        Intent pass = new Intent(MainMenuActivity.this, MyPostsActivity.class);
+                                        pass.putExtra("currentUser", currentUser);
+                                        pass.putExtra("postlist", postList);
+                                        startActivity(pass);
+                                        finish();
+                                    }
+
+                                });
+
+                            }
+                        }
+                    }
+                });
+
             }
         });
         botright.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent pass = new Intent(MainMenuActivity.this, SettingsActivity.class);
-                pass.putExtra("user", currentUser);
+                pass.putExtra("currentUser", currentUser);
                 startActivity(pass);
             }
         });

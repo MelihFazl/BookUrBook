@@ -67,8 +67,8 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.ViewHold
     public void onBindViewHolder(@NonNull MyPostsAdapter.ViewHolder holder, int position) {
         holder.title.setText(myPosts.get(position).getTitle());
         holder.seller.setText(myPosts.get(position).getOwner().getUsername());
-        Picasso.get().load("https://i.ytimg.com/vi/tIBN6kXHb_I/hqdefault.jpg").into(holder.photo);
-        holder.price.setText(Double.toString(myPosts.get(position).getPrice()) + "₺");
+        Picasso.get().load(myPosts.get(position).getPicture()).into(holder.photo);
+        holder.price.setText(Integer.toString(myPosts.get(position).getPrice()) + "₺");
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,7 +79,7 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.ViewHold
 
             }
         });
-        /*
+
         holder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
            public void onClick(View view) {
@@ -87,7 +87,7 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.ViewHold
                 intent2.putExtra("post", myPosts.get(position));
                 context.startActivity(intent2);
             }
-        });*/
+        });
         if(myPosts.get(position).isSold())
            holder.soldPhoto.setVisibility(View.VISIBLE);
         else
