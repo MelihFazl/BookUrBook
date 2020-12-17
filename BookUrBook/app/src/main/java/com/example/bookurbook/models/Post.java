@@ -3,21 +3,21 @@ import java.io.*;
 import java.util.*;
 import android.widget.ImageView;
 
-public class Post implements Reportable
+public class Post implements Reportable, Serializable
 {
     //instance variables
     private String description;
     private String title;
     private String university;
     private String course;
-    private double price;
-    private ImageView picture;
+    private int price;
+    private String picture;
     private User owner;
     private boolean sold;
     private ArrayList<Report> reports;
 
     //constructors
-    public Post(String description, String title, String university, String course, double price, ImageView picture, User owner)
+    public Post(String description, String title, String university, String course, int price, String picture, User owner)
     {
         this.description = description;
         this.title = title;
@@ -51,12 +51,12 @@ public class Post implements Reportable
         return course;
     }
 
-    public double getPrice()
+    public int getPrice()
     {
         return price;
     }
 
-    public ImageView getPicture()
+    public String getPicture()
     {
         return picture;
     }
@@ -97,12 +97,12 @@ public class Post implements Reportable
         this.course = course;
     }
 
-    public void setPrice(double price)
+    public void setPrice(int price)
     {
         this.price = price;
     }
 
-    public void setPicture(ImageView picture)
+    public void setPicture(String picture)
     {
         this.picture = picture;
     }
@@ -132,7 +132,7 @@ public class Post implements Reportable
      * @param price price
      * @param picture picture
      */
-    public void editPost(String description, String title, String university, String course, double price, ImageView picture)
+    public void editPost(String description, String title, String university, String course, int price, String picture)
     {
         if (!description.replaceAll("\\s+","").equals(""))
             this.description = description;

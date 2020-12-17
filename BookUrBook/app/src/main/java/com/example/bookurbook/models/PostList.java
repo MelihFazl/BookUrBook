@@ -1,8 +1,10 @@
 package com.example.bookurbook.models;
 import android.widget.ImageView;
+
+import java.io.Serializable;
 import java.util.*;
 
-public class PostList implements Filterable, Sortable
+public class PostList implements Filterable, Sortable, Serializable
 {
     //instance variables
     private ArrayList<Post> postArray;
@@ -20,9 +22,9 @@ public class PostList implements Filterable, Sortable
     }
 
     //set methods
-    public void setPostArray(PostList postList)
+    public void setPostArray(ArrayList<Post> postList)
     {
-        postArray = postList.getPostArray();
+        postArray = postList;
     }
 
     //other methods
@@ -61,7 +63,7 @@ public class PostList implements Filterable, Sortable
      * @param avatar .
      * @param owner .
      */
-    public void createPost(String description, String title, String university, String course, double price, ImageView avatar, User owner)
+    public void createPost(String description, String title, String university, String course, int price, String avatar, User owner)
     {
         if(!owner.isBanned())
         {

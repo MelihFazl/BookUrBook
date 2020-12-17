@@ -1,192 +1,206 @@
 package com.example.bookurbook;
 
+
+
+
+import android.content.Intent;
+import android.os.Bundle;
+
+
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
+
+import android.os.CountDownTimer;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Adapter;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Bundle;
-import android.provider.MediaStore;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
+import com.example.bookurbook.models.Admin;
+import com.example.bookurbook.models.Post;
+import com.example.bookurbook.models.PostList;
+import com.example.bookurbook.models.RegularUser;
+import com.example.bookurbook.models.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
-import java.io.IOException;
-import java.util.UUID;
+import java.util.ArrayList;
 
+
+// class for the Post List activity
 public class PostListActivity extends AppCompatActivity {
-    private Button btnSelect, btnUpload;
-    private ImageView imageView;
-    private Uri filePath;
-    FirebaseStorage storage;
-    StorageReference storageReference;
-    private int PICK_IMAGE_REQUEST = 22;
+
+    // variables
+    //Toolbar toolbar;
+    RecyclerView recyclerView;
+    SearchView searchView;
+    Button LtoHpriceButton;
+    Button HtoLpriceButton;
+    Button AtoZbutton;
+    Button ZtoAbutton;
+    Button resetButton;
+    ImageButton filterButton;
+    PostListAdapter postListAdapter;
+    PostList postList;
+    private FirebaseFirestore db;
+    private User currentUser;
+    private User currentPostOwner;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_list);
 
-        btnSelect = findViewById(R.id.select);
-        btnUpload = findViewById(R.id.upload);
-        imageView = findViewById(R.id.imageView);
-        storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
+        // postList = new ArrayList<>();                    delete later?
+        //add();  // method for adding posts from database ?
 
-        // on pressing btnSelect SelectImage() is called
-        btnSelect.setOnClickListener(new View.OnClickListener() {
+        // list from the model class
+
+        db = FirebaseFirestore.getInstance();
+        if(getIntent().getSerializableExtra("user") instanceof Admin)
+            currentUser = (Admin)getIntent().getSerializableExtra("user");
+        else
+            currentUser = (RegularUser)getIntent().getSerializableExtra("user");
+        postList = (PostList) getIntent().getSerializableExtra("postlist");
+        for(int i = 0; postList.getPostArray().size() > i; i++)
+        {
+            System.out.println(postList.getPostArray().get(i).getOwner().getEmail());
+        }
+
+
+        // later do all these operations with database
+        postList.addPost(new Post("great book", "big Java", "Bilkent University", "CS", 30, null, new RegularUser("Kaan", "mail", null)));
+
+
+        searchView = findViewById(R.id.search_id);
+        recyclerView = findViewById(R.id.recycler_id);
+        //toolbar = findViewById(R.id.toolbar);
+        LtoHpriceButton = findViewById(R.id.LtoH_price_button);
+        HtoLpriceButton = findViewById(R.id.HtoL_price_button);
+        AtoZbutton = findViewById(R.id.AtoZ_button);
+        ZtoAbutton = findViewById(R.id.ZtoA_button);
+        resetButton = findViewById(R.id.reset_button);
+        filterButton = findViewById(R.id.filterButton);
+
+        //setSupportActionBar(toolbar);
+       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);   // implement this later so that it goes back to the previous screen
+
+
+        postListAdapter = new PostListAdapter(this, postList);   // had to make it final, maybe change it later?
+        recyclerView.setAdapter(postListAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        search(postListAdapter); // method for searching
+
+        LtoHpriceButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                SelectImage();
+            public void onClick(View view) {
+                postListAdapter.sort(view);
             }
         });
 
-        // on pressing btnUpload uploadImage() is called
-        btnUpload.setOnClickListener(new View.OnClickListener() {
+        HtoLpriceButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                uploadImage();
+            public void onClick(View view) {
+                postListAdapter.sort(view);
             }
         });
+
+        AtoZbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                postListAdapter.sort(view);
+            }
+        });
+
+        ZtoAbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                postListAdapter.sort(view);
+            }
+        });
+
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                postListAdapter.sort(view);
+            }
+        });
+
+        filterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openFilterWindow();
+            }
+        });
+
+
     }
 
 
+    public void openFilterWindow() {
+        FilterScreenView filterScreen = new FilterScreenView();
+        filterScreen.show(getSupportFragmentManager(), "example filter");
 
-    private void SelectImage()
-    {
-
-        // Defining Implicit Intent to mobile gallery
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(
-                Intent.createChooser(
-                        intent,
-                        "Select Image from here..."),
-                PICK_IMAGE_REQUEST);
     }
 
-    private void uploadImage()
-    {
-        if (filePath != null) {
-
-            // Code for showing progressDialog while uploading
-            ProgressDialog progressDialog
-                    = new ProgressDialog(this);
-            progressDialog.setTitle("Uploading...");
-            progressDialog.show();
-
-            // Defining the child of storageReference
-            StorageReference ref
-                    = storageReference
-                    .child(
-                            "images/"
-                                    + UUID.randomUUID().toString());
-
-            // adding listeners on upload
-            // or failure of image
-            ref.putFile(filePath)
-                    .addOnSuccessListener(
-                            new OnSuccessListener<UploadTask.TaskSnapshot>() {
-
-                                @Override
-                                public void onSuccess(
-                                        UploadTask.TaskSnapshot taskSnapshot)
-                                {
-
-                                    // Image uploaded successfully
-                                    // Dismiss dialog
-                                    progressDialog.dismiss();
-                                    Toast
-                                            .makeText(PostListActivity.this,
-                                                    "Image Uploaded!!",
-                                                    Toast.LENGTH_SHORT)
-                                            .show();
-                                }
-                            })
-
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e)
-                        {
-
-                            // Error, Image not uploaded
-                            progressDialog.dismiss();
-                            Toast
-                                    .makeText(PostListActivity.this,
-                                            "Failed " + e.getMessage(),
-                                            Toast.LENGTH_SHORT)
-                                    .show();
-                        }
-                    })
-                    .addOnProgressListener(
-                            new OnProgressListener<UploadTask.TaskSnapshot>() {
-
-                                // Progress Listener for loading
-                                // percentage on the dialog box
-                                @Override
-                                public void onProgress(
-                                        UploadTask.TaskSnapshot taskSnapshot)
-                                {
-                                    double progress
-                                            = (100.0
-                                            * taskSnapshot.getBytesTransferred()
-                                            / taskSnapshot.getTotalByteCount());
-                                    progressDialog.setMessage(
-                                            "Uploaded "
-                                                    + (int)progress + "%");
-                                }
-                            });
-        }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        /*getMenuInflater().inflate(R.menu.menu, menu); */
+        return true;
     }
-    protected void onActivityResult(int requestCode,
-                                    int resultCode,
-                                    Intent data)
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        /*if (id == R.id.a)
+        {
+            // create post screen i aç
+        }*/
+        return true;
+    }
+    // method for adding posts to the post list
+
+    public void add()    // later change this method to add posts from database ???
     {
+        // napacaz bunu
+    }
 
-        super.onActivityResult(requestCode,
-                resultCode,
-                data);
+    // method for searching by a keyword from the list
+    public void search(PostListAdapter adp)
+    {
+        final PostListAdapter adapter = adp;
 
-        // checking request code and result code
-        // if request code is PICK_IMAGE_REQUEST and
-        // resultCode is RESULT_OK
-        // then set image in the image view
-        if (requestCode == PICK_IMAGE_REQUEST
-                && resultCode == RESULT_OK
-                && data != null
-                && data.getData() != null) {
-
-            // Get the Uri of data
-            filePath = data.getData();
-            try {
-
-                // Setting image on image view using Bitmap
-                Bitmap bitmap = MediaStore
-                        .Images
-                        .Media
-                        .getBitmap(
-                                getContentResolver(),
-                                filePath);
-                imageView.setImageBitmap(bitmap);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
             }
 
-            catch (IOException e) {
-                // Log the exception
-                e.printStackTrace();
+            @Override
+            public boolean onQueryTextChange(String s) {
+                adapter.getFilter().filter(s);
+                return false;
             }
-        }
+        });
+
     }
+
 }
