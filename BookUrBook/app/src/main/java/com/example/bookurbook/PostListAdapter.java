@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.bookurbook.models.Post;
 
 import com.example.bookurbook.models.PostList;
+import com.squareup.picasso.Picasso;
 
 
 import java.util.ArrayList;
@@ -51,16 +52,13 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PostListViewHolder postListViewHolder, int i) {
-
+    public void onBindViewHolder(@NonNull PostListViewHolder postListViewHolder, int i)
+    {
         Post examplePost = postListHolder.get(i);
-
-        // postListViewHolder.image.setImageResource(examplePost.getPicture());   // whcih method did Kerem use for post
         postListViewHolder.title.setText(examplePost.getTitle());
         postListViewHolder.seller.setText(examplePost.getOwner().getUsername());      // whcih method did Kerem use for post, is this correct?
         postListViewHolder.price.setText(Integer.toString((int) examplePost.getPrice()));
-
-
+        Picasso.get().load(examplePost.getPicture()).into(postListViewHolder.picture);
     }
 
     @Override
@@ -155,13 +153,13 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
         TextView title;
         TextView seller;
         TextView price;
-        ImageView image;
+        ImageView picture;
 
         // constructor
         public PostListViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.postText);
-            image = itemView.findViewById(R.id.postImageView);
+            picture = itemView.findViewById(R.id.postImageView);
             seller = itemView.findViewById(R.id.postSeller);
             price = itemView.findViewById(R.id.priceText);
         }

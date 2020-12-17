@@ -27,9 +27,16 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.example.bookurbook.models.Admin;
 import com.example.bookurbook.models.Post;
 import com.example.bookurbook.models.PostList;
 import com.example.bookurbook.models.RegularUser;
+import com.example.bookurbook.models.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -48,14 +55,11 @@ public class PostListActivity extends AppCompatActivity {
     Button resetButton;
     ImageButton filterButton;
     PostListAdapter postListAdapter;
-    PostList postList;    // PostList object?   // but there is no consturctor, is it ok ??
+    PostList postList;
+    private FirebaseFirestore db;
+    private User currentUser;
+    private User currentPostOwner;
 
-    // ArrayList<PostView> postList;         delete later?
-
-    public PostListActivity()
-    {
-        // is this constructor necessary?
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,12 +70,22 @@ public class PostListActivity extends AppCompatActivity {
         //add();  // method for adding posts from database ?
 
         // list from the model class
-        postList = new PostList();
+
+        db = FirebaseFirestore.getInstance();
+        if(getIntent().getSerializableExtra("user") instanceof Admin)
+            currentUser = (Admin)getIntent().getSerializableExtra("user");
+        else
+            currentUser = (RegularUser)getIntent().getSerializableExtra("user");
+        postList = (PostList) getIntent().getSerializableExtra("postlist");
+        for(int i = 0; postList.getPostArray().size() > i; i++)
+        {
+            System.out.println(postList.getPostArray().get(i).getOwner().getEmail());
+        }
+
 
         // later do all these operations with database
         postList.addPost(new Post("great book", "big Java", "Bilkent University", "CS", 30, null, new RegularUser("Kaan", "mail", null)));
-        postList.addPost(new Post("bad book", "discrete book", "Bilkent University", "CS", 20, null, new RegularUser("kerem", "mail", null)));
-        postList.addPost(new Post("hard book", "muscles", "Hacettepe University", "CS", 50, null, new RegularUser("ata", "mail", null)));
+
 
         searchView = findViewById(R.id.search_id);
         recyclerView = findViewById(R.id.recycler_id);
@@ -189,23 +203,4 @@ public class PostListActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onStart() {
-        //After waiting 10 seconds, the activity goes to the post screen in order to show what has been done so far by Kerem.
-        super.onStart();
-        new CountDownTimer(10000, 1000) {
-
-            @Override
-            public void onTick(long millisUntilFinished) {
-
-            }
-
-            @Override
-            public void onFinish() {
-                Intent pass = new Intent(PostListActivity.this, PostActivity.class);
-                startActivity(pass);
-
-            }
-        }.start();
-    }
 }
