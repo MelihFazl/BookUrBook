@@ -13,14 +13,15 @@ public class WishList implements Serializable{
         posts = new ArrayList<Post>();
     }
 
-    public void addPost(Post post) {
+    public void addPost(Post post)
+    {
         posts.add(post);
-        post.addUser(user);
     }
 
-    public void deletePost(Post post) {
+    public void deletePost(Post post)
+    {
         posts.remove(post);
-        post.deleteUser(user);
+
     }
 
     public void sendNotification(Post post) {

@@ -18,7 +18,7 @@ We came together to design our app UI design. Most of the screens were designed 
 21/11/2020
 According to the feedback, we made some changes, added new screens and features to our UI.
 
-03/12/2020
+28/11/2020
 We created UML diagram of model classes so we basically started to write classes and methods which connect each other and also the distribution of tasks was completed and everyone started coding
 
 16/12/2020

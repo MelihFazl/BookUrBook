@@ -120,12 +120,9 @@ public class LoginActivity extends AppCompatActivity {
                                 storage.getReference().child("images/profile_pictures/" + auth.getCurrentUser().getUid()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
                                     public void onSuccess(Uri uri) {
-                                        System.out.println(currentUser.getEmail() + "USER YARATILDI WALLA");
                                         currentUser.setAvatar(uri.toString());
-                                        System.out.println("GELIYOO");
-                                        System.out.println("LINK  " + uri.toString());
                                         Intent pass = new Intent(LoginActivity.this, MainMenuActivity.class);
-                                        pass.putExtra("user", currentUser);
+                                        pass.putExtra("currentUser", currentUser);
                                         startActivity(pass);
                                         finish();
                                     }
@@ -135,12 +132,9 @@ public class LoginActivity extends AppCompatActivity {
                                         storage.getReference().child("images/profile_pictures/default.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                             @Override
                                             public void onSuccess(Uri uri) {
-                                                System.out.println(currentUser.getEmail() + "USER YARATILDI WALLA");
                                                 currentUser.setAvatar(uri.toString());
-                                                System.out.println("GELIYOO");
-                                                System.out.println("LINK 2 " + uri);
                                                 Intent pass = new Intent(LoginActivity.this, MainMenuActivity.class);
-                                                pass.putExtra("user", currentUser);
+                                                pass.putExtra("currentUser", currentUser);
                                                 startActivity(pass);
                                                 finish();
                                             }
