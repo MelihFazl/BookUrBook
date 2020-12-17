@@ -22,9 +22,9 @@ public class PostList implements Filterable, Sortable, Serializable
     }
 
     //set methods
-    public void setPostArray(PostList postList)
+    public void setPostArray(ArrayList<Post> postList)
     {
-        postArray = postList.getPostArray();
+        postArray = postList;
     }
 
     //other methods

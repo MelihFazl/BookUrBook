@@ -2,8 +2,7 @@ package com.example.bookurbook;
 
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,16 +11,18 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.models.Post;   // obje oluşturmak yerine import ettim ???
-import com.example.models.PostList;
-import com.example.models.Post;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.bookurbook.models.Post;
+
+import com.example.bookurbook.models.PostList;
+
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashSet;
+
 import java.util.List;
-import java.util.Set;
-import java.util.zip.Inflater;
+;
 
 public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostListViewHolder> implements Filterable {
 
@@ -57,7 +58,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
         // postListViewHolder.image.setImageResource(examplePost.getPicture());   // whcih method did Kerem use for post
         postListViewHolder.title.setText(examplePost.getTitle());
         postListViewHolder.seller.setText(examplePost.getOwner().getUsername());      // whcih method did Kerem use for post, is this correct?
-        postListViewHolder.price.setText(Integer.toString(examplePost.getPrice()));
+        postListViewHolder.price.setText(Integer.toString((int) examplePost.getPrice()));
 
 
     }
