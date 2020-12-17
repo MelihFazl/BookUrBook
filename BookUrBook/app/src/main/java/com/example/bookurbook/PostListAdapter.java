@@ -57,7 +57,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
         Post examplePost = postListHolder.get(i);
         postListViewHolder.title.setText(examplePost.getTitle());
         postListViewHolder.seller.setText(examplePost.getOwner().getUsername());      // whcih method did Kerem use for post, is this correct?
-        postListViewHolder.price.setText(Integer.toString((int) examplePost.getPrice()));
+        postListViewHolder.price.setText(Integer.toString((int) examplePost.getPrice()) + "₺");
         Picasso.get().load(examplePost.getPicture()).into(postListViewHolder.picture);
     }
 
