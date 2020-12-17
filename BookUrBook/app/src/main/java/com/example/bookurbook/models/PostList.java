@@ -117,7 +117,7 @@ public class PostList implements Filterable, Sortable, Serializable
         PostList filtered = new PostList();
         for (Post post : postArray)
         {
-            if (post.getUniversity().equals(University))
+            if (post.getUniversity().equalsIgnoreCase(University))
                 filtered.addPost(post);
         }
         return filtered;
@@ -129,7 +129,7 @@ public class PostList implements Filterable, Sortable, Serializable
         PostList filtered = new PostList();
         for (Post post : postArray)
         {
-            if (post.getCourse().equals(course))
+            if (post.getCourse().equalsIgnoreCase(course))
                 filtered.addPost(post);
         }
         return filtered;

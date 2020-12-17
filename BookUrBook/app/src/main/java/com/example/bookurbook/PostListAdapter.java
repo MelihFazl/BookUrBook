@@ -3,12 +3,14 @@ package com.example.bookurbook;
 
 import android.content.Context;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,6 +34,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
     private ArrayList<Post> postListHolderFull;
     PostList list;
     Context context;
+
 
     // constructor
     public PostListAdapter(Context c, PostList list)
@@ -59,6 +62,14 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
         postListViewHolder.seller.setText(examplePost.getOwner().getUsername());      // whcih method did Kerem use for post, is this correct?
         postListViewHolder.price.setText(Integer.toString((int) examplePost.getPrice()) + "₺");
         Picasso.get().load(examplePost.getPicture()).into(postListViewHolder.picture);
+        postListViewHolder.linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, PostActivity.class);
+                intent.putExtra("post", postListHolderFull.get(i));
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -154,14 +165,35 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
         TextView seller;
         TextView price;
         ImageView picture;
+        LinearLayout linearLayout;
 
         // constructor
         public PostListViewHolder(@NonNull View itemView) {
             super(itemView);
+            linearLayout = itemView.findViewById(R.id.post_layout_id);
             title = itemView.findViewById(R.id.postText);
             picture = itemView.findViewById(R.id.postImageView);
             seller = itemView.findViewById(R.id.postSeller);
             price = itemView.findViewById(R.id.priceText);
         }
+    }
+
+    public void filterResults(String uni, String course, int lowPrice, int highPrice)
+    {
+        PostList filteredList = list;
+
+        if (!uni.equals("Other")) {
+            filteredList = list.filterByUniversity(uni);
+        }
+        if (!course.equals("Other")) {
+            filteredList = list.filterByUniversity(uni);
+        }
+        if (lowPrice != -1 || highPrice != -1) {
+            filteredList = list.filterByPrice(lowPrice, highPrice);
+        }
+
+
+        postListHolder = new ArrayList<>(filteredList.getPostArray());
+        notifyDataSetChanged();
     }
 }
