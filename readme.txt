@@ -63,3 +63,9 @@ and updating whenever a change occurs in database.
 -> Designing My Chats screen in Android Studio and building an adapter for the recycler view.
 
 ---Kerem Şahin---
+-> Creating the Model Classes of the application. (Other than Miray)
+-> Implementation of the methods of the Model Class.
+-> Creating the Layout and activity classes of the Post Screen.
+-> Creating the Layout and activity classes of the Edit Post Screen.
+-> Creating the Layout and activity classes of the Create Post Screen.
+-> Creating dialog pop up for user interraction.
