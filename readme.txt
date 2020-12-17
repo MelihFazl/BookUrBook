@@ -57,5 +57,9 @@ and updating whenever a change occurs in database.
 
 
 --- Kaan Tek---
+-> Mostly working on user interface and adapting the Java classes to Android environment.
+-> Designed Post List screen in Android Studio and built an adapter for the recycler view.
+-> Designed Filter screen so that the user can filter de Post List results.
+-> Designing My Chats screen in Android Studio and building an adapter for the recycler view.
 
 ---Kerem Şahin---
