@@ -65,12 +65,12 @@ public class SettingsActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        if(getIntent().getSerializableExtra("user") instanceof Admin)
-            currentUser = (Admin)getIntent().getSerializableExtra("user");
+        if(getIntent().getSerializableExtra("currentUser") instanceof Admin)
+            currentUser = (Admin)getIntent().getSerializableExtra("currentUser");
         else
-            currentUser = (RegularUser)getIntent().getSerializableExtra("user");
-        System.out.println("SETTINGSDEYIZ ABI " + currentUser.getEmail());
-        System.out.println("avatarimiz :aSDSADA " + currentUser.getAvatar());
+            currentUser = (RegularUser)getIntent().getSerializableExtra("currentUser");
+        System.out.println("In Settings Current User Email: " + currentUser.getEmail());
+        System.out.println("Current User Avatar: " + currentUser.getAvatar());
         Picasso.get().load(currentUser.getAvatar()).into(profilePic);
         if(currentUser instanceof Admin)
             userDetails.setText(currentUser.getUsername()+ "\n" + "Admin User");
@@ -121,7 +121,7 @@ public class SettingsActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         // Get a URL to the uploaded content
-                        Toast.makeText(getApplicationContext(), "BRUH", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "SUCCESS", Toast.LENGTH_LONG).show();
                         picRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
@@ -146,7 +146,7 @@ public class SettingsActivity extends AppCompatActivity {
     public void onBackPressed()
     {
         pass = new Intent(SettingsActivity.this, MainMenuActivity.class);
-        pass.putExtra("user", currentUser);
+        pass.putExtra("currentUser", currentUser);
         startActivity(pass);
     }
 }

@@ -15,7 +15,7 @@ public class UserSpecPostList extends PostList implements Serializable
 
     public void updateUserSpecPostList(PostList postList)
     {
-        setPostArray(postList.filterByOwner(owner));
+        //setPostArray(postList.filterByOwner(owner));
     }
 
 }

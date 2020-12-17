@@ -1,15 +1,19 @@
 package com.example.bookurbook;
 
-import android.app.Dialog;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.SearchView.OnQueryTextListener;
 
-import android.support.v7.widget.Toolbar;
+
+
+import android.os.Bundle;
+
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,10 +22,12 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import com.example.models.Post;
+import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.models.PostList;
-import com.example.models.RegularUser;
+
+import com.example.bookurbook.models.Post;
+import com.example.bookurbook.models.PostList;
+import com.example.bookurbook.models.RegularUser;
 
 import java.util.ArrayList;
 
@@ -52,7 +58,7 @@ public class PostListView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_post_list);
 
         // postList = new ArrayList<>();                    delete later?
         //add();  // method for adding posts from database ?
@@ -142,7 +148,7 @@ public class PostListView extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
+        /*getMenuInflater().inflate(R.menu.menu, menu); */
         return true;
     }
 
@@ -150,10 +156,10 @@ public class PostListView extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.create_post)
+        /*if (id == R.id.a)
         {
             // create post screen i aç
-        }
+        }*/
         return true;
     }
     // method for adding posts to the post list

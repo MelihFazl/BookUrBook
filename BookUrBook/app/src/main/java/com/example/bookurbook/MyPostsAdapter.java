@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookurbook.R;
 import com.example.bookurbook.models.Post;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -66,19 +67,19 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.ViewHold
     public void onBindViewHolder(@NonNull MyPostsAdapter.ViewHolder holder, int position) {
         holder.title.setText(myPosts.get(position).getTitle());
         holder.seller.setText(myPosts.get(position).getOwner().getUsername());
-        holder.photo.setImageResource(myPosts.get(position).getPicture());
-        holder.price.setText(Double.toString(myPosts.get(position).getPrice()) + "₺");
+        Picasso.get().load(myPosts.get(position).getPicture()).into(holder.photo);
+        holder.price.setText(Integer.toString(myPosts.get(position).getPrice()) + "₺");
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, PostActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("post", myPosts.get(position));
                 context.startActivity(intent);
 
             }
         });
-        /*
+
         holder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
            public void onClick(View view) {
@@ -86,7 +87,7 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.ViewHold
                 intent2.putExtra("post", myPosts.get(position));
                 context.startActivity(intent2);
             }
-        });*/
+        });
         if(myPosts.get(position).isSold())
            holder.soldPhoto.setVisibility(View.VISIBLE);
         else

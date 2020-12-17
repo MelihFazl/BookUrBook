@@ -55,7 +55,7 @@ public class BlockedUsersAdapter extends RecyclerView.Adapter<BlockedUsersAdapte
     @Override
     public void onBindViewHolder(@NonNull BlockedUsersAdapter.ViewHolder holder, int position) {
         holder.username.setText(blockedUsers.get(position).getUsername());
-        holder.photo.setImageResource(blockedUsers.get(position).getAvatar());
+        //holder.photo.setImageResource(blockedUsers.get(position).getAvatar());
         holder.blockButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -35,10 +35,11 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        /**Bundle extras = getIntent().getExtras();
-         if (extras != null) {
-         post = (Post) getIntent().getSerializableExtra("MyClass");
-         }*/
+        Bundle extras = getIntent().getExtras();
+        if (extras != null)
+        {
+         post = (Post) getIntent().getSerializableExtra("post");
+        }
         post = new Post("This book is very nice :)", "MAT132 BOOK FOR CS STUDENTS", "Bilkent", "Math", 10, null, new RegularUser("Mehmet", "mehmet@ug.bilkent.edu.tr", null));
         postTitleTextView = findViewById(R.id.postTitleTextView);
         postSellerTextView = findViewById(R.id.postSellerTextView);

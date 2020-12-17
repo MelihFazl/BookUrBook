@@ -43,12 +43,12 @@ public class MyChatsActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
-        if(getIntent().getSerializableExtra("user") instanceof Admin)
-            currentUser = (Admin)getIntent().getSerializableExtra("user");
+        if(getIntent().getSerializableExtra("currentUser") instanceof Admin)
+            currentUser = (Admin)getIntent().getSerializableExtra("currentUser");
         else
-            currentUser = (RegularUser)getIntent().getSerializableExtra("user");
+            currentUser = (RegularUser)getIntent().getSerializableExtra("currentUser");
 
-        System.out.println("CHATTEYİZ ABİ " + currentUser.getEmail());
+        System.out.println("In chat, current currentUser's email: " + currentUser.getEmail());
         db.collection("chats").addSnapshotListener(new EventListener<QuerySnapshot>()
         {
             @Override
