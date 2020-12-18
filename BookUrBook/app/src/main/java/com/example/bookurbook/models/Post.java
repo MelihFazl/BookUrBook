@@ -12,13 +12,14 @@ public class Post implements Reportable, Serializable
     private String course;
     private int price;
     private String picture;
+    private String id;
     private User owner;
     private boolean sold;
     private ArrayList<Report> reports;
     private int reportNum;
 
     //constructors
-    public Post(String description, String title, String university, String course, int price, String picture, User owner)
+    public Post(String description, String title, String university, String course, int price, String picture, User owner, String id)
     {
         this.description = description;
         this.title = title;
@@ -26,6 +27,7 @@ public class Post implements Reportable, Serializable
         this.course = course;
         this.price = price;
         this.picture = picture;
+        this.id = id;
         this.owner = owner;
         sold = false;
         reports = new ArrayList<>();
@@ -78,6 +80,14 @@ public class Post implements Reportable, Serializable
     public boolean isSold()
     {
         return sold;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public ArrayList<Report> getReports()

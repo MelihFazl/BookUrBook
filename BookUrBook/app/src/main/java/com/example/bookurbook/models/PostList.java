@@ -44,13 +44,7 @@ public class PostList implements Filterable, Sortable, Serializable
      */
     public void deletePost(Post post)
     {
-        for (Iterator<Post> iterator = postArray.iterator(); iterator.hasNext(); )
-        {
-            Post listPost = iterator.next();
-            if (listPost == post) {
-                iterator.remove();
-            }
-        }
+        this.getPostArray().remove(post);
     }
 
     /**
@@ -60,14 +54,15 @@ public class PostList implements Filterable, Sortable, Serializable
      * @param university .
      * @param course .
      * @param price .
-     * @param avatar .
+     * @param picture .
      * @param owner .
+     * @param id .
      */
-    public void createPost(String description, String title, String university, String course, int price, String avatar, User owner)
+    public void createPost(String description, String title, String university, String course, int price, String picture, User owner, String id)
     {
         if(!owner.isBanned())
         {
-            Post post = new Post(description, title, university, course, price, avatar, owner);
+            Post post = new Post(description, title, university, course, price, picture, owner, id);
             this.addPost(post);
             owner.getUserPostList().addPost(post);
         }
@@ -117,7 +112,7 @@ public class PostList implements Filterable, Sortable, Serializable
         PostList filtered = new PostList();
         for (Post post : postArray)
         {
-            if (post.getUniversity().equals(University))
+            if (post.getUniversity().equalsIgnoreCase(University))
                 filtered.addPost(post);
         }
         return filtered;
@@ -129,7 +124,7 @@ public class PostList implements Filterable, Sortable, Serializable
         PostList filtered = new PostList();
         for (Post post : postArray)
         {
-            if (post.getCourse().equals(course))
+            if (post.getCourse().equalsIgnoreCase(course))
                 filtered.addPost(post);
         }
         return filtered;

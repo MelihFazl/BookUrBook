@@ -90,9 +90,11 @@ public class MainMenuActivity extends AppCompatActivity {
                                         {
                                             currentPostOwner = new RegularUser(doc.getString("username"), doc.getString("email"), doc.getString("avatar"));
                                         }
-                                        postList.addPost(new Post(document.getString("description"), document.getString("title"), document.getString("university")
-                                                , document.getString("course"), document.getLong("price").intValue(), document.getString("picture"), currentPostOwner));
-                                        Intent pass = new Intent(MainMenuActivity.this, PostListActivity.class);
+                                        if(!document.getBoolean("sold"))
+                                        {
+                                            postList.addPost(new Post(document.getString("description"), document.getString("title"), document.getString("university")
+                                                    , document.getString("course"), document.getLong("price").intValue(), document.getString("picture"), currentPostOwner, (String) document.get("id")));
+                                        }
                                         pass.putExtra("currentUser", currentUser);
                                         pass.putExtra("postlist", postList);
                                         startActivity(pass);
@@ -103,6 +105,9 @@ public class MainMenuActivity extends AppCompatActivity {
 
                             }
                         }
+                        pass.putExtra("currentUser", currentUser);
+                        pass.putExtra("postlist", postList);
+                        startActivity(pass);
                     }
                 });
 
@@ -140,9 +145,9 @@ public class MainMenuActivity extends AppCompatActivity {
                                         if(document.getString("username").equals(currentUser.getUsername()))
                                         {
                                             postList.addPost(new Post(document.getString("description"), document.getString("title"), document.getString("university")
-                                                    , document.getString("course"), document.getLong("price").intValue(), document.getString("picture"), currentPostOwner));
+                                                    , document.getString("course"), document.getLong("price").intValue(), document.getString("picture"), currentPostOwner, (String)document.get("id")));
+                                            postList.getPostArray().get(postList.getPostArray().size() - 1).setSold(document.getBoolean("sold"));
                                         }
-                                        Intent pass = new Intent(MainMenuActivity.this, MyPostsActivity.class);
                                         pass.putExtra("currentUser", currentUser);
                                         pass.putExtra("postlist", postList);
                                         startActivity(pass);
@@ -153,6 +158,10 @@ public class MainMenuActivity extends AppCompatActivity {
 
                             }
                         }
+                        pass.putExtra("currentUser", currentUser);
+                        pass.putExtra("postlist", postList);
+                        startActivity(pass);
+
                     }
                 });
 
