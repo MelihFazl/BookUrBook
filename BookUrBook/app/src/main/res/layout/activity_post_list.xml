@@ -31,10 +31,10 @@
 
         <Button
             android:id="@+id/LtoH_price_button"
-            android:layout_width="100dp"
+            android:layout_width="90dp"
             android:layout_height="55dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
             android:text="Low to High"
             android:textAllCaps="false"
             android:textSize="14dp"
@@ -45,11 +45,11 @@
 
         <Button
             android:id="@+id/HtoL_price_button"
-            android:layout_width="100dp"
+            android:layout_width="90dp"
             android:layout_height="55dp"
             android:layout_marginStart="4dp"
             android:layout_marginLeft="4dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:text="High to Low"
             android:textAllCaps="false"
             android:textSize="14dp"
@@ -58,42 +58,41 @@
 
         <Button
             android:id="@+id/AtoZ_button"
-            android:layout_width="50dp"
+            android:layout_width="58dp"
             android:layout_height="55dp"
-            android:layout_marginStart="2dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginBottom="3dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
             android:text="A-Z"
             android:textSize="14dp"
             app:layout_constraintBottom_toBottomOf="@+id/HtoL_price_button"
             app:layout_constraintStart_toEndOf="@+id/HtoL_price_button"
             app:layout_constraintTop_toTopOf="@+id/HtoL_price_button"
-            app:layout_constraintVertical_bias="0.75" />
+            app:layout_constraintVertical_bias="0.0" />
 
         <Button
             android:id="@+id/ZtoA_button"
-            android:layout_width="50dp"
+            android:layout_width="58dp"
             android:layout_height="55dp"
-            android:layout_marginStart="2dp"
-            android:layout_marginLeft="2dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
             android:layout_marginBottom="3dp"
             android:text="Z-A"
             android:textSize="14dp"
             app:layout_constraintBottom_toBottomOf="@+id/AtoZ_button"
             app:layout_constraintStart_toEndOf="@+id/AtoZ_button"
             app:layout_constraintTop_toTopOf="@+id/AtoZ_button"
-            app:layout_constraintVertical_bias="0.25" />
+            app:layout_constraintVertical_bias="0.0" />
 
         <Button
             android:id="@+id/reset_button"
-            android:layout_width="70dp"
-            android:layout_height="40dp"
+            android:layout_width="66dp"
+            android:layout_height="39dp"
             android:layout_marginStart="4dp"
             android:layout_marginLeft="4dp"
             android:layout_marginTop="3dp"
             android:layout_marginBottom="3dp"
             android:text="RESET"
-            android:textSize="12dp"
+            android:textSize="9dp"
             app:layout_constraintBottom_toBottomOf="@+id/ZtoA_button"
             app:layout_constraintStart_toEndOf="@+id/ZtoA_button"
             app:layout_constraintTop_toTopOf="@+id/ZtoA_button" />

@@ -49,7 +49,28 @@ and updating whenever a change occurs in database.
 
 
 --- Miray Ayerdem---
+-> Adding and coding some methods to User and Post Classes
+-> Creating Wishlist Class as a model class and designing it again Wishlist screen according to feedback
+-> Creating Wishlist screen layout in Android Studio using xml, its adapter and its activity class using Java
+-> Creating My Posts screen layout in Android Studio using xml, its adapter and its activity class using Java
+-> Creating My Blocklist screen layout and its pop-ups in Android Studio using xml, its adapter and its activity class using Java
+-> Designing Settings screen layout in Android Studio using xml
+
 
 --- Kaan Tek---
+-> Mostly working on user interface and adapting the Java classes to Android environment.
+-> Designed Post List screen in Android Studio and built an adapter for the recycler view.
+-> Designed Filter screen so that the user can filter de Post List results.
+-> Designing My Chats screen in Android Studio and building an adapter for the recycler view.
+-> Designing Chat screen in Android Studio and building an adapter for the recycler view.
+-> Making the connection between the database and the user interface of some classes.
+-> Creating dialog pop up for user interraction.
+
 
 ---Kerem Şahin---
+>>Creation of Model Classes and implementation of their methods.
+>>Post Details Screen layout in Android Studio using xml, design and the creation of activi-ty classes.
+>>Create Post Screen layout in Android Studio using xml, design and the creation of activity class.
+>>Edit Post layout in Android Studio using xml, design and the creation of activity classes.
+>>Creation of the report post pop up.
+>>Additions that provide the user-interface interactions (as pop up screens) for the previously mentioned screens. 
