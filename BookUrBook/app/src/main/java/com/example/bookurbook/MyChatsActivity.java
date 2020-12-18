@@ -50,11 +50,10 @@ public class MyChatsActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
-<<<<<<< Updated upstream
+
         chatList = new ArrayList<Chat>();
         buildRecyclerView();
-=======
->>>>>>> Stashed changes
+
         if(getIntent().getSerializableExtra("currentUser") instanceof Admin)
             currentUser = (Admin)getIntent().getSerializableExtra("currentUser");
         else
