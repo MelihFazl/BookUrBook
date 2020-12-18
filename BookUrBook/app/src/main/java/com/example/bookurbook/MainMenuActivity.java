@@ -101,8 +101,7 @@ public class MainMenuActivity extends AppCompatActivity {
         topright.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // changed this to MyChatsView
-                Intent pass = new Intent(MainMenuActivity.this, MyChatsView.class);
+                Intent pass = new Intent(MainMenuActivity.this, MyChatsActivity.class);
                 pass.putExtra("currentUser", currentUser);
                 startActivity(pass);
             }

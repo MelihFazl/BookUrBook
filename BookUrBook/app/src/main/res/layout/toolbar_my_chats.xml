@@ -6,7 +6,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#589114"
     app:title="My Chats"
-    android:elevation="4dp">
+    android:elevation="4dp"
+    android:id="@+id/toolbar_my_chats">
 
 
 
