@@ -65,10 +65,10 @@ public class SettingsActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        if(getIntent().getSerializableExtra("user") instanceof Admin)
-            currentUser = (Admin)getIntent().getSerializableExtra("user");
+        if(getIntent().getSerializableExtra("currentUser") instanceof Admin)
+            currentUser = (Admin)getIntent().getSerializableExtra("currentUser");
         else
-            currentUser = (RegularUser)getIntent().getSerializableExtra("user");
+            currentUser = (RegularUser)getIntent().getSerializableExtra("currentUser");
         System.out.println("In Settings Current User Email: " + currentUser.getEmail());
         System.out.println("Current User Avatar: " + currentUser.getAvatar());
         Picasso.get().load(currentUser.getAvatar()).into(profilePic);
@@ -146,7 +146,7 @@ public class SettingsActivity extends AppCompatActivity {
     public void onBackPressed()
     {
         pass = new Intent(SettingsActivity.this, MainMenuActivity.class);
-        pass.putExtra("user", currentUser);
+        pass.putExtra("currentUser", currentUser);
         startActivity(pass);
     }
 }

@@ -122,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
                                     public void onSuccess(Uri uri) {
                                         currentUser.setAvatar(uri.toString());
                                         Intent pass = new Intent(LoginActivity.this, MainMenuActivity.class);
-                                        pass.putExtra("user", currentUser);
+                                        pass.putExtra("currentUser", currentUser);
                                         startActivity(pass);
                                         finish();
                                     }
@@ -134,7 +134,7 @@ public class LoginActivity extends AppCompatActivity {
                                             public void onSuccess(Uri uri) {
                                                 currentUser.setAvatar(uri.toString());
                                                 Intent pass = new Intent(LoginActivity.this, MainMenuActivity.class);
-                                                pass.putExtra("user", currentUser);
+                                                pass.putExtra("currentUser", currentUser);
                                                 startActivity(pass);
                                                 finish();
                                             }

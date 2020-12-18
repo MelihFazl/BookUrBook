@@ -66,25 +66,27 @@ public class PostListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_list);
 
+
         // postList = new ArrayList<>();                    delete later?
         //add();  // method for adding posts from database ?
 
         // list from the model class
 
         db = FirebaseFirestore.getInstance();
-        if(getIntent().getSerializableExtra("user") instanceof Admin)
-            currentUser = (Admin)getIntent().getSerializableExtra("user");
+        if(getIntent().getSerializableExtra("currentUser") instanceof Admin)
+            currentUser = (Admin)getIntent().getSerializableExtra("currentUser");
         else
-            currentUser = (RegularUser)getIntent().getSerializableExtra("user");
+            currentUser = (RegularUser)getIntent().getSerializableExtra("currentUser");
         postList = (PostList) getIntent().getSerializableExtra("postlist");
         for(int i = 0; postList.getPostArray().size() > i; i++)
         {
             System.out.println(postList.getPostArray().get(i).getOwner().getEmail());
         }
+        System.out.println("CURRENT USER: " + currentUser.getUsername());
 
 
         // later do all these operations with database
-        postList.addPost(new Post("great book", "big Java", "Bilkent University", "CS", 30, null, new RegularUser("Kaan", "mail", null)));
+       //postList.addPost(new Post("great book", "big Java", "Bilkent University", "CS", 30, null, new RegularUser("Kaan", "mail", null)));
 
 
         searchView = findViewById(R.id.search_id);
@@ -101,7 +103,7 @@ public class PostListActivity extends AppCompatActivity {
        // getSupportActionBar().setDisplayHomeAsUpEnabled(true);   // implement this later so that it goes back to the previous screen
 
 
-        postListAdapter = new PostListAdapter(this, postList);   // had to make it final, maybe change it later?
+        postListAdapter = new PostListAdapter(this, postList, currentUser);   // had to make it final, maybe change it later?
         recyclerView.setAdapter(postListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -203,4 +205,11 @@ public class PostListActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent pass = new Intent(PostListActivity.this, MainMenuActivity.class);
+        pass.putExtra("currentUser", currentUser);
+        startActivity(pass);
+        finish();
+    }
 }

@@ -3,17 +3,26 @@ package com.example.bookurbook;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.bookurbook.models.Admin;
 import com.example.bookurbook.models.Post;
+import com.example.bookurbook.models.PostList;
 import com.example.bookurbook.models.RegularUser;
+import com.example.bookurbook.models.User;
+import com.squareup.picasso.Picasso;
 
 public class PostActivity extends AppCompatActivity implements ReportPostDialogListener {
     //instance variables
     private Post post;
+    private PostList postList;
+    private User currentUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +35,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         TextView postPriceTextView;
         TextView postDescriptionTextView;
         ImageButton reportButton;
+        ImageView postPic;
 
         //method code
         super.onCreate(savedInstanceState);
@@ -35,12 +45,14 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null)
-        {
+
          post = (Post) getIntent().getSerializableExtra("post");
-        }
-        post = new Post("This book is very nice :)", "MAT132 BOOK FOR CS STUDENTS", "Bilkent", "Math", 10, null, new RegularUser("Mehmet", "mehmet@ug.bilkent.edu.tr", null));
+         if(getIntent().getSerializableExtra("currentUser") instanceof Admin)
+            currentUser = (Admin)getIntent().getSerializableExtra("currentUser");
+         else
+             currentUser = (RegularUser)getIntent().getSerializableExtra("currentUser");
+         postList = (PostList)getIntent().getSerializableExtra("postlist");
+
         postTitleTextView = findViewById(R.id.postTitleTextView);
         postSellerTextView = findViewById(R.id.postSellerTextView);
         postUniversityTextView = findViewById(R.id.postUniversityTextView);
@@ -48,7 +60,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         postPriceTextView = findViewById(R.id.postPriceTextView);
         postDescriptionTextView = findViewById(R.id.postDescriptionTextView);
         reportButton = findViewById(R.id.reportButton);
-
+        postPic = findViewById(R.id.postImageView);
         reportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,13 +83,21 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         postCourseTextView.setText("Course: " + post.getCourse());
         postPriceTextView.setText("Price: " + post.getPrice() + "");
         postDescriptionTextView.setText(post.getDescription());
-        ///IMAGE WILL BE ADDED!!!!!!!!!!!!
+        Picasso.get().load(post.getPicture()).into(postPic);
 
     }
 
     public void openPostReportDialog() {
         ReportDialog dialog = new ReportDialog();
         dialog.show(getSupportFragmentManager(), "");
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent pass = new Intent(PostActivity.this, PostListActivity.class);
+        pass.putExtra("currentUser", currentUser);
+        pass.putExtra("postlist", postList);
+        startActivity(pass);
     }
 
     @Override

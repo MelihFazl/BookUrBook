@@ -3,12 +3,14 @@ package com.example.bookurbook;
 
 import android.content.Context;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.bookurbook.models.Post;
 
 import com.example.bookurbook.models.PostList;
+import com.example.bookurbook.models.User;
 import com.squareup.picasso.Picasso;
 
 
@@ -30,12 +33,16 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
     // variables
     private ArrayList<Post> postListHolder;
     private ArrayList<Post> postListHolderFull;
+    private User postOwner;
+    private User currentUser;
+    private PostList postList;
     PostList list;
     Context context;
 
     // constructor
-    public PostListAdapter(Context c, PostList list)
+    public PostListAdapter(Context c, PostList list, User user)
     {
+        currentUser = user;
         this.list = list;
         postListHolder = list.getPostArray(); // buraya bak
         postListHolderFull = new ArrayList<>(postListHolder);
@@ -57,8 +64,18 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
         Post examplePost = postListHolder.get(i);
         postListViewHolder.title.setText(examplePost.getTitle());
         postListViewHolder.seller.setText(examplePost.getOwner().getUsername());      // whcih method did Kerem use for post, is this correct?
-        postListViewHolder.price.setText(Integer.toString((int) examplePost.getPrice()));
+        postListViewHolder.price.setText(Integer.toString((int) examplePost.getPrice()) + "₺");
         Picasso.get().load(examplePost.getPicture()).into(postListViewHolder.picture);
+        postListViewHolder.layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent pass = new Intent(context, PostActivity.class);
+                pass.putExtra("currentUser", currentUser);
+                pass.putExtra("postlist", list);
+                pass.putExtra("post", examplePost);
+                context.startActivity(pass);
+            }
+        });
     }
 
     @Override
@@ -154,6 +171,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
         TextView seller;
         TextView price;
         ImageView picture;
+        LinearLayout layout;
 
         // constructor
         public PostListViewHolder(@NonNull View itemView) {
@@ -162,6 +180,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
             picture = itemView.findViewById(R.id.postImageView);
             seller = itemView.findViewById(R.id.postSeller);
             price = itemView.findViewById(R.id.priceText);
+            layout = (LinearLayout)  itemView.findViewById(R.id.row_post);
         }
     }
 }
