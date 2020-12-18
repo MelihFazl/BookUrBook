@@ -157,12 +157,12 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
 
     }
 
-    @Override
+    /*@Override
     public void onBackPressed() {
         Intent pass = new Intent(PostListActivity.this, MainMenuActivity.class);
         pass.putExtra("user", currentUser);
         startActivity(pass);
-    }
+    }*/
 
 
     public void openFilterWindow() {
@@ -215,15 +215,15 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
     }
 
     @Override
-<<<<<<< Updated upstream
     public void onBackPressed() {
         Intent pass = new Intent(PostListActivity.this, MainMenuActivity.class);
         pass.putExtra("currentUser", currentUser);
         startActivity(pass);
         finish();
-=======
+    }
+
     public void filterThePosts(String uni, String course, int lowPrice, int highPrice) {
             postListAdapter.filterResults(uni, course, lowPrice, highPrice);
->>>>>>> Stashed changes
+
     }
 }
