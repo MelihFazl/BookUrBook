@@ -28,7 +28,6 @@ public class MyPostsActivity extends AppCompatActivity {
     MyPostsAdapter adp;
     PostList postList;
     UserSpecPostList userSpecPostList;
-    ImageView temp;
     User currentUser;
 
     @Override
@@ -48,18 +47,12 @@ public class MyPostsActivity extends AppCompatActivity {
             currentUser = (RegularUser)getIntent().getSerializableExtra("currentUser");
 
         postList = (PostList) getIntent().getSerializableExtra("postlist");
-        userSpecPostList = new UserSpecPostList(currentUser);
-        System.out.println(currentUser.getEmail() + "MY POSTS");
-        for(int i = 0; postList.getPostArray().size() > i; i++ )
-        {
-            userSpecPostList.addPost(postList.getPostArray().get(i));
-        }
+
 
         this.add = findViewById(R.id.addButton);
         this.username = findViewById(R.id.username);
         this.userType = findViewById(R.id.user_type);
         this.img = findViewById(R.id.profile_image);
-
         recyclerView = findViewById(R.id.recycler_id);
 
         Picasso.get().load(currentUser.getAvatar()).into(img);

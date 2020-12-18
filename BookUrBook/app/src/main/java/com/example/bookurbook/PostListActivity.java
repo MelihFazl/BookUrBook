@@ -42,12 +42,11 @@ import java.util.ArrayList;
 
 
 // class for the Post List activity
-public class PostListActivity extends AppCompatActivity implements FilterScreenView.FilterScreenListener {
+public class PostListActivity extends AppCompatActivity {
 
     // variables
     //Toolbar toolbar;
     RecyclerView recyclerView;
-    FilterScreenView filterScreenView;
     SearchView searchView;
     Button LtoHpriceButton;
     Button HtoLpriceButton;
@@ -67,6 +66,7 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_list);
 
+
         // postList = new ArrayList<>();                    delete later?
         //add();  // method for adding posts from database ?
 
@@ -82,11 +82,11 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
         {
             System.out.println(postList.getPostArray().get(i).getOwner().getEmail());
         }
+        System.out.println("CURRENT USER: " + currentUser.getUsername());
 
 
         // later do all these operations with database
        //postList.addPost(new Post("great book", "big Java", "Bilkent University", "CS", 30, null, new RegularUser("Kaan", "mail", null)));
-
 
 
         searchView = findViewById(R.id.search_id);
@@ -103,11 +103,9 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
        // getSupportActionBar().setDisplayHomeAsUpEnabled(true);   // implement this later so that it goes back to the previous screen
 
 
-        postListAdapter = new PostListAdapter(this, postList);
+        postListAdapter = new PostListAdapter(this, postList, currentUser);   // had to make it final, maybe change it later?
         recyclerView.setAdapter(postListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        // filterScreenView = new FilterScreenView(postListAdapter);            may deletee?
 
         search(postListAdapter); // method for searching
 
@@ -157,16 +155,9 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
 
     }
 
-    /*@Override
-    public void onBackPressed() {
-        Intent pass = new Intent(PostListActivity.this, MainMenuActivity.class);
-        pass.putExtra("user", currentUser);
-        startActivity(pass);
-    }*/
-
 
     public void openFilterWindow() {
-        FilterScreenView filterScreen = new FilterScreenView();    //deleted the parameter constructor?
+        FilterScreenView filterScreen = new FilterScreenView();
         filterScreen.show(getSupportFragmentManager(), "example filter");
 
     }
@@ -220,10 +211,5 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
         pass.putExtra("currentUser", currentUser);
         startActivity(pass);
         finish();
-    }
-
-    public void filterThePosts(String uni, String course, int lowPrice, int highPrice) {
-            postListAdapter.filterResults(uni, course, lowPrice, highPrice);
-
     }
 }

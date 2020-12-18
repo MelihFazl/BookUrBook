@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.bookurbook.models.Post;
 
 import com.example.bookurbook.models.PostList;
+import com.example.bookurbook.models.User;
 import com.squareup.picasso.Picasso;
 
 
@@ -32,13 +33,16 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
     // variables
     private ArrayList<Post> postListHolder;
     private ArrayList<Post> postListHolderFull;
+    private User postOwner;
+    private User currentUser;
+    private PostList postList;
     PostList list;
     Context context;
 
-
     // constructor
-    public PostListAdapter(Context c, PostList list)
+    public PostListAdapter(Context c, PostList list, User user)
     {
+        currentUser = user;
         this.list = list;
         postListHolder = list.getPostArray(); // buraya bak
         postListHolderFull = new ArrayList<>(postListHolder);
@@ -62,12 +66,14 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
         postListViewHolder.seller.setText(examplePost.getOwner().getUsername());      // whcih method did Kerem use for post, is this correct?
         postListViewHolder.price.setText(Integer.toString((int) examplePost.getPrice()) + "₺");
         Picasso.get().load(examplePost.getPicture()).into(postListViewHolder.picture);
-        postListViewHolder.linearLayout.setOnClickListener(new View.OnClickListener() {
+        postListViewHolder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, PostActivity.class);
-                intent.putExtra("post", postListHolderFull.get(i));
-                context.startActivity(intent);
+            public void onClick(View v) {
+                Intent pass = new Intent(context, PostActivity.class);
+                pass.putExtra("currentUser", currentUser);
+                pass.putExtra("postlist", list);
+                pass.putExtra("post", examplePost);
+                context.startActivity(pass);
             }
         });
     }
@@ -165,35 +171,16 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
         TextView seller;
         TextView price;
         ImageView picture;
-        LinearLayout linearLayout;
+        LinearLayout layout;
 
         // constructor
         public PostListViewHolder(@NonNull View itemView) {
             super(itemView);
-            linearLayout = itemView.findViewById(R.id.post_layout_id);
             title = itemView.findViewById(R.id.postText);
             picture = itemView.findViewById(R.id.postImageView);
             seller = itemView.findViewById(R.id.postSeller);
             price = itemView.findViewById(R.id.priceText);
+            layout = (LinearLayout)  itemView.findViewById(R.id.row_post);
         }
-    }
-
-    public void filterResults(String uni, String course, int lowPrice, int highPrice)
-    {
-        PostList filteredList = list;
-
-        if (!uni.equals("Other")) {
-            filteredList = list.filterByUniversity(uni);
-        }
-        if (!course.equals("Other")) {
-            filteredList = list.filterByUniversity(uni);
-        }
-        if (lowPrice != -1 || highPrice != -1) {
-            filteredList = list.filterByPrice(lowPrice, highPrice);
-        }
-
-
-        postListHolder = new ArrayList<>(filteredList.getPostArray());
-        notifyDataSetChanged();
     }
 }

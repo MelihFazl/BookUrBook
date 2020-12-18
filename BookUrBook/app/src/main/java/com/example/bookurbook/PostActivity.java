@@ -1,21 +1,27 @@
 package com.example.bookurbook;
+import com.example.bookurbook.ReportDialog;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+        import androidx.appcompat.app.AppCompatActivity;
+        import androidx.appcompat.widget.Toolbar;
 
-import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
+        import android.os.Bundle;
+        import android.view.View;
+        import android.widget.ImageButton;
+        import android.widget.TextView;
+        import android.widget.Toast;
 
+import com.example.bookurbook.models.Admin;
 import com.example.bookurbook.models.Post;
+import com.example.bookurbook.models.PostList;
 import com.example.bookurbook.models.RegularUser;
+import com.example.bookurbook.models.User;
 import com.example.bookurbook.models.WishList;
 
 public class PostActivity extends AppCompatActivity implements ReportPostDialogListener {
     //instance variables
     private Post post;
+    private PostList postList;
+    private User currentUser;
     private WishList wishlist;
 
     @Override
@@ -39,11 +45,12 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null)
-        {
-         post = (Post) getIntent().getSerializableExtra("post");
-        }
+        post = (Post) getIntent().getSerializableExtra("post");
+        if(getIntent().getSerializableExtra("currentUser") instanceof Admin)
+            currentUser = (Admin)getIntent().getSerializableExtra("currentUser");
+        else
+            currentUser = (RegularUser)getIntent().getSerializableExtra("currentUser");
+        postList = (PostList)getIntent().getSerializableExtra("postlist");
 
         //initialization
         // post = new Post("This book is very nice :)", "MAT132 BOOK FOR CS STUDENTS", "Bilkent", "Math", 10, null, new RegularUser("Mehmet", "mehmet@ug.bilkent.edu.tr", null));
@@ -117,3 +124,6 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         //System.out.println(post.getReports().get(0).getCategory());
     }
 }
+
+
+
