@@ -7,7 +7,8 @@ import com.example.bookurbook.ReportDialog;
         import android.os.Bundle;
         import android.view.View;
         import android.widget.ImageButton;
-        import android.widget.TextView;
+import android.widget.ImageView;
+import android.widget.TextView;
         import android.widget.Toast;
 
 import com.example.bookurbook.models.Admin;
@@ -16,6 +17,7 @@ import com.example.bookurbook.models.PostList;
 import com.example.bookurbook.models.RegularUser;
 import com.example.bookurbook.models.User;
 import com.example.bookurbook.models.WishList;
+import com.squareup.picasso.Picasso;
 
 public class PostActivity extends AppCompatActivity implements ReportPostDialogListener {
     //instance variables
@@ -36,6 +38,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         TextView postDescriptionTextView;
         ImageButton reportButton;
         ImageButton wishlistButton;
+        ImageView postPic;
 
         //method code
         super.onCreate(savedInstanceState);
@@ -51,7 +54,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         else
             currentUser = (RegularUser)getIntent().getSerializableExtra("currentUser");
         postList = (PostList)getIntent().getSerializableExtra("postlist");
-
+        postPic = findViewById(R.id.postImageView);
         //initialization
         // post = new Post("This book is very nice :)", "MAT132 BOOK FOR CS STUDENTS", "Bilkent", "Math", 10, null, new RegularUser("Mehmet", "mehmet@ug.bilkent.edu.tr", null));
         postTitleTextView = findViewById(R.id.postTitleTextView);
@@ -68,6 +71,8 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         postCourseTextView.setText("Course: " + post.getCourse());
         postPriceTextView.setText("Price: " + post.getPrice() + "");
         postDescriptionTextView.setText(post.getDescription());
+        Picasso.get().load(post.getPicture()).into(postPic);
+        System.out.println(post.getPicture() + "link");
 
         /**
          * Will add the post to the wishlist if it is not included in the wishlist. If it is already
