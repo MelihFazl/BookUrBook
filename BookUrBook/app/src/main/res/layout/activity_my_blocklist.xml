@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#e3c6bf"
-    tools:context=".views.MyBlockList">
+    tools:context=".MyBlockListActivity">
 
 
         <androidx.appcompat.widget.Toolbar
