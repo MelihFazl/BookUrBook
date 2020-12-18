@@ -1,8 +1,10 @@
 package com.example.bookurbook;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -62,6 +64,10 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         postPriceTextView.setText("Price: " + post.getPrice() + "");
         postDescriptionTextView.setText(post.getDescription());
 
+        if(post.getOwner().getReports().size() >= 10)
+            badRepAlert();
+
+
         /**
          * Will add the post to the wishlist if it is not included in the wishlist. If it is already
          * in the wishlist, it will remove it from the wishlist.
@@ -98,8 +104,6 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         startActivity(startIntent);
         }
         });*/
-
-
     }
 
     /**
@@ -115,5 +119,26 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         post.report(description, category);
         //System.out.println(post.getReports().get(0).getDescription());
         //System.out.println(post.getReports().get(0).getCategory());
+    }
+
+    /**
+     * This method creates a pop up dialog before entering the screen if the seller of the post
+     * has been reported several times.
+     */
+    public void badRepAlert(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(PostActivity.this);
+        builder.setTitle("Attention");
+        builder.setMessage("This user has been reported several times. Be careful with the user or the post.");
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+
+            }
+        });
+
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }

@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.bookurbook.models.Admin;
 import com.example.bookurbook.models.Post;
@@ -33,6 +35,9 @@ public class MainMenuActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private PostList postList;
     private User currentPostOwner;
+    private ImageButton adminPanelButton;
+    private TextView adminPanelTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,8 +61,13 @@ public class MainMenuActivity extends AppCompatActivity {
         botleft = findViewById(R.id.botleft);
         botright = findViewById(R.id.botright);
         wishlist = findViewById(R.id.wishlist);
+        adminPanelButton = findViewById(R.id.adminPanelButton);
+        adminPanelTextView = findViewById(R.id.adminPanelTextView);
 
-
+        if( currentUser instanceof Admin ){
+            adminPanelButton.setVisibility(View.VISIBLE);
+            adminPanelTextView.setVisibility(View.VISIBLE);
+        }
 
         topleft.setOnClickListener(new View.OnClickListener() {
 
@@ -160,6 +170,14 @@ public class MainMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainMenuActivity.this, WishlistActivity.class));
+            }
+        });
+
+        adminPanelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent adminPanel = new Intent(MainMenuActivity.this,AdminPanelActivity.class);
+                startActivity(adminPanel);
             }
         });
 

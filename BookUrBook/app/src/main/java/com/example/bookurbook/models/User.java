@@ -13,6 +13,7 @@ public abstract class User implements Reportable, Serializable
     private String email;
     private boolean banned;
     private ArrayList<Report> reports;
+    private int reportNum;
     private String avatar;
     private UserSpecPostList userPostList;
     private UserList blockedUsers;
@@ -26,15 +27,23 @@ public abstract class User implements Reportable, Serializable
         reports = new ArrayList<Report>();
         userPostList = new UserSpecPostList(this);
         blockedUsers = new UserList();
+        reportNum = 0;
     }
-    public String getUsername()
-    {
+    public String getUsername() {
         return username;
     }
-    public void setUsername(String username)
-    {
+
+    public void setUsername(String username) {
         this.username = username;
 
+    }
+
+    public int getReportNum() {
+        return reportNum;
+    }
+
+    public void setReportNum(int reportNum) {
+        this.reportNum = reportNum;
     }
 
     public String getEmail()

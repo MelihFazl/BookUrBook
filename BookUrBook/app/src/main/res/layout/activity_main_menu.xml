@@ -202,4 +202,32 @@
         app:srcCompat="@drawable/wishlist"
         app:tint="@color/white" />
 
+    <ImageButton
+        android:id="@+id/adminPanelButton"
+        android:layout_width="276dp"
+        android:layout_height="61dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/topbar"
+        app:layout_constraintVertical_bias="0.889"
+        app:srcCompat="@drawable/fui_idp_button_background_twitter" />
+
+    <TextView
+        android:id="@+id/adminPanelTextView"
+        android:layout_width="239dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="ADMIN PANEL"
+        android:visibility="gone"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/adminPanelButton"
+        app:layout_constraintEnd_toEndOf="@+id/adminPanelButton"
+        app:layout_constraintHorizontal_bias="0.513"
+        app:layout_constraintStart_toStartOf="@+id/adminPanelButton"
+        app:layout_constraintTop_toTopOf="@+id/adminPanelButton"
+        app:layout_constraintVertical_bias="0.428" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
