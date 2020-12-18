@@ -16,6 +16,7 @@ public class Post implements Reportable, Serializable
     private User owner;
     private boolean sold;
     private ArrayList<Report> reports;
+    private int reportNum;
 
     //constructors
     public Post(String description, String title, String university, String course, int price, String picture, User owner, String id)
@@ -66,6 +67,14 @@ public class Post implements Reportable, Serializable
     public User getOwner()
     {
         return owner;
+    }
+
+    public int getReportNum() {
+        return reportNum;
+    }
+
+    public void setReportNum(int reportNum) {
+        this.reportNum = reportNum;
     }
 
     public boolean isSold()
