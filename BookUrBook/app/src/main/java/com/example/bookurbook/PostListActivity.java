@@ -1,8 +1,5 @@
 package com.example.bookurbook;
 
-
-
-
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -66,6 +63,7 @@ public class PostListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_list);
 
+
         // postList = new ArrayList<>();                    delete later?
         //add();  // method for adding posts from database ?
 
@@ -81,6 +79,7 @@ public class PostListActivity extends AppCompatActivity {
         {
             System.out.println(postList.getPostArray().get(i).getOwner().getEmail());
         }
+        System.out.println("CURRENT USER: " + currentUser.getUsername());
 
 
         // later do all these operations with database
@@ -101,7 +100,7 @@ public class PostListActivity extends AppCompatActivity {
        // getSupportActionBar().setDisplayHomeAsUpEnabled(true);   // implement this later so that it goes back to the previous screen
 
 
-        postListAdapter = new PostListAdapter(this, postList);   // had to make it final, maybe change it later?
+        postListAdapter = new PostListAdapter(this, postList, currentUser);   // had to make it final, maybe change it later?
         recyclerView.setAdapter(postListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 

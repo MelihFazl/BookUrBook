@@ -4,19 +4,22 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Chat implements Serializable
+public class Chat implements Serializable, Comparable<Chat>
 {
     //variables
     User user1;
     User user2;
     ArrayList<Message> messages;
     String lastMessageContentInDB;
+    Date date;
+    String chatID;
 
     //constructor
-    public Chat(User user1, User user2)
+    public Chat(User user1, User user2, String chatID)
     {
         this.user1 = user1;
         this.user2 = user2;
+        this.chatID = chatID;
         messages = new ArrayList<Message>();
     }
 
@@ -79,9 +82,30 @@ public class Chat implements Serializable
         this.lastMessageContentInDB = lastMessageContentInDB;
     }
 
+    public Date getDate()
+    {
+        return date;
+    }
+
+    public void setDate(Date date)
+    {
+        this.date = date;
+    }
+
     public String getLastMessageInFromDB()
     {
         return lastMessageContentInDB;
+    }
+
+    @Override
+    public int compareTo(Chat o)
+    {
+        return -(getDate().compareTo(o.getDate()));
+    }
+
+    public String getChatID()
+    {
+        return chatID;
     }
 
 }

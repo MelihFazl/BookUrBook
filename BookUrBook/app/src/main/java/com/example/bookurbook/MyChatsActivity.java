@@ -3,9 +3,12 @@ package com.example.bookurbook;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.icu.text.Edits;
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.bookurbook.models.Admin;
 import com.example.bookurbook.models.Chat;
@@ -25,6 +28,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 
 public class MyChatsActivity extends AppCompatActivity {
@@ -32,9 +37,11 @@ public class MyChatsActivity extends AppCompatActivity {
     private User currentUser;
     private FirebaseFirestore db;
     private FirebaseAuth auth;
-    DocumentReference docRef;
-    ArrayList<Chat> chatList;
-    String otherUsername;
+    private DocumentReference docRef;
+    private ArrayList<Chat> chatList;
+    private String otherUsername;
+    private RecyclerView recyclerView;
+    private MyChatsAdapter myChatsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +50,10 @@ public class MyChatsActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
+
+        chatList = new ArrayList<Chat>();
+        buildRecyclerView();
+
         if(getIntent().getSerializableExtra("currentUser") instanceof Admin)
             currentUser = (Admin)getIntent().getSerializableExtra("currentUser");
         else
@@ -67,42 +78,55 @@ public class MyChatsActivity extends AppCompatActivity {
                                 otherUsername = doc.getString("username2");
                             else
                                 otherUsername = doc.getString("username1");
-                            db.collection("users")
-                                    .whereEqualTo("username", otherUsername)
+                            db.collection("users").whereEqualTo("username", otherUsername)
                                     .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+                            {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task)
+                                {
+                                    if (task.isSuccessful())
                                     {
-                                        @Override
-                                        public void onComplete(@NonNull Task<QuerySnapshot> task)
+                                        for (DocumentSnapshot document : task.getResult())
                                         {
-                                            if (task.isSuccessful())
-                                            {
-                                                for (DocumentSnapshot document : task.getResult())
-                                                {
-                                                    Chat chat = new Chat(currentUser, new RegularUser(document.getString("username"),
-                                                            document.getString("email"), document.getString("avatar")));
-                                                    chat.setLastMessageContentInDB(doc.getString("lastmessage"));
-                                                    chatList.add(chat);
-                                                }
-                                            }
-                                            else
-                                            {
-                                                System.out.println("hata");
-                                            }
-                                            for ( int i = 0; i < chatList.size(); i++ )
-                                            {
-                                                System.out.println("for: " + i);
-                                                System.out.println(chatList.get(i).getUser1().getUsername());
-                                                System.out.println(chatList.get(i).getUser2().getUsername());
-                                            }
+                                            Chat chat = new Chat(currentUser, new RegularUser(document.getString("username"),
+                                                    document.getString("email"), document.getString("avatar")), doc.getId());
+                                            chat.setLastMessageContentInDB(doc.getString("lastmessage"));
+                                            chat.setDate(doc.getDate("lastmessagedate"));
+                                            chatList.add(chat);
                                         }
-                                    });
+                                    }
+                                    else
+                                    {
+                                        System.out.println("hata");
+                                    }
+                                    Collections.sort(chatList);
+                                    buildRecyclerView();
+                                    //Update GUI
+                                    //Test
+                                   for ( int i = 0; i < chatList.size(); i++ )
+                                    {
+                                        System.out.println("for: " + i);
+                                        System.out.println(chatList.get(i).getUser1().getUsername());
+                                        System.out.println(chatList.get(i).getUser2().getUsername());
+                                    }
+                                }
+                            });
                     }
                 }
             }
         });
     }
+
+    private void buildRecyclerView()
+    {
+        recyclerView = findViewById(R.id.my_chats_recycler_id);
+        myChatsAdapter = new MyChatsAdapter(MyChatsActivity.this, chatList, currentUser);
+        recyclerView.setAdapter(myChatsAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(MyChatsActivity.this));
+        myChatsAdapter.notifyDataSetChanged();
+    }
 }
+
 /*
-     Adding time and sorting regarding time ( Melih )
      GUI ( Kaan or someone available )
 */

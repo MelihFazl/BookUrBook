@@ -18,15 +18,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookurbook.R;
 import com.example.bookurbook.models.Post;
+import com.example.bookurbook.models.PostList;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.ViewHolder> {
 
     //properties
     private ArrayList<Post> myPosts;
     private Context context;
+    private FirebaseFirestore db;
+
 
 
     public MyPostsAdapter(Context context, ArrayList<Post> posts) {
@@ -40,7 +48,7 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.ViewHold
         private ImageView photo;
         private ImageView soldPhoto, tickSold;
         private LinearLayout layout;
-        private ImageButton editButton;;
+        private ImageView editButton;
 
 
         //inner class constructor
@@ -69,6 +77,17 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull MyPostsAdapter.ViewHolder holder, int position) {
+        db = FirebaseFirestore.getInstance();
+        System.out.println(myPosts.get(position).isSold() + "MMMHH");
+        if(myPosts.get(position).isSold())
+        {
+            holder.soldPhoto.setImageResource(R.drawable.sold);
+            holder.tickSold.setImageResource(R.drawable.unmark);
+        }
+
+
+
+
         holder.title.setText(myPosts.get(position).getTitle());
         holder.seller.setText(myPosts.get(position).getOwner().getUsername());
         Picasso.get().load(myPosts.get(position).getPicture()).into(holder.photo);
@@ -85,9 +104,17 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.ViewHold
 
         holder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
-           public void onClick(View view) {
+            public void onClick(View view)
+            {
                 Intent intent2 = new Intent(context, EditPostActivity.class);
                 intent2.putExtra("post", myPosts.get(position));
+                intent2.putExtra("currentUser", myPosts.get(position).getOwner());
+                PostList pass = new PostList();
+                for(int i = 0; myPosts.size() > i; i++)
+                {
+                    pass.addPost(myPosts.get(i));
+                }
+                intent2.putExtra("postlist", pass);
                 context.startActivity(intent2);
             }
         });
@@ -100,11 +127,23 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.ViewHold
                 if (!myPosts.get(position).isSold()) {
                     builder.setMessage("Are you sure that you want to mark the Post as sold?");
                     builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            myPosts.get(position).setSold(true);
-                            holder.soldPhoto.setImageResource(R.drawable.sold);
-                            dialog.dismiss();
-                            Toast.makeText(context, "You have successfully sold your Post!", Toast.LENGTH_SHORT).show();
+                        public void onClick(DialogInterface dialog, int which)
+                        {
+
+                            HashMap<String, Object> newData = new HashMap<>();
+                            newData.put("sold", true);
+                            db.collection("posts").document(myPosts.get(position).getId()).set(newData, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    myPosts.get(position).setSold(true);
+                                    Toast.makeText(context, "You have successfully sold your Post!", Toast.LENGTH_SHORT).show();
+                                    holder.soldPhoto.setImageResource(R.drawable.sold);
+                                    holder.soldPhoto.setVisibility(View.VISIBLE);
+                                    holder.tickSold.setImageResource(R.drawable.unmark);
+                                    dialog.dismiss();
+                                }
+                            });
+
                         }
                     });
 
@@ -124,10 +163,20 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.ViewHold
                     builder.setMessage("Are you sure that you want to mark the Post as unsold?");
                     builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            myPosts.get(position).setSold(false);
-                            holder.soldPhoto.setVisibility(View.INVISIBLE);
-                            dialog.dismiss();
-                            Toast.makeText(context, "You have marked your Post as unsold!", Toast.LENGTH_SHORT).show();
+
+                            HashMap<String, Object> newData = new HashMap<>();
+                            newData.put("sold", false);
+                            db.collection("posts").document(myPosts.get(position).getId()).set(newData, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    holder.soldPhoto.setVisibility(View.INVISIBLE);
+                                    holder.tickSold.setImageResource(R.drawable.tick);
+                                    myPosts.get(position).setSold(false);
+                                    Toast.makeText(context, "You have marked your Post as unsold!", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                }
+                            });
+
                         }
                     });
 

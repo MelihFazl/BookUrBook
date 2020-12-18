@@ -54,6 +54,7 @@ and updating whenever a change occurs in database.
 -> Creating Wishlist screen layout in Android Studio using xml, its adapter and its activity class using Java
 -> Creating My Posts screen layout in Android Studio using xml, its adapter and its activity class using Java
 -> Creating My Blocklist screen layout and its pop-ups in Android Studio using xml, its adapter and its activity class using Java
+-> Designing Settings screen layout in Android Studio using xml
 
 
 --- Kaan Tek---
