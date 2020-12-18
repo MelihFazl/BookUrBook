@@ -2,31 +2,33 @@ package com.example.bookurbook.models;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
-public class Message implements Serializable
+public class Message implements Serializable, Comparable<Message>
 {
     //variables
-    SimpleDateFormat messageDate;
-    SimpleDateFormat messageTime;
-    User sentBy;
+    String messageDate;
+    String messageTime;
+    String sentBy;
     String content;
+    Date date;
 
     //constructor
-    public Message ( SimpleDateFormat messageDate, SimpleDateFormat messageTime, User sentBy, String content )
+    public Message ( String sentBy, String contentString, String messageDate, String messageTime )
     {
         this.messageDate = messageDate;
         this.messageTime = messageTime;
-        this.content = content;
+        this.content = contentString;
         this.sentBy = sentBy;
     }
 
     //methods
-    public SimpleDateFormat getMessageDate()
+    public String getMessageDate()
     {
         return messageDate;
     }
 
-    public SimpleDateFormat getMessageTime()
+    public String getMessageTime()
     {
         return messageTime;
     }
@@ -36,17 +38,17 @@ public class Message implements Serializable
         return content;
     }
 
-    public User getSentBy()
+    public String getSentBy()
     {
         return sentBy;
     }
 
-    public void setMessageDate(SimpleDateFormat messageDate)
+    public void setMessageDate(String messageDate)
     {
         this.messageDate = messageDate;
     }
 
-    public void setMessageTime(SimpleDateFormat messageTime)
+    public void setMessageTime(String messageTime)
     {
         this.messageTime = messageTime;
     }
@@ -56,8 +58,24 @@ public class Message implements Serializable
         this.content = content;
     }
 
-    public void setSentBy(User sentBy)
+    public void setSentBy(String sentBy)
     {
         this.sentBy = sentBy;
+    }
+
+    public Date getDate()
+    {
+        return date;
+    }
+
+    public void setDate(Date date)
+    {
+        this.date = date;
+    }
+
+    @Override
+    public int compareTo(Message o)
+    {
+        return this.getDate().compareTo(o.getDate());
     }
 }
