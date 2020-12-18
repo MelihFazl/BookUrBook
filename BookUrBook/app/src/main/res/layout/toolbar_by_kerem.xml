@@ -7,6 +7,14 @@
     android:elevation="4dp">
 
     <ImageButton
+        android:id="@+id/wishlistButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|right"
+        android:src="@android:drawable/stat_notify_error"
+        tools:src="@drawable/baseline_favorite_black_18dp" />
+
+    <ImageButton
         android:id="@+id/reportButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

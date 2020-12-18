@@ -42,11 +42,12 @@ import java.util.ArrayList;
 
 
 // class for the Post List activity
-public class PostListActivity extends AppCompatActivity {
+public class PostListActivity extends AppCompatActivity implements FilterScreenView.FilterScreenListener {
 
     // variables
     //Toolbar toolbar;
     RecyclerView recyclerView;
+    FilterScreenView filterScreenView;
     SearchView searchView;
     Button LtoHpriceButton;
     Button HtoLpriceButton;
@@ -87,6 +88,7 @@ public class PostListActivity extends AppCompatActivity {
        //postList.addPost(new Post("great book", "big Java", "Bilkent University", "CS", 30, null, new RegularUser("Kaan", "mail", null)));
 
 
+
         searchView = findViewById(R.id.search_id);
         recyclerView = findViewById(R.id.recycler_id);
         //toolbar = findViewById(R.id.toolbar);
@@ -101,9 +103,11 @@ public class PostListActivity extends AppCompatActivity {
        // getSupportActionBar().setDisplayHomeAsUpEnabled(true);   // implement this later so that it goes back to the previous screen
 
 
-        postListAdapter = new PostListAdapter(this, postList);   // had to make it final, maybe change it later?
+        postListAdapter = new PostListAdapter(this, postList);
         recyclerView.setAdapter(postListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // filterScreenView = new FilterScreenView(postListAdapter);            may deletee?
 
         search(postListAdapter); // method for searching
 
@@ -153,9 +157,16 @@ public class PostListActivity extends AppCompatActivity {
 
     }
 
+    /*@Override
+    public void onBackPressed() {
+        Intent pass = new Intent(PostListActivity.this, MainMenuActivity.class);
+        pass.putExtra("user", currentUser);
+        startActivity(pass);
+    }*/
+
 
     public void openFilterWindow() {
-        FilterScreenView filterScreen = new FilterScreenView();
+        FilterScreenView filterScreen = new FilterScreenView();    //deleted the parameter constructor?
         filterScreen.show(getSupportFragmentManager(), "example filter");
 
     }
@@ -209,5 +220,10 @@ public class PostListActivity extends AppCompatActivity {
         pass.putExtra("currentUser", currentUser);
         startActivity(pass);
         finish();
+    }
+
+    public void filterThePosts(String uni, String course, int lowPrice, int highPrice) {
+            postListAdapter.filterResults(uni, course, lowPrice, highPrice);
+
     }
 }
