@@ -1,6 +1,8 @@
 package com.example.bookurbook;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.bookurbook.R;
 
@@ -33,14 +36,14 @@ public class BlockedUsersAdapter extends RecyclerView.Adapter<BlockedUsersAdapte
         //inner class properties
         private TextView username;
         private ImageView photo;
-        private ImageButton blockButton;
+        private ImageButton unblockButton;
 
         //inner class constructor
         public ViewHolder(View view) {
             super(view);
             this.username = view.findViewById(R.id.blocked_username);
             this.photo = view.findViewById(R.id.image_user);
-            this.blockButton = view.findViewById(R.id.btn_block);
+            this.unblockButton = view.findViewById(R.id.btn_unblock);
         }
     }
 
@@ -56,16 +59,34 @@ public class BlockedUsersAdapter extends RecyclerView.Adapter<BlockedUsersAdapte
     public void onBindViewHolder(@NonNull BlockedUsersAdapter.ViewHolder holder, int position) {
         holder.username.setText(blockedUsers.get(position).getUsername());
         //holder.photo.setImageResource(blockedUsers.get(position).getAvatar());
-        holder.blockButton.setOnClickListener(new View.OnClickListener() {
+        holder.unblockButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, blockedUsers.get(position).getUsername() + "'s block has been removed", Toast.LENGTH_SHORT).show();
-                user.getBlockedUsers().deleteUser(blockedUsers.get(position));
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Confirm");
+                builder.setMessage("Are you sure that you want to unblock " + blockedUsers.get(position).getUsername() + "?");
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        Toast.makeText(context, blockedUsers.get(position).getUsername() + "'s block has been removed", Toast.LENGTH_SHORT).show();
+                        user.getBlockedUsers().deleteUser(blockedUsers.get(position));
+                        context.startActivity(new Intent(context, MyBlockListActivity.class));
+                    }
+                });
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
             }
         });
 
     }
-
     @Override
     public int getItemCount() {
         return blockedUsers.size();
