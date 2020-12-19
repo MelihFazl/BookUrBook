@@ -50,7 +50,7 @@ public class MyBlockListActivity extends AppCompatActivity {
         currentUser.getBlockedUsers().addUser(new RegularUser("kerem","kerem.sahin@ug.bilkent.edu.tr", "https://i.ytimg.com/vi/tIBN6kXHb_I/hqdefault.jpg"));
         currentUser.getBlockedUsers().addUser(new RegularUser("melih","melih.keskin@ug.bilkent.edu.tr", "https://i.ytimg.com/vi/tIBN6kXHb_I/hqdefault.jpg"));
         currentUser.getBlockedUsers().addUser(new RegularUser("ferhat","ferhat.korkmaz@ug.bilkent.edu.tr", "https://i.ytimg.com/vi/tIBN6kXHb_I/hqdefault.jpg"));
-        blockedUsers =  currentUser.getBlockedUsers().getUserArray(); //userliste eklendi silincek
+       // blockedUsers =  currentUser.getBlockedUsers().getUserArray(); //userliste eklendi silincek
     }
 
 }

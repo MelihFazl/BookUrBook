@@ -109,39 +109,48 @@ public class LoginActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful())
                     {
-                        Toast.makeText(LoginActivity.this, "Login successful",  Toast.LENGTH_LONG).show();
                         db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                             @Override
                             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                if(documentSnapshot.getBoolean("admin"))
-                                    currentUser = new Admin(documentSnapshot.getString("username"), documentSnapshot.getString("email"), null);
+                                if (documentSnapshot.getBoolean("banned")) {
+                                    Toast.makeText(LoginActivity.this, "This user has been banned from BookUrBook!", Toast.LENGTH_LONG).show();
+                                    Intent banned = new Intent(LoginActivity.this, WelcomeActivity.class);
+                                    FirebaseAuth.getInstance().signOut();
+                                    startActivity(banned);
+                                    finish();
+                                }
                                 else
-                                    currentUser = new RegularUser(documentSnapshot.getString("username"), documentSnapshot.getString("email"), null);
-                                storage.getReference().child("images/profile_pictures/" + auth.getCurrentUser().getUid()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-                                        currentUser.setAvatar(uri.toString());
-                                        Intent pass = new Intent(LoginActivity.this, MainMenuActivity.class);
-                                        pass.putExtra("currentUser", currentUser);
-                                        startActivity(pass);
-                                        finish();
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        storage.getReference().child("images/profile_pictures/default.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                            @Override
-                                            public void onSuccess(Uri uri) {
-                                                currentUser.setAvatar(uri.toString());
-                                                Intent pass = new Intent(LoginActivity.this, MainMenuActivity.class);
-                                                pass.putExtra("currentUser", currentUser);
-                                                startActivity(pass);
-                                                finish();
-                                            }
-                                        });
-                                    }
-                                });
+                                    {
+                                        if (documentSnapshot.getBoolean("admin"))
+                                        currentUser = new Admin(documentSnapshot.getString("username"), documentSnapshot.getString("email"), null);
+                                    else
+                                        currentUser = new RegularUser(documentSnapshot.getString("username"), documentSnapshot.getString("email"), null);
+                                    storage.getReference().child("images/profile_pictures/" + auth.getCurrentUser().getUid()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            currentUser.setAvatar(uri.toString());
+                                            Intent pass = new Intent(LoginActivity.this, MainMenuActivity.class);
+                                            pass.putExtra("currentUser", currentUser);
+                                            startActivity(pass);
+                                            finish();
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            storage.getReference().child("images/profile_pictures/default.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                @Override
+                                                public void onSuccess(Uri uri) {
+                                                    currentUser.setAvatar(uri.toString());
+                                                    Intent pass = new Intent(LoginActivity.this, MainMenuActivity.class);
+                                                    pass.putExtra("currentUser", currentUser);
+                                                    startActivity(pass);
+                                                    finish();
+                                                }
+                                            });
+                                        }
+                                    });
 
+                                }
                             }
                         });
                     }
