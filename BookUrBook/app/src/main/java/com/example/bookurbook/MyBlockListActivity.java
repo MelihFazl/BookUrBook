@@ -4,12 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.bookurbook.R;
+import com.example.bookurbook.models.PostList;
 import com.example.bookurbook.models.RegularUser;
 import com.example.bookurbook.models.User;
 
@@ -33,6 +35,7 @@ public class MyBlockListActivity extends AppCompatActivity {
 
     public void setProperties()
     {
+        //currentUser = (User) getIntent().getSerializableExtra("currentUser");
         add();
         this.blockList = findViewById(R.id.blockList);
         adapter = new BlockedUsersAdapter(getBaseContext(), blockedUsers, currentUser);
@@ -40,14 +43,14 @@ public class MyBlockListActivity extends AppCompatActivity {
         blockList.setLayoutManager(new LinearLayoutManager(this));
 
     }
-    public void add()
+    public void add() //silinecek
     {
         currentUser = new RegularUser("miri","miray.ayerdem@ug.bilkent.edu.tr", "https://i.ytimg.com/vi/tIBN6kXHb_I/hqdefault.jpg");
         currentUser.getBlockedUsers().addUser(new RegularUser("kaan","kaan.tek@ug.bilkent.edu.tr", "https://i.ytimg.com/vi/tIBN6kXHb_I/hqdefault.jpg"));
         currentUser.getBlockedUsers().addUser(new RegularUser("kerem","kerem.sahin@ug.bilkent.edu.tr", "https://i.ytimg.com/vi/tIBN6kXHb_I/hqdefault.jpg"));
         currentUser.getBlockedUsers().addUser(new RegularUser("melih","melih.keskin@ug.bilkent.edu.tr", "https://i.ytimg.com/vi/tIBN6kXHb_I/hqdefault.jpg"));
         currentUser.getBlockedUsers().addUser(new RegularUser("ferhat","ferhat.korkmaz@ug.bilkent.edu.tr", "https://i.ytimg.com/vi/tIBN6kXHb_I/hqdefault.jpg"));
-
+        blockedUsers =  currentUser.getBlockedUsers().getUserArray(); //userliste eklendi silincek
     }
 
 }
