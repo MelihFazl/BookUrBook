@@ -1,4 +1,5 @@
 package com.example.bookurbook;
+import com.example.bookurbook.ReportDialog;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -6,16 +7,33 @@ import androidx.appcompat.widget.Toolbar;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.bookurbook.models.Admin;
 import com.example.bookurbook.models.Post;
+import com.example.bookurbook.models.PostList;
 import com.example.bookurbook.models.RegularUser;
+import com.example.bookurbook.models.User;
 import com.example.bookurbook.models.WishList;
+import com.squareup.picasso.Picasso;
 
 public class PostActivity extends AppCompatActivity implements ReportPostDialogListener {
     //instance variables
     private Post post;
+    private PostList postList;
+    private User currentUser;
     private WishList wishlist;
 
     @Override
@@ -30,6 +48,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         TextView postDescriptionTextView;
         ImageButton reportButton;
         ImageButton wishlistButton;
+        ImageView postPic;
 
         //method code
         super.onCreate(savedInstanceState);
@@ -39,12 +58,13 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null)
-        {
-         post = (Post) getIntent().getSerializableExtra("post");
-        }
-
+        post = (Post) getIntent().getSerializableExtra("post");
+        if (getIntent().getSerializableExtra("currentUser") instanceof Admin)
+            currentUser = (Admin) getIntent().getSerializableExtra("currentUser");
+        else
+            currentUser = (RegularUser) getIntent().getSerializableExtra("currentUser");
+        postList = (PostList) getIntent().getSerializableExtra("postlist");
+        postPic = findViewById(R.id.postImageView);
         //initialization
         // post = new Post("This book is very nice :)", "MAT132 BOOK FOR CS STUDENTS", "Bilkent", "Math", 10, null, new RegularUser("Mehmet", "mehmet@ug.bilkent.edu.tr", null));
         postTitleTextView = findViewById(R.id.postTitleTextView);
@@ -61,6 +81,12 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         postCourseTextView.setText("Course: " + post.getCourse());
         postPriceTextView.setText("Price: " + post.getPrice() + "");
         postDescriptionTextView.setText(post.getDescription());
+        Picasso.get().load(post.getPicture()).into(postPic);
+        System.out.println(post.getPicture() + "link");
+
+        if (post.getOwner().getReports().size() >= 10)
+            badRepAlert();
+
 
         /**
          * Will add the post to the wishlist if it is not included in the wishlist. If it is already
@@ -72,8 +98,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
                 if (wishlist.findPost(post)) {
                     wishlist.deletePost(post);
                     Toast.makeText(PostActivity.this, "You have deleted the item from the wishlist", Toast.LENGTH_LONG).show();
-                }
-                else{
+                } else {
                     wishlist.addPost(post);
                     Toast.makeText(PostActivity.this, "You have added the item to the wishlist", Toast.LENGTH_LONG).show();
                 }
@@ -98,14 +123,14 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         startActivity(startIntent);
         }
         });*/
-
-
     }
+
 
     /**
      * This method is created in order to create a pop up dialog using ReportDialog class.
      */
-    public void openPostReportDialog() {
+    public void openPostReportDialog()
+    {
         ReportDialog dialog = new ReportDialog();
         dialog.show(getSupportFragmentManager(), "");
     }
@@ -116,4 +141,27 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         //System.out.println(post.getReports().get(0).getDescription());
         //System.out.println(post.getReports().get(0).getCategory());
     }
+
+    /**
+     * This method creates a pop up dialog before entering the screen if the seller of the post
+     * has been reported several times.
+     */
+    public void badRepAlert(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(PostActivity.this);
+        builder.setTitle("Attention");
+        builder.setMessage("This user has been reported several times. Be careful with the user or the post.");
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+
+            }
+        });
+
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
 }
+

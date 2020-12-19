@@ -9,22 +9,22 @@
 
     <ImageButton
         android:id="@+id/applyButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_gravity="center|right"
         android:src="@drawable/baseline_done_outline_black_18dp" />
 
     <ImageButton
         android:id="@+id/deleteButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_gravity="center|right"
         android:src="@android:drawable/ic_menu_delete" />
 
     <ImageButton
         android:id="@+id/homeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_gravity="center|right"
         android:src="@drawable/ic_action_name" />
 

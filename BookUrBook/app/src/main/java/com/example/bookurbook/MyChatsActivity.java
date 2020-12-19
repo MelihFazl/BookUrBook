@@ -51,8 +51,10 @@ public class MyChatsActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
+
         chatList = new ArrayList<Chat>();
         buildRecyclerView();
+
         if(getIntent().getSerializableExtra("currentUser") instanceof Admin)
             currentUser = (Admin)getIntent().getSerializableExtra("currentUser");
         else
