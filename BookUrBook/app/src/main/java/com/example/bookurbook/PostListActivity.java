@@ -1,8 +1,5 @@
 package com.example.bookurbook;
 
-
-
-
 import android.content.Intent;
 import android.os.Bundle;
 

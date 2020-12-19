@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.icu.text.Edits;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.bookurbook.models.Admin;
 import com.example.bookurbook.models.Chat;
@@ -50,11 +51,10 @@ public class MyChatsActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
-<<<<<<< Updated upstream
+
         chatList = new ArrayList<Chat>();
         buildRecyclerView();
-=======
->>>>>>> Stashed changes
+
         if(getIntent().getSerializableExtra("currentUser") instanceof Admin)
             currentUser = (Admin)getIntent().getSerializableExtra("currentUser");
         else
@@ -67,7 +67,8 @@ public class MyChatsActivity extends AppCompatActivity {
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error)
             {
                 if (error != null) {
-                    System.out.println("Listen failed.");
+                    Toast chatError = Toast.makeText(MyChatsActivity.this,"Something is wrong. Please check your Internet connection.", Toast.LENGTH_LONG);
+                    chatError.show();
                     return;
                 }
                 chatList = new ArrayList<Chat>();
@@ -98,18 +99,12 @@ public class MyChatsActivity extends AppCompatActivity {
                                     }
                                     else
                                     {
-                                        System.out.println("hata");
+                                        Toast chatError = Toast.makeText(MyChatsActivity.this,"Something is wrong. Please check your Internet connection.", Toast.LENGTH_LONG);
+                                        chatError.show();
                                     }
+                                    //Update GUI
                                     Collections.sort(chatList);
                                     buildRecyclerView();
-                                    //Update GUI
-                                    //Test
-                                   for ( int i = 0; i < chatList.size(); i++ )
-                                    {
-                                        System.out.println("for: " + i);
-                                        System.out.println(chatList.get(i).getUser1().getUsername());
-                                        System.out.println(chatList.get(i).getUser2().getUsername());
-                                    }
                                 }
                             });
                     }
@@ -127,7 +122,3 @@ public class MyChatsActivity extends AppCompatActivity {
         myChatsAdapter.notifyDataSetChanged();
     }
 }
-
-/*
-     GUI ( Kaan or someone available )
-*/

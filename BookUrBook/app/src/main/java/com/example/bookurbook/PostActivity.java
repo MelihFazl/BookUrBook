@@ -1,7 +1,6 @@
 package com.example.bookurbook;
 import com.example.bookurbook.ReportDialog;
 
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -60,11 +59,11 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         post = (Post) getIntent().getSerializableExtra("post");
-        if(getIntent().getSerializableExtra("currentUser") instanceof Admin)
-            currentUser = (Admin)getIntent().getSerializableExtra("currentUser");
+        if (getIntent().getSerializableExtra("currentUser") instanceof Admin)
+            currentUser = (Admin) getIntent().getSerializableExtra("currentUser");
         else
-            currentUser = (RegularUser)getIntent().getSerializableExtra("currentUser");
-        postList = (PostList)getIntent().getSerializableExtra("postlist");
+            currentUser = (RegularUser) getIntent().getSerializableExtra("currentUser");
+        postList = (PostList) getIntent().getSerializableExtra("postlist");
         postPic = findViewById(R.id.postImageView);
         //initialization
         // post = new Post("This book is very nice :)", "MAT132 BOOK FOR CS STUDENTS", "Bilkent", "Math", 10, null, new RegularUser("Mehmet", "mehmet@ug.bilkent.edu.tr", null));
@@ -85,7 +84,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         Picasso.get().load(post.getPicture()).into(postPic);
         System.out.println(post.getPicture() + "link");
 
-        if(post.getOwner().getReports().size() >= 10)
+        if (post.getOwner().getReports().size() >= 10)
             badRepAlert();
 
 
@@ -99,8 +98,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
                 if (wishlist.findPost(post)) {
                     wishlist.deletePost(post);
                     Toast.makeText(PostActivity.this, "You have deleted the item from the wishlist", Toast.LENGTH_LONG).show();
-                }
-                else{
+                } else {
                     wishlist.addPost(post);
                     Toast.makeText(PostActivity.this, "You have added the item to the wishlist", Toast.LENGTH_LONG).show();
                 }
@@ -127,10 +125,12 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         });*/
     }
 
+
     /**
      * This method is created in order to create a pop up dialog using ReportDialog class.
      */
-    public void openPostReportDialog() {
+    public void openPostReportDialog()
+    {
         ReportDialog dialog = new ReportDialog();
         dialog.show(getSupportFragmentManager(), "");
     }
@@ -141,8 +141,6 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         //System.out.println(post.getReports().get(0).getDescription());
         //System.out.println(post.getReports().get(0).getCategory());
     }
-
-}
 
     /**
      * This method creates a pop up dialog before entering the screen if the seller of the post
@@ -164,4 +162,6 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         AlertDialog alert = builder.create();
         alert.show();
     }
+
 }
+

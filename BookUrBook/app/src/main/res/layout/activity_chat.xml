@@ -4,6 +4,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#e3c6bf"
     tools:context=".ChatActivity">
+
+    <include
+        android:id="@+id/toolbar_chat"
+        layout="@layout/toolbar_chat" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/my_chats_recycler_id"
+        android:layout_width="408dp"
+        android:layout_height="606dp"
+        android:background="#e3c6bf"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/toolbar_chat"
+        app:layout_constraintVertical_bias="0.448" />
+
+    <ImageView
+        android:id="@+id/send_message_button"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/message_send_image"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/my_chats_recycler_id"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/message_box"
+        style="@style/Widget.AppCompat.AutoCompleteTextView"
+        android:layout_width="325dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:background="@drawable/rounded_edittext"
+        android:ems="10"
+        android:hint="Type your message..."
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/send_message_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/my_chats_recycler_id"
+        app:layout_constraintVertical_bias="0.368" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
