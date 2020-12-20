@@ -1,6 +1,7 @@
 package com.example.bookurbook;
 import com.example.bookurbook.ReportDialog;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -24,12 +25,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bookurbook.models.Admin;
+import com.example.bookurbook.models.Chat;
 import com.example.bookurbook.models.Post;
 import com.example.bookurbook.models.PostList;
 import com.example.bookurbook.models.RegularUser;
 import com.example.bookurbook.models.User;
 import com.example.bookurbook.models.WishList;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class PostActivity extends AppCompatActivity implements ReportPostDialogListener {
     //instance variables
@@ -37,7 +46,9 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
     private PostList postList;
     private User currentUser;
     private WishList wishlist;
+    private FirebaseFirestore db;
     private boolean isPostListPreviousActivity;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,7 +62,11 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         TextView postDescriptionTextView;
         ImageButton reportButton;
         ImageButton wishlistButton;
+
+        ImageButton chatButton;
+
         ImageButton homeButton;
+
         ImageView postPic;
 
 
@@ -63,6 +78,8 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Post");
+        chatButton = findViewById(R.id.chat_image_button);
+        db = FirebaseFirestore.getInstance();
 
         post = (Post) getIntent().getSerializableExtra("post");
         if (getIntent().getSerializableExtra("currentUser") instanceof Admin)
@@ -132,6 +149,77 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         startIntent.putExtra("currentUser" , currentUser);
         startActivity(startIntent);
         }
+
+        });
+
+        /**
+         * This button starts a chat with the post owner
+         */
+        chatButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                db.collection("chats").document(currentUser.getUsername() + ", " + post.getOwner().getUsername())
+                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>()
+                {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task)
+                    {
+                        if (task.isSuccessful())
+                        {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists())
+                            {
+                                Intent pass = new Intent(PostActivity.this, ChatActivity.class);
+                                Chat chat = new Chat(currentUser, post.getOwner(), currentUser.getUsername() + ", " + post.getOwner().getUsername());
+                                pass.putExtra("currentUser", currentUser);
+                                pass.putExtra("clickedChat", chat);
+                                startActivity(pass);
+                            }
+                            else
+                            {
+                                db.collection("chats").document(post.getOwner().getUsername() + ", " + currentUser.getUsername())
+                                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>()
+                                {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task)
+                                    {
+                                        if ( document.exists())
+                                        {
+                                            Intent pass = new Intent(PostActivity.this, ChatActivity.class);
+                                            Chat chat = new Chat(currentUser, post.getOwner(), post.getOwner().getUsername() + ", " + currentUser.getUsername());
+                                            pass.putExtra("currentUser", currentUser);
+                                            pass.putExtra("clickedChat", chat);
+                                            startActivity(pass);
+                                        }
+                                        else
+                                        {
+                                            Intent pass = new Intent(PostActivity.this, ChatActivity.class);
+                                            Chat chat = new Chat(currentUser, post.getOwner(), post.getOwner().getUsername() + ", " + currentUser.getUsername());
+                                            Map<String, Object> chatData = new HashMap<>();
+                                            chatData.put("username1", post.getOwner().getUsername());
+                                            chatData.put("username2", currentUser.getUsername());
+                                            chatData.put("lastmessage", "");
+                                            chatData.put("lastmessagedate", "");
+                                            db.collection("chats").document(chat.getChatID()).set(chatData);
+                                            pass.putExtra("currentUser", currentUser);
+                                            pass.putExtra("clickedChat", chat);
+                                            startActivity(pass);
+                                        }
+
+                                    }
+                                });
+                            }
+                        }
+                        else
+                        {
+                            Toast chatError = Toast.makeText(PostActivity.this,"Something is wrong. Please check your Internet connection.", Toast.LENGTH_LONG);
+                        }
+                    }
+                });
+            }
+
         });
     }
 
