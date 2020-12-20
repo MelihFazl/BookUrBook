@@ -51,18 +51,18 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/blockList"
-        android:layout_width="381dp"
-        android:layout_height="746dp"
+        android:layout_width="391dp"
+        android:layout_height="655dp"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="25dp"
         android:layout_marginRight="15dp"
         android:scrollbars="vertical"
-        app:layout_constraintTop_toBottomOf="@id/top_toolbar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.152"
         app:layout_constraintStart_toStartOf="parent"
-        ></androidx.recyclerview.widget.RecyclerView>
-
+        app:layout_constraintTop_toBottomOf="@id/top_toolbar"
+        app:layout_constraintVertical_bias="0.0"></androidx.recyclerview.widget.RecyclerView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

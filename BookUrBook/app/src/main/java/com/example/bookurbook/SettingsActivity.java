@@ -39,7 +39,7 @@ public class SettingsActivity extends AppCompatActivity {
     private Button logout;
     private Button select;
     private TextView userDetails;
-    private ImageView profilePic;
+    private ImageView profilePic, blockedUsers;
     private Uri imageUri;
     private User currentUser;
     private FirebaseStorage storage;
@@ -60,6 +60,7 @@ public class SettingsActivity extends AppCompatActivity {
         select = findViewById(R.id.selectImage);
         profilePic = findViewById(R.id.profilepic);
         userDetails = findViewById(R.id.userdetails);
+        blockedUsers = findViewById(R.id.blocked_users);
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
         auth = FirebaseAuth.getInstance();
@@ -89,6 +90,16 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 choosePicture();
+            }
+        });
+        blockedUsers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SettingsActivity.this, MyBlockListActivity.class);
+                //intent.putExtra("currentUser" , currentUser );
+                startActivity(intent);
+                finish();
+
             }
         });
     }
