@@ -1,49 +1,85 @@
 package com.example.bookurbook;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.bookurbook.models.Admin;
 import com.example.bookurbook.models.Post;
 import com.example.bookurbook.models.PostList;
 import com.example.bookurbook.models.RegularUser;
+import com.example.bookurbook.models.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
 
 public class EditPostActivity extends AppCompatActivity {
     //instance variables
     private Post post;
-    private PostList list;
+    private PostList postList;
+    private User currentUser;
+    private FirebaseFirestore db;
+    private FirebaseStorage storage;
+    private Uri imageUri;
+    private ImageView photoUpload;
+    Toolbar toolbar;
+    EditText postTitleEditText;
+    Spinner spinner;
+    Spinner spinner2;
+    EditText postPrice;
+    EditText postDescriptionEditText;
+    ImageButton homeButton;
+    ImageButton deleteButton;
+    ImageButton applyButton;
+    private boolean picChanged;
+    String id;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //variables
-        Toolbar toolbar;
-        EditText postTitleEditText;
-        Spinner spinner;
-        Spinner spinner2;
-        EditText postPrice;
-        EditText postDescriptionEditText;
-        ImageButton homeButton;
-        ImageButton deleteButton;
-        ImageButton applyButton;
-        ImageButton photoUpload;
 
+
+        picChanged = false;
         //method code
-        /**Bundle extras = getIntent().getExtras();
-         if (extras != null) {
-         post = (Post) getIntent().getSerializableExtra("MyClass");
-         }*/
-        post = new Post("This book is very nice :)", "MAT132 BOOK FOR CS STUDENTS", "Gazi", "EEE", 10, null, new RegularUser("Mehmet", "mehmet@ug.bilkent.edu.tr", null));
-        list = new PostList();
-        list.addPost(post);
+        post = (Post) getIntent().getSerializableExtra("post");
+        if(getIntent().getSerializableExtra("currentUser") instanceof Admin)
+            currentUser = (Admin)getIntent().getSerializableExtra("currentUser");
+        else
+            currentUser = (RegularUser)getIntent().getSerializableExtra("currentUser");
+        postList = (PostList) getIntent().getSerializableExtra("postlist");
+        db = FirebaseFirestore.getInstance();
+        storage = FirebaseStorage.getInstance();
+        System.out.println(currentUser.getEmail() + "EDİTLİYORUZ HAYDİ BAKALIIIM");
+        id = post.getId();
+
+
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_post);
@@ -80,13 +116,13 @@ public class EditPostActivity extends AppCompatActivity {
         postPrice.setText(post.getPrice() + "");
         postDescriptionEditText.setText(post.getDescription());
         photoUpload = findViewById(R.id.photoUpload2);
-        ////////// WILL GET POST IMAGE !!!!!photoUpload.setImage
+        Picasso.get().load(post.getPicture()).into(photoUpload);
 
 
         photoUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                choosePicture();
             }
         });
 
@@ -110,9 +146,38 @@ public class EditPostActivity extends AppCompatActivity {
 
                     public void onClick(DialogInterface dialog, int which) {
 
-                        list.deletePost(post);
-                        dialog.dismiss();
-                        Toast.makeText(EditPostActivity.this, "You have successfully deleted your Post!", Toast.LENGTH_LONG).show();
+
+                        db.collection("posts").whereEqualTo("id", post.getId()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                                (task.getResult().getDocuments().get(0).getReference()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+
+                                        Intent pass = new Intent(EditPostActivity.this, MyPostsActivity.class);
+                                        for(int i = 0; postList.getPostArray().size() > i; i++)
+                                        {
+                                            if(postList.getPostArray().get(i).getId().equals(post.getId()))
+                                                postList.getPostArray().remove(i);
+                                        }
+                                        pass.putExtra("currentUser", currentUser);
+                                        pass.putExtra("postlist", postList);
+                                        for(int i = 0; postList.getPostArray().size() > i; i++)
+                                        {
+                                            System.out.println("PASSLEDİKLERİM " + i + postList.getPostArray().get(i).getTitle());
+                                        }
+                                        Toast.makeText(EditPostActivity.this, "You have successfully deleted your Post!", Toast.LENGTH_LONG).show();
+                                        dialog.dismiss();
+                                        startActivity(pass);
+                                        finish();
+                                    }
+                                });
+
+                            }
+                        });
+
+
                         //Then it will close the screen automatically!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                     }
                 });
@@ -150,13 +215,10 @@ public class EditPostActivity extends AppCompatActivity {
                             dialog.dismiss();
                         }
                         else {
-                            post.setDescription(postDescriptionEditText.getText().toString());
-                            post.setTitle(postTitleEditText.getText().toString());
-                            post.setUniversity(spinner.getSelectedItem().toString());
-                            post.setCourse(spinner2.getSelectedItem().toString());
-                            post.setPrice(Integer.parseInt(postPrice.getText().toString()));
+                            updateDatabase();
                             Toast.makeText(EditPostActivity.this, "You have successfully applied your changes!", Toast.LENGTH_LONG).show();
                             dialog.dismiss();
+
                         }
                     }
                 });
@@ -176,4 +238,120 @@ public class EditPostActivity extends AppCompatActivity {
         });
 
     }
+    private void choosePicture()
+    {
+        Intent galleryOpen = new Intent();
+        galleryOpen.setType("image/*");
+        galleryOpen.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(galleryOpen, 1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1 && resultCode == RESULT_OK && data != null)
+        {
+            imageUri = data.getData();
+            System.out.println("resim degisti koydugum" + imageUri);
+            picChanged = true;
+            Picasso.get().load(imageUri).into(photoUpload);
+        }
+
+
+    }
+    private void updateDatabase() {
+        if (picChanged) {
+
+
+            StorageReference picRef = storage.getReference().child("posts/post_picture/" + post.getId());
+            picRef.putFile(imageUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            // Get a URL to the uploaded content
+                            Toast.makeText(getApplicationContext(), "SUCCESS", Toast.LENGTH_LONG).show();
+                            picRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+
+                                    HashMap<String, Object> newData = new HashMap();
+                                    post.setDescription(postDescriptionEditText.getText().toString());
+                                    post.setTitle(postTitleEditText.getText().toString());
+                                    post.setUniversity(spinner.getSelectedItem().toString());
+                                    post.setCourse(spinner2.getSelectedItem().toString());
+                                    post.setPrice(Integer.parseInt(postPrice.getText().toString()));
+                                    post.setPicture(uri.toString());
+                                    newData.put("picture", uri.toString());
+                                    newData.put("title", post.getTitle());
+                                    newData.put("description", post.getDescription());
+                                    newData.put("university", post.getUniversity());
+                                    newData.put("course", post.getCourse());
+                                    newData.put("price", post.getPrice());
+                                    db.collection("posts").document(post.getId()).set(newData, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Intent pass = new Intent(EditPostActivity.this, MyPostsActivity.class);
+                                            for (int i = 0; postList.getPostArray().size() > i; i++) {
+                                                if (postList.getPostArray().get(i).getId().equals(id))
+                                                    postList.getPostArray().remove(i);
+                                            }
+                                            postList.addPost(post);
+                                            ;
+                                            pass.putExtra("currentUser", currentUser);
+                                            pass.putExtra("postlist", postList);
+                                            for (int i = 0; postList.getPostArray().size() > i; i++) {
+                                                System.out.println("passlenen edit: " + postList.getPostArray().get(i).getTitle());
+                                            }
+                                            startActivity(pass);
+                                            finish();
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            Toast.makeText(getApplicationContext(), "FAIL", Toast.LENGTH_LONG).show();
+                        }
+                    });
+        }
+        else
+        {
+                    HashMap<String, Object> newData = new HashMap();
+                    post.setDescription(postDescriptionEditText.getText().toString());
+                    post.setTitle(postTitleEditText.getText().toString());
+                    post.setUniversity(spinner.getSelectedItem().toString());
+                    post.setCourse(spinner2.getSelectedItem().toString());
+                    post.setPrice(Integer.parseInt(postPrice.getText().toString()));
+                    newData.put("title", post.getTitle());
+                    newData.put("description", post.getDescription());
+                    newData.put("university", post.getUniversity());
+                    newData.put("course", post.getCourse());
+                    newData.put("price", post.getPrice());
+                    db.collection("posts").document(post.getId()).set(newData, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Intent pass = new Intent(EditPostActivity.this, MyPostsActivity.class);
+                            for (int i = 0; postList.getPostArray().size() > i; i++) {
+                                if (postList.getPostArray().get(i).getId().equals(id))
+                                    postList.getPostArray().remove(i);
+                            }
+                            postList.addPost(post);
+                            ;
+                            pass.putExtra("currentUser", currentUser);
+                            pass.putExtra("postlist", postList);
+                            for (int i = 0; postList.getPostArray().size() > i; i++) {
+                                System.out.println("passlenen edit: " + postList.getPostArray().get(i).getTitle());
+                            }
+                            startActivity(pass);
+                            finish();
+                        }
+                    });
+                }
+
+
+    }
+
 }

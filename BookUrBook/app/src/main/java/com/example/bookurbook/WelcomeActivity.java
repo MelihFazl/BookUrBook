@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Parcelable;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 
 import com.example.bookurbook.models.Admin;
@@ -41,19 +42,26 @@ public class WelcomeActivity extends AppCompatActivity {
             db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    if(documentSnapshot.getBoolean("admin"))
-                        currentUser = new Admin(documentSnapshot.getString("username"), documentSnapshot.getString("email"), null);
-                    else
-                        currentUser = new RegularUser(documentSnapshot.getString("username"), documentSnapshot.getString("email"), null);
-                    if(documentSnapshot.getString("avatar") != null)
-                    {
-                        currentUser.setAvatar(documentSnapshot.getString("avatar"));
+                    if (documentSnapshot.getBoolean("banned")) {
+                        Toast.makeText(WelcomeActivity.this, "This user has been banned from BookUrBook!", Toast.LENGTH_LONG).show();
+                        Intent banned = new Intent(WelcomeActivity.this, WelcomeActivity.class);
+                        FirebaseAuth.getInstance().signOut();
+                        startActivity(banned);
+                        finish();
                     }
-                    else
-                        currentUser.setAvatar("https://firebasestorage.googleapis.com/v0/b/bookurbook-a02e4.appspot.com/o/images%2Fprofile_pictures%2Fdefault.jpg?alt=media&token=a54505f6-0d24-40cd-a626-e39a655254c6");
-                    Intent pass = new Intent(WelcomeActivity.this, MainMenuActivity.class);
-                    pass.putExtra("currentUser", currentUser);
-                    startActivity(pass);
+                    else {
+                        if (documentSnapshot.getBoolean("admin"))
+                            currentUser = new Admin(documentSnapshot.getString("username"), documentSnapshot.getString("email"), null);
+                        else
+                            currentUser = new RegularUser(documentSnapshot.getString("username"), documentSnapshot.getString("email"), null);
+                        if (documentSnapshot.getString("avatar") != null) {
+                            currentUser.setAvatar(documentSnapshot.getString("avatar"));
+                        } else
+                            currentUser.setAvatar("https://firebasestorage.googleapis.com/v0/b/bookurbook-a02e4.appspot.com/o/images%2Fprofile_pictures%2Fdefault.jpg?alt=media&token=a54505f6-0d24-40cd-a626-e39a655254c6");
+                        Intent pass = new Intent(WelcomeActivity.this, MainMenuActivity.class);
+                        pass.putExtra("currentUser", currentUser);
+                        startActivity(pass);
+                    }
                 }
             });
         }
