@@ -59,6 +59,7 @@ public class MyChatsAdapter extends RecyclerView.Adapter<MyChatsAdapter.MyChatsV
                 if ( chatsList.size() != 0)
                 {
                     pass.putExtra("currentUser", currentUser);
+                    pass.putExtra("fromPostActivity",false);
                     pass.putExtra("clickedChat", exampleChat);
                     context.startActivity(pass);
                 }
