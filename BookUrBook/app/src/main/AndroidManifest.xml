@@ -11,6 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BookUrBook">
+<<<<<<< Updated upstream
+=======
+        <activity android:name=".MyChatsView"></activity>
+>>>>>>> Stashed changes
         <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".VerificationActivity" />
@@ -25,7 +29,10 @@
         <activity android:name=".EditPostActivity" />
         <activity android:name=".PostActivity" />
         <activity android:name=".MyBlockListActivity" />
+<<<<<<< Updated upstream
         <activity android:name=".ChatActivity" />
+=======
+>>>>>>> Stashed changes
         <activity
             android:name=".WelcomeActivity"
             android:label="@string/app_name">
