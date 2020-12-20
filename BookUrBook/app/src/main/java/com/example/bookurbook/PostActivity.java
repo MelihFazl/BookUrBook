@@ -4,7 +4,9 @@ import com.example.bookurbook.ReportDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -35,9 +37,10 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
     private PostList postList;
     private User currentUser;
     private WishList wishlist;
+    private boolean isPostListPreviousActivity;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         //variables
         Toolbar toolbar;
         TextView postTitleTextView;
@@ -49,6 +52,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         ImageButton reportButton;
         ImageButton wishlistButton;
         ImageView postPic;
+
 
         //method code
         super.onCreate(savedInstanceState);
@@ -65,6 +69,10 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         else
             currentUser = (RegularUser) getIntent().getSerializableExtra("currentUser");
         postList = (PostList) getIntent().getSerializableExtra("postlist");
+
+        if( (getIntent().getExtras().get("fromPostList") != null))
+        isPostListPreviousActivity = (boolean) getIntent().getExtras().get("fromPostList"); //does not get fromPostList intent?
+
         postPic = findViewById(R.id.postImageView);
         //initialization
         // post = new Post("This book is very nice :)", "MAT132 BOOK FOR CS STUDENTS", "Bilkent", "Math", 10, null, new RegularUser("Mehmet", "mehmet@ug.bilkent.edu.tr", null));
@@ -163,6 +171,24 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
 
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    public void onBackPressed() {
+        Intent pass;
+        if(isPostListPreviousActivity)
+        pass = new Intent(PostActivity.this, PostListActivity.class);
+        else
+            pass = new Intent(PostActivity.this, MyPostsActivity.class);
+        pass.putExtra("postlist", postList);
+        pass.putExtra("currentUser", currentUser);
+        startActivity(pass);
+        finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        onBackPressed();
+        return super.onOptionsItemSelected(item);
     }
 
 }

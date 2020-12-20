@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -66,7 +67,7 @@ public class CreatePostActivity extends AppCompatActivity {
             currentUser = (RegularUser)getIntent().getSerializableExtra("currentUser");
 
         postList = (PostList) getIntent().getSerializableExtra("postlist");
-        isPostListPreviousActivity = (Boolean)getIntent().getExtras().get("fromPostList");
+        isPostListPreviousActivity = (Boolean) getIntent().getExtras().get("fromPostList");
         isPhotoPicked = false;
 
         db = FirebaseFirestore.getInstance();
@@ -278,5 +279,11 @@ public class CreatePostActivity extends AppCompatActivity {
         pass.putExtra("currentUser", currentUser);
         startActivity(pass);
         finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        onBackPressed();
+        return super.onOptionsItemSelected(item);
     }
 }

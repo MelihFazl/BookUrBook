@@ -190,12 +190,20 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
     public void onBackPressed() {
         Intent pass = new Intent(PostListActivity.this, MainMenuActivity.class);
         pass.putExtra("currentUser", currentUser);
+        pass.putExtra("postlist", postList);
         startActivity(pass);
         finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        onBackPressed();
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void filterThePosts(String uni, String course, int lowPrice, int highPrice) {
 
     }
+
 }
