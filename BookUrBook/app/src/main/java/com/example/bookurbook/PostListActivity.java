@@ -57,12 +57,18 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
     private FirebaseFirestore db;
     private User currentUser;
     private User currentPostOwner;
-
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_list);
+
+        toolbar = findViewById(R.id.postListToolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("Post List");
 
 
         // for database purposes

@@ -28,7 +28,7 @@ public class AdminPanelActivity extends AppCompatActivity {
         setContentView(R.layout.activity_admin_panel);
         toolbar = findViewById(R.id.toolbarblocklist);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("REPORTS LIST");
+        getSupportActionBar().setTitle("Reported Users");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         setProperties();
@@ -61,7 +61,7 @@ public class AdminPanelActivity extends AppCompatActivity {
         currentUser.report("zaaa", "mhhhh");
         User user = new RegularUser("kaan","kaan.tek@ug.bilkent.edu.tr", "https://i.ytimg.com/vi/tIBN6kXHb_I/hqdefault.jpg");
         user.report("amannn", "pehhh");
-        currentUser.getBlockedUsers().addUser(new RegularUser("kerem","kerem.sahin@ug.bilkent.edu.tr", "https://i.ytimg.com/vi/tIBN6kXHb_I/hqdefault.jpg"));
+        currentUser.getBlockedUsers().addUser(new RegularUser("kerem","k.sahin@ug.bilkent.edu.tr", "https://i.ytimg.com/vi/tIBN6kXHb_I/hqdefault.jpg"));
         currentUser.getBlockedUsers().addUser(new RegularUser("melih","melih.keskin@ug.bilkent.edu.tr", "https://i.ytimg.com/vi/tIBN6kXHb_I/hqdefault.jpg"));
         currentUser.getBlockedUsers().addUser(new RegularUser("ferhat","ferhat.korkmaz@ug.bilkent.edu.tr", "https://i.ytimg.com/vi/tIBN6kXHb_I/hqdefault.jpg"));
         reportedUsers =  currentUser.getBlockedUsers().getUserArray();
