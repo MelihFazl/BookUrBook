@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/addButton"
+            android:id="@+id/createPostButton"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center|right"
