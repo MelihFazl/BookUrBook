@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -158,5 +159,11 @@ public class SettingsActivity extends AppCompatActivity {
         pass = new Intent(SettingsActivity.this, MainMenuActivity.class);
         pass.putExtra("currentUser", currentUser);
         startActivity(pass);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        onBackPressed();
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -5,7 +5,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.example.bookurbook.models.RegularUser;
 import com.example.bookurbook.models.User;
@@ -65,6 +67,21 @@ public class AdminPanelActivity extends AppCompatActivity {
         currentUser.getBlockedUsers().addUser(new RegularUser("melih","melih.keskin@ug.bilkent.edu.tr", "https://i.ytimg.com/vi/tIBN6kXHb_I/hqdefault.jpg"));
         currentUser.getBlockedUsers().addUser(new RegularUser("ferhat","ferhat.korkmaz@ug.bilkent.edu.tr", "https://i.ytimg.com/vi/tIBN6kXHb_I/hqdefault.jpg"));
         reportedUsers =  currentUser.getBlockedUsers().getUserArray();
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        Intent pass = new Intent(AdminPanelActivity.this, MainMenuActivity.class);
+        pass.putExtra("currentUser", currentUser);
+        startActivity(pass);
+        finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        onBackPressed();
+        return super.onOptionsItemSelected(item);
     }
 
 }
