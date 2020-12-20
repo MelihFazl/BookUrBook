@@ -29,7 +29,6 @@ public class FilterScreenView extends AppCompatDialogFragment implements Adapter
     Spinner uniSpinner;
     TextView filterByCourse;
     Spinner courseSpinner;
-    TextView filterByPrice;
     EditText lowPrice;
     EditText highPrice;
 
