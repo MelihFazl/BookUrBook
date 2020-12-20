@@ -39,7 +39,7 @@ import java.util.ArrayList;
 
 
 // class for the Post List activity
-public class PostListActivity extends AppCompatActivity {
+public class PostListActivity extends AppCompatActivity implements FilterScreenView.FilterScreenListener {
 
     // variables
     Toolbar toolbar;
@@ -107,6 +107,9 @@ public class PostListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(PostListActivity.this, CreatePostActivity.class);
+                intent.putExtra("currentUser", currentUser);
+                intent.putExtra("postlist", postList);
+                intent.putExtra("fromPostList", true);
                 startActivity(intent);
             }
         });
@@ -161,7 +164,6 @@ public class PostListActivity extends AppCompatActivity {
     public void openFilterWindow() {
         FilterScreenView filterScreen = new FilterScreenView();
         filterScreen.show(getSupportFragmentManager(), "example filter");
-
     }
 
 
@@ -190,5 +192,10 @@ public class PostListActivity extends AppCompatActivity {
         pass.putExtra("currentUser", currentUser);
         startActivity(pass);
         finish();
+    }
+
+    @Override
+    public void filterThePosts(String uni, String course, int lowPrice, int highPrice) {
+
     }
 }
