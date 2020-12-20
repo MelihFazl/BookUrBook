@@ -57,7 +57,6 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
     private FirebaseFirestore db;
     private User currentUser;
     private User currentPostOwner;
-    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +86,6 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
 
 
         createPostButton = findViewById(R.id.createPostButton);
-
         searchView = findViewById(R.id.search_id);
         recyclerView = findViewById(R.id.recycler_id);
         toolbar = findViewById(R.id.toolbar);
@@ -97,10 +95,6 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
         ZtoAbutton = findViewById(R.id.ZtoA_button);
         resetButton = findViewById(R.id.reset_button);
         filterButton = findViewById(R.id.filterButton);
-
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);   // implement this later so that it goes back to the previous screen
-
 
         postListAdapter = new PostListAdapter(this, postList, currentUser);   // had to make it final, maybe change it later?
         recyclerView.setAdapter(postListAdapter);
