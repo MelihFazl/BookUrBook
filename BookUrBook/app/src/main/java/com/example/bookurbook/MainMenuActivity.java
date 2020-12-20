@@ -2,6 +2,7 @@ package com.example.bookurbook;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -37,19 +38,22 @@ public class MainMenuActivity extends AppCompatActivity {
     private User currentPostOwner;
     private ImageButton adminPanelButton;
     private TextView adminPanelTextView;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
-        init();
-        db = FirebaseFirestore.getInstance();
-        auth = FirebaseAuth.getInstance();
-
         if(getIntent().getSerializableExtra("currentUser") instanceof Admin)
             currentUser = (Admin)getIntent().getSerializableExtra("currentUser");
         else
             currentUser = (RegularUser)getIntent().getSerializableExtra("currentUser");
+        toolbar = findViewById(R.id.mainMenuToolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Main Menu");
+        init();
+        db = FirebaseFirestore.getInstance();//initin üstünde olabilir hatırlayamadım
+        auth = FirebaseAuth.getInstance();//initin üstünde olabilir hatırlayamadım
         System.out.println("Main Menu Current User email:  " + currentUser.getEmail());
     }
 

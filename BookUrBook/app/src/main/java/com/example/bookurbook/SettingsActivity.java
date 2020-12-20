@@ -3,6 +3,7 @@ package com.example.bookurbook;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -47,6 +48,7 @@ public class SettingsActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseFirestore db;
     private Intent pass;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +62,16 @@ public class SettingsActivity extends AppCompatActivity {
         select = findViewById(R.id.selectImage);
         profilePic = findViewById(R.id.profilepic);
         userDetails = findViewById(R.id.userdetails);
+
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+
+        toolbar = findViewById(R.id.settingsToolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("Settings");
+
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
