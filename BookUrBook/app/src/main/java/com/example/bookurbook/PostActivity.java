@@ -62,7 +62,11 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         TextView postDescriptionTextView;
         ImageButton reportButton;
         ImageButton wishlistButton;
+
         ImageButton chatButton;
+
+        ImageButton homeButton;
+
         ImageView postPic;
 
 
@@ -93,6 +97,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         postTitleTextView = findViewById(R.id.postTitleTextView);
         postSellerTextView = findViewById(R.id.postSellerTextView);
         postUniversityTextView = findViewById(R.id.postUniversityTextView);
+        homeButton = findViewById(R.id.homeButton);
         postCourseTextView = findViewById(R.id.postCourseTextView);
         postPriceTextView = findViewById(R.id.postPriceTextView);
         postDescriptionTextView = findViewById(R.id.postDescriptionTextView);
@@ -138,14 +143,14 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
             }
         });
 
-        /**ImageButton homeButton = (ImageButton) findViewById(R.id.homeButton);
-         homeButton.setOnClickListener(new View.OnClickListener() {
+        homeButton.setOnClickListener(new View.OnClickListener() {
         @Override public void onClick(View v) {
-        Intent startIntent = new Intent(getApplicationContext(), HomeScreen.class);
-        startIntent.putExtra("com.example.quicklauncher.SOMETHING" , "I am trying something!");
+        Intent startIntent = new Intent(PostActivity.this, MainMenuActivity.class);
+        startIntent.putExtra("currentUser" , currentUser);
         startActivity(startIntent);
         }
-        });*/
+
+        });
 
         /**
          * This button starts a chat with the post owner
@@ -214,6 +219,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
                     }
                 });
             }
+
         });
     }
 

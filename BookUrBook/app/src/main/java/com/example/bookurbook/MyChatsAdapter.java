@@ -88,4 +88,5 @@ public class MyChatsAdapter extends RecyclerView.Adapter<MyChatsAdapter.MyChatsV
             layout = (LinearLayout) itemView.findViewById(R.id.chat_layout_id);
         }
     }
+
 }

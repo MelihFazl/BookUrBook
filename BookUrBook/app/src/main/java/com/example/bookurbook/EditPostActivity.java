@@ -126,9 +126,10 @@ public class EditPostActivity extends AppCompatActivity {
 
         homeButton = findViewById(R.id.homeButton);
         homeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
+            @Override public void onClick(View v) {
+                Intent startIntent = new Intent(EditPostActivity.this, MainMenuActivity.class);
+                startIntent.putExtra("currentUser" , currentUser);
+                startActivity(startIntent);
             }
         });
         deleteButton = findViewById(R.id.deleteButton);
