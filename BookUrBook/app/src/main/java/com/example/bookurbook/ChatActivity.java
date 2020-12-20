@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -20,6 +21,8 @@ import android.widget.Toast;
 import com.example.bookurbook.models.Admin;
 import com.example.bookurbook.models.Chat;
 import com.example.bookurbook.models.Message;
+import com.example.bookurbook.models.Post;
+import com.example.bookurbook.models.PostList;
 import com.example.bookurbook.models.RegularUser;
 import com.example.bookurbook.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -206,5 +209,27 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
         currentChat.getUser2().setReportNum(currentUser.getReportNum()+1);
         //System.out.println(post.getReports().get(0).getDescription());
         //System.out.println(post.getReports().get(0).getCategory());
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent pass;
+        if((boolean) getIntent().getExtras().get("fromPostActivity")) {
+            pass = new Intent(ChatActivity.this, PostActivity.class);
+            pass.putExtra("postlist", (PostList) getIntent().getSerializableExtra("postlist"));
+            pass.putExtra("post", (Post) getIntent().getSerializableExtra("post"));
+            pass.putExtra("fromPostList", true);
+        }
+        else
+            pass = new Intent(ChatActivity.this, MyChatsActivity.class);
+        pass.putExtra("currentUser", currentUser);
+        startActivity(pass);
+        finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        onBackPressed();
+        return super.onOptionsItemSelected(item);
     }
 }

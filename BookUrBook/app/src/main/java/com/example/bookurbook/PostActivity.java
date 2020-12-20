@@ -37,6 +37,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -88,8 +89,9 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
             currentUser = (RegularUser) getIntent().getSerializableExtra("currentUser");
         postList = (PostList) getIntent().getSerializableExtra("postlist");
 
-        if( (getIntent().getExtras().get("fromPostList") != null))
+        if( (boolean) (getIntent().getExtras().get("fromPostList")))
         isPostListPreviousActivity = (boolean) getIntent().getExtras().get("fromPostList"); //does not get fromPostList intent?
+
 
         postPic = findViewById(R.id.postImageView);
         //initialization
@@ -174,6 +176,9 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
                                 Intent pass = new Intent(PostActivity.this, ChatActivity.class);
                                 Chat chat = new Chat(currentUser, post.getOwner(), currentUser.getUsername() + ", " + post.getOwner().getUsername());
                                 pass.putExtra("currentUser", currentUser);
+                                pass.putExtra("fromPostActivity", true);
+                                pass.putExtra("post",post);
+                                pass.putExtra("postlist", postList);
                                 pass.putExtra("clickedChat", chat);
                                 startActivity(pass);
                             }
@@ -190,6 +195,9 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
                                             Intent pass = new Intent(PostActivity.this, ChatActivity.class);
                                             Chat chat = new Chat(currentUser, post.getOwner(), post.getOwner().getUsername() + ", " + currentUser.getUsername());
                                             pass.putExtra("currentUser", currentUser);
+                                            pass.putExtra("fromPostActivity", true);
+                                            pass.putExtra("post",post);
+                                            pass.putExtra("postlist", postList);
                                             pass.putExtra("clickedChat", chat);
                                             startActivity(pass);
                                         }
@@ -201,10 +209,13 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
                                             chatData.put("username1", post.getOwner().getUsername());
                                             chatData.put("username2", currentUser.getUsername());
                                             chatData.put("lastmessage", "");
-                                            chatData.put("lastmessagedate", "");
+                                            chatData.put("lastmessagedate", new Date());
                                             db.collection("chats").document(chat.getChatID()).set(chatData);
                                             pass.putExtra("currentUser", currentUser);
                                             pass.putExtra("clickedChat", chat);
+                                            pass.putExtra("post",post);
+                                            pass.putExtra("postlist", postList);
+                                            pass.putExtra("fromPostActivity", true);
                                             startActivity(pass);
                                         }
 
