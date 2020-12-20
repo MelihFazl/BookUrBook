@@ -7,23 +7,41 @@
     android:background="#e3c6bf"
     tools:context=".SettingsActivity">
 
+    <androidx.appcompat.widget.Toolbar
+
+        android:id="@+id/settingsToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#589114"
+        android:elevation="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+    </androidx.appcompat.widget.Toolbar>
+
     <Button
         android:id="@+id/logout"
         android:layout_width="165dp"
         android:layout_height="59dp"
+        android:gravity="center"
         android:text="LOGOUT"
         android:textSize="25sp"
         app:backgroundTint="#AF0505"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.757" />
+        app:layout_constraintVertical_bias="0.731" />
 
     <Button
         android:id="@+id/selectImage"
         android:layout_width="225dp"
         android:layout_height="90dp"
+        android:gravity="center"
         android:text="Change Profıle Picture"
         android:textSize="20sp"
         app:backgroundTint="#FF7E67"
@@ -31,12 +49,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.466" />
+        app:layout_constraintVertical_bias="0.451" />
 
     <Button
         android:id="@+id/resetPassword"
         android:layout_width="225dp"
         android:layout_height="90dp"
+        android:gravity="center"
         android:text="Reset Password"
         android:textSize="20sp"
         app:backgroundTint="#FF7E67"
@@ -44,24 +63,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.606" />
+        app:layout_constraintVertical_bias="0.595"
+        app:layout_constraintHorizontal_bias="0.5"/>
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profilepic"
-        android:layout_width="149dp"
-        android:layout_height="174dp"
-        app:layout_constraintBottom_toTopOf="@+id/logout"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="28dp"
+        android:src="@drawable/user"
+        app:civ_border_color="@color/white"
+        app:civ_border_width="0dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.111"
+        app:layout_constraintVertical_bias="0.265"
         app:srcCompat="@drawable/logo_big" />
+
 
     <TextView
         android:id="@+id/userdetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/actor"
+        android:gravity="center"
         android:text="Username"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
@@ -70,6 +97,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.324" />
+        app:layout_constraintVertical_bias="0.334" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

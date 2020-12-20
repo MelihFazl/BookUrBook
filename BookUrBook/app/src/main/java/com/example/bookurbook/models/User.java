@@ -2,7 +2,6 @@ package com.example.bookurbook.models;
 import android.net.Uri;
 import android.widget.ImageView;
 
-
 import java.io.Serializable;
 import java.util.*;
 

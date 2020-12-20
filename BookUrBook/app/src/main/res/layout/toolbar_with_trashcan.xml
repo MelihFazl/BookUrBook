@@ -19,7 +19,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="center|right"
-        android:src="@android:drawable/ic_menu_delete" />
+        android:src="@drawable/baseline_delete_black_18dp" />
 
     <ImageButton
         android:id="@+id/homeButton"

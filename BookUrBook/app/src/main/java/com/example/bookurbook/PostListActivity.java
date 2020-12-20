@@ -39,10 +39,10 @@ import java.util.ArrayList;
 
 
 // class for the Post List activity
-public class PostListActivity extends AppCompatActivity {
+public class PostListActivity extends AppCompatActivity implements FilterScreenView.FilterScreenListener {
 
     // variables
-    //Toolbar toolbar;
+    Toolbar toolbar;
     RecyclerView recyclerView;
     SearchView searchView;
     Button LtoHpriceButton;
@@ -51,24 +51,27 @@ public class PostListActivity extends AppCompatActivity {
     Button ZtoAbutton;
     Button resetButton;
     ImageButton filterButton;
+    ImageButton createPostButton;
     PostListAdapter postListAdapter;
     PostList postList;
     private FirebaseFirestore db;
     private User currentUser;
     private User currentPostOwner;
-
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_list);
 
+        toolbar = findViewById(R.id.postListToolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("Post List");
 
-        // postList = new ArrayList<>();                    delete later?
-        //add();  // method for adding posts from database ?
 
-        // list from the model class
-
+        // for database purposes
         db = FirebaseFirestore.getInstance();
         if(getIntent().getSerializableExtra("currentUser") instanceof Admin)
             currentUser = (Admin)getIntent().getSerializableExtra("currentUser");
@@ -82,13 +85,12 @@ public class PostListActivity extends AppCompatActivity {
         System.out.println("CURRENT USER: " + currentUser.getUsername());
 
 
-        // later do all these operations with database
-       //postList.addPost(new Post("great book", "big Java", "Bilkent University", "CS", 30, null, new RegularUser("Kaan", "mail", null)));
 
+        createPostButton = findViewById(R.id.createPostButton);
 
         searchView = findViewById(R.id.search_id);
         recyclerView = findViewById(R.id.recycler_id);
-        //toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         LtoHpriceButton = findViewById(R.id.LtoH_price_button);
         HtoLpriceButton = findViewById(R.id.HtoL_price_button);
         AtoZbutton = findViewById(R.id.AtoZ_button);
@@ -96,15 +98,27 @@ public class PostListActivity extends AppCompatActivity {
         resetButton = findViewById(R.id.reset_button);
         filterButton = findViewById(R.id.filterButton);
 
-        //setSupportActionBar(toolbar);
-       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);   // implement this later so that it goes back to the previous screen
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);   // implement this later so that it goes back to the previous screen
 
 
         postListAdapter = new PostListAdapter(this, postList, currentUser);   // had to make it final, maybe change it later?
         recyclerView.setAdapter(postListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+
         search(postListAdapter); // method for searching
+
+        createPostButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PostListActivity.this, CreatePostActivity.class);
+                intent.putExtra("currentUser", currentUser);
+                intent.putExtra("postlist", postList);
+                intent.putExtra("fromPostList", true);
+                startActivity(intent);
+            }
+        });
 
         LtoHpriceButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,31 +170,8 @@ public class PostListActivity extends AppCompatActivity {
     public void openFilterWindow() {
         FilterScreenView filterScreen = new FilterScreenView();
         filterScreen.show(getSupportFragmentManager(), "example filter");
-
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        /*getMenuInflater().inflate(R.menu.menu, menu); */
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-
-        /*if (id == R.id.a)
-        {
-            // create post screen i aç
-        }*/
-        return true;
-    }
-    // method for adding posts to the post list
-
-    public void add()    // later change this method to add posts from database ???
-    {
-        // napacaz bunu
-    }
 
     // method for searching by a keyword from the list
     public void search(PostListAdapter adp)
@@ -192,21 +183,25 @@ public class PostListActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String s) {
                 return false;
             }
-
             @Override
             public boolean onQueryTextChange(String s) {
                 adapter.getFilter().filter(s);
                 return false;
             }
         });
-
     }
 
+    // this does not work ????
     @Override
     public void onBackPressed() {
         Intent pass = new Intent(PostListActivity.this, MainMenuActivity.class);
         pass.putExtra("currentUser", currentUser);
         startActivity(pass);
         finish();
+    }
+
+    @Override
+    public void filterThePosts(String uni, String course, int lowPrice, int highPrice) {
+
     }
 }

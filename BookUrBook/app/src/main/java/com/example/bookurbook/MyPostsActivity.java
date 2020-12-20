@@ -1,11 +1,13 @@
 package com.example.bookurbook;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -21,7 +23,8 @@ import com.squareup.picasso.Picasso;
 
 public class MyPostsActivity extends AppCompatActivity {
 
-    ImageView add;
+    ImageButton add;
+    private Toolbar toolbar;
     RecyclerView recyclerView;
     ImageView img;
     TextView username, userType;
@@ -31,9 +34,14 @@ public class MyPostsActivity extends AppCompatActivity {
     User currentUser;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_posts);
+        toolbar = (Toolbar) findViewById(R.id.myPostsToolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("My Posts");
         setProperties();
     }
 
@@ -92,14 +100,20 @@ public class MyPostsActivity extends AppCompatActivity {
         finish();
     }
 
-
     public void addPost()
     {
         Intent intent = new Intent(getBaseContext(), CreatePostActivity.class);
         intent.putExtra("currentUser", currentUser);
         intent.putExtra("postlist", postList);
+        intent.putExtra("fromPostList", false);
         startActivity(intent);
         finish();
      }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        onBackPressed();
+        return super.onOptionsItemSelected(item);
+    }
 
 }

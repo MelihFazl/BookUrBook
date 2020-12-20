@@ -35,7 +35,7 @@
 
             <TextView
                 android:id="@+id/postText"
-                android:layout_width="wrap_content"
+                android:layout_width="175dp"
                 android:layout_height="41dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
@@ -58,7 +58,8 @@
                 android:text="Seller text"
                 android:textSize="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/postImageView"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/postText"
                 app:layout_constraintTop_toBottomOf="@+id/postText" />
 
             <TextView
@@ -69,9 +70,10 @@
                 android:textSize="30dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/postImageView"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/postSeller"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.82" />
+                app:layout_constraintVertical_bias="0.863" />
 
             <ImageView
                 android:id="@+id/postImageView"

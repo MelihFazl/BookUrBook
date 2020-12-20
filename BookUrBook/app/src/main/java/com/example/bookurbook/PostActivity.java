@@ -57,6 +57,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("Post");
 
         post = (Post) getIntent().getSerializableExtra("post");
         if (getIntent().getSerializableExtra("currentUser") instanceof Admin)
@@ -138,6 +139,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
     @Override
     public void applyTexts(String description, String category) {
         post.report(description, category);
+        post.setReportNum(post.getReportNum()+1);
         //System.out.println(post.getReports().get(0).getDescription());
         //System.out.println(post.getReports().get(0).getCategory());
     }
