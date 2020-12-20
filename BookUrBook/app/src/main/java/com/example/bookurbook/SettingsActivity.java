@@ -20,11 +20,14 @@ import android.widget.Toast;
 import com.example.bookurbook.models.Admin;
 import com.example.bookurbook.models.RegularUser;
 import com.example.bookurbook.models.User;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -32,6 +35,7 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -39,6 +43,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private Button logout;
     private Button select;
+    private Button blocklist;
     private TextView userDetails;
     private ImageView profilePic;
     private Uri imageUri;
@@ -60,6 +65,7 @@ public class SettingsActivity extends AppCompatActivity {
     {
         logout = findViewById(R.id.logout);
         select = findViewById(R.id.selectImage);
+        blocklist = findViewById(R.id.blocked_users);
         profilePic = findViewById(R.id.profilepic);
         userDetails = findViewById(R.id.userdetails);
 
@@ -99,6 +105,18 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 choosePicture();
+            }
+        });
+        blocklist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<User> blockedUsers = new ArrayList<User>();
+                db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                    }
+                });
             }
         });
     }
