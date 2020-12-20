@@ -43,6 +43,14 @@ public class UserList implements Serializable
         return null;
     }
 
+    public ArrayList<User> getUserArray() {
+        return userArray;
+    }
+
+    public void setUserArray(ArrayList<User> userArray) {
+        this.userArray = userArray;
+    }
+
     public void addUser(User user)
     {
         userArray.add(user);

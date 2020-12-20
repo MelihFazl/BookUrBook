@@ -7,28 +7,25 @@
     android:background="#e3c6bf"
     tools:context=".MyPostsActivity">
 
-
-    <ImageView
-        android:id="@+id/addButton"
-        android:layout_width="56dp"
-        android:layout_height="51dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginRight="4dp"
-        android:background="@drawable/addbutton"
-        android:scaleType="fitXY"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/myPostsToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#589114"
+        android:elevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="5dp" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <ImageButton
-        android:id="@+id/backButton"
-        android:layout_width="56dp"
-        android:layout_height="51dp"
-        android:background="@drawable/backbutton"
-        android:scaleType="fitXY"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="8dp" />
+        <ImageButton
+            android:id="@+id/addButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center|right"
+            android:src="@drawable/baseline_add_circle_outline_black_18dp" />
 
+    </androidx.appcompat.widget.Toolbar>
 
     <TextView
         android:id="@+id/myPosts"

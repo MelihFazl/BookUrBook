@@ -11,7 +11,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="center|right"
-        android:src="@android:drawable/stat_notify_error"
+        android:src="@drawable/baseline_favorite_black_18dp"
         tools:src="@drawable/baseline_favorite_black_18dp" />
 
     <ImageButton
@@ -19,7 +19,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="center|right"
-        android:src="@android:drawable/stat_notify_error"/>
+        android:src="@drawable/baseline_report_problem_black_18dp" />
 
     <ImageButton
         android:id="@+id/homeButton"
