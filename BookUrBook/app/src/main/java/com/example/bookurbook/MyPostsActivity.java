@@ -105,6 +105,7 @@ public class MyPostsActivity extends AppCompatActivity {
         Intent intent = new Intent(getBaseContext(), CreatePostActivity.class);
         intent.putExtra("currentUser", currentUser);
         intent.putExtra("postlist", postList);
+        intent.putExtra("fromPostList", false);
         startActivity(intent);
         finish();
      }
