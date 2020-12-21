@@ -1,10 +1,13 @@
 package com.example.bookurbook;
 import com.example.bookurbook.ReportDialog;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -22,12 +25,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bookurbook.models.Admin;
+import com.example.bookurbook.models.Chat;
 import com.example.bookurbook.models.Post;
 import com.example.bookurbook.models.PostList;
 import com.example.bookurbook.models.RegularUser;
 import com.example.bookurbook.models.User;
 import com.example.bookurbook.models.WishList;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PostActivity extends AppCompatActivity implements ReportPostDialogListener {
     //instance variables
@@ -35,9 +47,12 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
     private PostList postList;
     private User currentUser;
     private WishList wishlist;
+    private FirebaseFirestore db;
+    private boolean isPostListPreviousActivity;
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         //variables
         Toolbar toolbar;
         TextView postTitleTextView;
@@ -48,7 +63,13 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         TextView postDescriptionTextView;
         ImageButton reportButton;
         ImageButton wishlistButton;
+
+        ImageButton chatButton;
+
+        ImageButton homeButton;
+
         ImageView postPic;
+
 
         //method code
         super.onCreate(savedInstanceState);
@@ -57,6 +78,9 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("Post");
+        chatButton = findViewById(R.id.chat_image_button);
+        db = FirebaseFirestore.getInstance();
 
         post = (Post) getIntent().getSerializableExtra("post");
         if (getIntent().getSerializableExtra("currentUser") instanceof Admin)
@@ -64,12 +88,18 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         else
             currentUser = (RegularUser) getIntent().getSerializableExtra("currentUser");
         postList = (PostList) getIntent().getSerializableExtra("postlist");
+
+        if( (boolean) (getIntent().getExtras().get("fromPostList")))
+        isPostListPreviousActivity = (boolean) getIntent().getExtras().get("fromPostList"); //does not get fromPostList intent?
+
+
         postPic = findViewById(R.id.postImageView);
         //initialization
         // post = new Post("This book is very nice :)", "MAT132 BOOK FOR CS STUDENTS", "Bilkent", "Math", 10, null, new RegularUser("Mehmet", "mehmet@ug.bilkent.edu.tr", null));
         postTitleTextView = findViewById(R.id.postTitleTextView);
         postSellerTextView = findViewById(R.id.postSellerTextView);
         postUniversityTextView = findViewById(R.id.postUniversityTextView);
+        homeButton = findViewById(R.id.homeButton);
         postCourseTextView = findViewById(R.id.postCourseTextView);
         postPriceTextView = findViewById(R.id.postPriceTextView);
         postDescriptionTextView = findViewById(R.id.postDescriptionTextView);
@@ -115,14 +145,93 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
             }
         });
 
-        /**ImageButton homeButton = (ImageButton) findViewById(R.id.homeButton);
-         homeButton.setOnClickListener(new View.OnClickListener() {
+        homeButton.setOnClickListener(new View.OnClickListener() {
         @Override public void onClick(View v) {
-        Intent startIntent = new Intent(getApplicationContext(), HomeScreen.class);
-        startIntent.putExtra("com.example.quicklauncher.SOMETHING" , "I am trying something!");
+        Intent startIntent = new Intent(PostActivity.this, MainMenuActivity.class);
+        startIntent.putExtra("currentUser" , currentUser);
         startActivity(startIntent);
         }
-        });*/
+
+        });
+
+        /**
+         * This button starts a chat with the post owner
+         */
+        chatButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                db.collection("chats").document(currentUser.getUsername() + ", " + post.getOwner().getUsername())
+                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>()
+                {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task)
+                    {
+                        if (task.isSuccessful())
+                        {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists())
+                            {
+                                Intent pass = new Intent(PostActivity.this, ChatActivity.class);
+                                Chat chat = new Chat(currentUser, post.getOwner(), currentUser.getUsername() + ", " + post.getOwner().getUsername());
+                                pass.putExtra("currentUser", currentUser);
+                                pass.putExtra("fromPostActivity", true);
+                                pass.putExtra("post",post);
+                                pass.putExtra("postlist", postList);
+                                pass.putExtra("clickedChat", chat);
+                                startActivity(pass);
+                            }
+                            else
+                            {
+                                db.collection("chats").document(post.getOwner().getUsername() + ", " + currentUser.getUsername())
+                                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>()
+                                {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task)
+                                    {
+                                        if ( document.exists())
+                                        {
+                                            Intent pass = new Intent(PostActivity.this, ChatActivity.class);
+                                            Chat chat = new Chat(currentUser, post.getOwner(), post.getOwner().getUsername() + ", " + currentUser.getUsername());
+                                            pass.putExtra("currentUser", currentUser);
+                                            pass.putExtra("fromPostActivity", true);
+                                            pass.putExtra("post",post);
+                                            pass.putExtra("postlist", postList);
+                                            pass.putExtra("clickedChat", chat);
+                                            startActivity(pass);
+                                        }
+                                        else
+                                        {
+                                            Intent pass = new Intent(PostActivity.this, ChatActivity.class);
+                                            Chat chat = new Chat(currentUser, post.getOwner(), post.getOwner().getUsername() + ", " + currentUser.getUsername());
+                                            Map<String, Object> chatData = new HashMap<>();
+                                            chatData.put("username1", post.getOwner().getUsername());
+                                            chatData.put("username2", currentUser.getUsername());
+                                            chatData.put("lastmessage", "");
+                                            chatData.put("lastmessagedate", new Date());
+                                            db.collection("chats").document(chat.getChatID()).set(chatData);
+                                            pass.putExtra("currentUser", currentUser);
+                                            pass.putExtra("clickedChat", chat);
+                                            pass.putExtra("post",post);
+                                            pass.putExtra("postlist", postList);
+                                            pass.putExtra("fromPostActivity", true);
+                                            startActivity(pass);
+                                        }
+
+                                    }
+                                });
+                            }
+                        }
+                        else
+                        {
+                            Toast chatError = Toast.makeText(PostActivity.this,"Something is wrong. Please check your Internet connection.", Toast.LENGTH_LONG);
+                        }
+                    }
+                });
+            }
+
+        });
     }
 
 
@@ -138,6 +247,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
     @Override
     public void applyTexts(String description, String category) {
         post.report(description, category);
+        post.setReportNum(post.getReportNum()+1);
         //System.out.println(post.getReports().get(0).getDescription());
         //System.out.println(post.getReports().get(0).getCategory());
     }
@@ -161,6 +271,24 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
 
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    public void onBackPressed() {
+        Intent pass;
+        if(isPostListPreviousActivity)
+        pass = new Intent(PostActivity.this, PostListActivity.class);
+        else
+            pass = new Intent(PostActivity.this, MyPostsActivity.class);
+        pass.putExtra("postlist", postList);
+        pass.putExtra("currentUser", currentUser);
+        startActivity(pass);
+        finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        onBackPressed();
+        return super.onOptionsItemSelected(item);
     }
 
 }

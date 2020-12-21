@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="#e3c6bf"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MyChatsActivity">
@@ -14,16 +15,16 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/my_chats_recycler_id"
-        android:layout_width="414dp"
-        android:layout_height="721dp"
+        android:layout_width="409dp"
+        android:layout_height="651dp"
         android:background="#e3c6bf"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="@+id/toolbar_my_chats"
+        app:layout_constraintVertical_bias="0.724" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

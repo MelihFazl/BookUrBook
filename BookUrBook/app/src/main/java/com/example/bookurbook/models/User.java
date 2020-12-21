@@ -2,7 +2,6 @@ package com.example.bookurbook.models;
 import android.net.Uri;
 import android.widget.ImageView;
 
-
 import java.io.Serializable;
 import java.util.*;
 
@@ -16,7 +15,7 @@ public abstract class User implements Reportable, Serializable
     private int reportNum;
     private String avatar;
     private UserSpecPostList userPostList;
-    private UserList blockedUsers;
+    private ArrayList<User> blockedUsers;
 
     //constructor
     public User(String username, String email, String avatar)///PASSWORD AS PARAMETER-DATABASE?? //yes of course!.
@@ -26,7 +25,7 @@ public abstract class User implements Reportable, Serializable
         this.avatar = avatar;
         reports = new ArrayList<Report>();
         userPostList = new UserSpecPostList(this);
-        blockedUsers = new UserList();
+        blockedUsers = new ArrayList<User>();
         reportNum = 0;
     }
     public String getUsername() {
@@ -100,12 +99,12 @@ public abstract class User implements Reportable, Serializable
         this.userPostList = userPostList;
     }
 
-    public UserList getBlockedUsers()
+    public ArrayList<User> getBlockedUsers()
     {
         return blockedUsers;
     }
 
-    public void setBlockedUsers(UserList blockedUsers)
+    public void setBlockedUsers(ArrayList<User> blockedUsers)
     {
         this.blockedUsers = blockedUsers;
     }
@@ -141,7 +140,7 @@ public abstract class User implements Reportable, Serializable
 
     public void blockUser(User user)
     {
-            blockedUsers.addUser(user);
+            blockedUsers.add(user);
     }
 
     @Override

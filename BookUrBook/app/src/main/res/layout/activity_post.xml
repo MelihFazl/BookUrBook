@@ -155,7 +155,7 @@
         app:layout_constraintVertical_bias="0.713" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/chat_image_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -9,6 +9,26 @@
     android:background="#e3c6bf"
     >
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/postListToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#589114"
+        android:elevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/createPostButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center|right"
+            android:src="@drawable/baseline_add_circle_outline_black_18dp" />
+
+    </androidx.appcompat.widget.Toolbar>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="409dp"
@@ -96,10 +116,6 @@
             app:layout_constraintBottom_toBottomOf="@+id/ZtoA_button"
             app:layout_constraintStart_toEndOf="@+id/ZtoA_button"
             app:layout_constraintTop_toTopOf="@+id/ZtoA_button" />
-
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/toolbar" />
 
 
         <androidx.appcompat.widget.SearchView
