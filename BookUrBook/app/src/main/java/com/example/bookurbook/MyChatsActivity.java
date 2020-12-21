@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 public class MyChatsActivity extends AppCompatActivity {
     //variables
@@ -46,6 +47,7 @@ public class MyChatsActivity extends AppCompatActivity {
     private String otherUsername;
     private RecyclerView recyclerView;
     private MyChatsAdapter myChatsAdapter;
+    private ArrayList<String> blockedUsernames;
     private Toolbar toolbar;
 
     @Override
@@ -69,7 +71,7 @@ public class MyChatsActivity extends AppCompatActivity {
         else
             currentUser = (RegularUser)getIntent().getSerializableExtra("currentUser");
 
-        System.out.println("In chat, current currentUser's email: " + currentUser.getEmail());
+        blockedUsernames = getIntent().getStringArrayListExtra("blockedUsernames");
         db.collection("chats").addSnapshotListener(new EventListener<QuerySnapshot>()
         {
             @Override
@@ -99,11 +101,14 @@ public class MyChatsActivity extends AppCompatActivity {
                                     {
                                         for (DocumentSnapshot document : task.getResult())
                                         {
-                                            Chat chat = new Chat(currentUser, new RegularUser(document.getString("username"),
-                                                    document.getString("email"), document.getString("avatar")), doc.getId());
-                                            chat.setLastMessageContentInDB(doc.getString("lastmessage"));
-                                            chat.setDate(doc.getDate("lastmessagedate"));
-                                            chatList.add(chat);
+                                           if( !blockedUsernames.contains(document.getString("username")))
+                                           {
+                                                Chat chat = new Chat(currentUser, new RegularUser(document.getString("username"),
+                                                        document.getString("email"), document.getString("avatar")), doc.getId());
+                                                chat.setLastMessageContentInDB(doc.getString("lastmessage"));
+                                                chat.setDate(doc.getDate("lastmessagedate"));
+                                                chatList.add(chat);
+                                           }
                                         }
                                     }
                                     else
@@ -140,7 +145,7 @@ public class MyChatsActivity extends AppCompatActivity {
     private void buildRecyclerView()
     {
         recyclerView = findViewById(R.id.my_chats_recycler_id);
-        myChatsAdapter = new MyChatsAdapter(MyChatsActivity.this, chatList, currentUser);
+        myChatsAdapter = new MyChatsAdapter(MyChatsActivity.this, chatList, currentUser, blockedUsernames);
         recyclerView.setAdapter(myChatsAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(MyChatsActivity.this));
         myChatsAdapter.notifyDataSetChanged();

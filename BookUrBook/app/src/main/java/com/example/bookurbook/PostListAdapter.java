@@ -190,19 +190,21 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
         PostList filteredList = list;
 
         if (!uni.equals("Other")) {
-            filteredList = list.filterByUniversity(uni);
+            filteredList = filteredList.filterByUniversity(uni);
         }
         if (!course.equals("Other")) {
-            filteredList = list.filterByUniversity(uni);
+            filteredList = filteredList.filterByCourse(course);
+
         }
         if (lowPrice != -1 || highPrice != -1) {
-            filteredList = list.filterByPrice(lowPrice, highPrice);
-        }
+            filteredList = filteredList.filterByPrice(lowPrice, highPrice);
 
+        }
 
         postListHolder = new ArrayList<>(filteredList.getPostArray());
         notifyDataSetChanged();
     }
+<<<<<<< HEAD
 
 =======
 
@@ -235,4 +237,6 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
         notifyDataSetChanged();
     }
 >>>>>>> Stashed changes
+=======
+>>>>>>> Kaan
 }
