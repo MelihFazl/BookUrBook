@@ -3,11 +3,14 @@ package com.example.bookurbook;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.icu.text.Edits;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -32,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 public class MyChatsActivity extends AppCompatActivity {
     //variables
@@ -43,11 +47,18 @@ public class MyChatsActivity extends AppCompatActivity {
     private String otherUsername;
     private RecyclerView recyclerView;
     private MyChatsAdapter myChatsAdapter;
+    private ArrayList<String> blockedUsernames;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_chats);
+
+        toolbar = findViewById(R.id.toolbar_my_chats);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
@@ -60,7 +71,7 @@ public class MyChatsActivity extends AppCompatActivity {
         else
             currentUser = (RegularUser)getIntent().getSerializableExtra("currentUser");
 
-        System.out.println("In chat, current currentUser's email: " + currentUser.getEmail());
+        blockedUsernames = getIntent().getStringArrayListExtra("blockedUsernames");
         db.collection("chats").addSnapshotListener(new EventListener<QuerySnapshot>()
         {
             @Override
@@ -90,11 +101,14 @@ public class MyChatsActivity extends AppCompatActivity {
                                     {
                                         for (DocumentSnapshot document : task.getResult())
                                         {
-                                            Chat chat = new Chat(currentUser, new RegularUser(document.getString("username"),
-                                                    document.getString("email"), document.getString("avatar")), doc.getId());
-                                            chat.setLastMessageContentInDB(doc.getString("lastmessage"));
-                                            chat.setDate(doc.getDate("lastmessagedate"));
-                                            chatList.add(chat);
+                                           if( !blockedUsernames.contains(document.getString("username")))
+                                           {
+                                                Chat chat = new Chat(currentUser, new RegularUser(document.getString("username"),
+                                                        document.getString("email"), document.getString("avatar")), doc.getId());
+                                                chat.setLastMessageContentInDB(doc.getString("lastmessage"));
+                                                chat.setDate(doc.getDate("lastmessagedate"));
+                                                chatList.add(chat);
+                                           }
                                         }
                                     }
                                     else
@@ -113,10 +127,25 @@ public class MyChatsActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed()
+    {
+        Intent pass = new Intent(MyChatsActivity.this, MainMenuActivity.class);
+        pass.putExtra("currentUser", currentUser);
+        startActivity(pass);
+        finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        onBackPressed();
+        return super.onOptionsItemSelected(item);
+    }
+
     private void buildRecyclerView()
     {
         recyclerView = findViewById(R.id.my_chats_recycler_id);
-        myChatsAdapter = new MyChatsAdapter(MyChatsActivity.this, chatList, currentUser);
+        myChatsAdapter = new MyChatsAdapter(MyChatsActivity.this, chatList, currentUser, blockedUsernames);
         recyclerView.setAdapter(myChatsAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(MyChatsActivity.this));
         myChatsAdapter.notifyDataSetChanged();

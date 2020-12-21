@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
@@ -38,6 +39,7 @@ public class ReportDialog extends AppCompatDialogFragment {
                 String description = descriptionEditText.getText().toString();
                 String category = spinner.getSelectedItem().toString();
                 listener.applyTexts(description, category);
+                Toast.makeText(builder.getContext(), "Report sent!", Toast.LENGTH_LONG).show();
             }
         });
         descriptionEditText = (EditText) view.findViewById(R.id.postReportDescription);
