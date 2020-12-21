@@ -83,44 +83,50 @@ public class MainMenuActivity extends AppCompatActivity {
             public void onClick(View v) {
                 postList = new PostList();
                 Intent pass = new Intent(MainMenuActivity.this, PostListActivity.class);
-                db.collection("posts").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful())
-                        {
-                            for (DocumentSnapshot document : task.getResult())
-                            {
-                                db.collection("users").whereEqualTo("username", document.getString("username")).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        FirebaseFirestore db;
-                                        for(DocumentSnapshot doc: task.getResult())
-                                        {
-                                            currentPostOwner = new RegularUser(doc.getString("username"), doc.getString("email"), doc.getString("avatar"));
-                                        }
-                                        if(!document.getBoolean("sold"))
-                                        {
-                                            postList.addPost(new Post(document.getString("description"), document.getString("title"), document.getString("university")
-                                                    , document.getString("course"), document.getLong("price").intValue(), document.getString("picture"), currentPostOwner, (String) document.get("id")));
-                                        }
-                                        pass.putExtra("currentUser", currentUser);
-                                        pass.putExtra("postlist", postList);
-                                        startActivity(pass);
-                                        finish();
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        List<String> blockedUsernames = (List<String>) documentSnapshot.get("blockedusers");
+                        db.collection("posts").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (DocumentSnapshot document : task.getResult()) {
+                                        db.collection("users").whereEqualTo("username", document.getString("username")).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                FirebaseFirestore db;
+                                                for (DocumentSnapshot doc : task.getResult()) {
+                                                    currentPostOwner = new RegularUser(doc.getString("username"), doc.getString("email"), doc.getString("avatar"));
+                                                }
+                                                if (!document.getBoolean("sold")) {
+                                                    if (!blockedUsernames.contains(currentPostOwner.getUsername())) {
+                                                        postList.addPost(new Post(document.getString("description"), document.getString("title"), document.getString("university")
+                                                                , document.getString("course"), document.getLong("price").intValue(), document.getString("picture"), currentPostOwner, (String) document.get("id")));
+                                                    }
+                                                }
+                                                pass.putExtra("currentUser", currentUser);
+                                                pass.putExtra("postlist", postList);
+                                                startActivity(pass);
+                                                finish();
+                                            }
+
+                                        });
+
                                     }
-
-                                });
-
+                                }
+                                pass.putExtra("currentUser", currentUser);
+                                pass.putExtra("postlist", postList);
+                                startActivity(pass);
                             }
-                        }
-                        pass.putExtra("currentUser", currentUser);
-                        pass.putExtra("postlist", postList);
-                        startActivity(pass);
-                    }
-                });
+                        });
 
+                    }
+
+                });
             }
         });
+
         topright.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
