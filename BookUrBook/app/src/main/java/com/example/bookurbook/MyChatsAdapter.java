@@ -48,6 +48,8 @@ public class MyChatsAdapter extends RecyclerView.Adapter<MyChatsAdapter.MyChatsV
 
         Chat exampleChat = chatsList.get(position);
         holder.userName.setText(exampleChat.getUser2().getUsername());
+        holder.latestChat.setText(exampleChat.getLastMessageInFromDB());  // maybe this will be getLastMessageInFromDb ??
+        Picasso.get().load(exampleChat.getUser2().getAvatar()).into(holder.userAvatar);
         holder.layout.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -57,13 +59,12 @@ public class MyChatsAdapter extends RecyclerView.Adapter<MyChatsAdapter.MyChatsV
                 if ( chatsList.size() != 0)
                 {
                     pass.putExtra("currentUser", currentUser);
+                    pass.putExtra("fromPostActivity",false);
                     pass.putExtra("clickedChat", exampleChat);
                     context.startActivity(pass);
                 }
             }
         });
-        holder.latestChat.setText(exampleChat.getLastMessageInFromDB());  // maybe this will be getLastMessageInFromDb ??
-        Picasso.get().load(exampleChat.getUser2().getAvatar()).into(holder.userAvatar);
 
     }
 
@@ -89,8 +90,4 @@ public class MyChatsAdapter extends RecyclerView.Adapter<MyChatsAdapter.MyChatsV
         }
     }
 
-    public void setChatsList(ArrayList<Chat> chatsList)
-    {
-        this.chatsList = chatsList;
-    }
 }

@@ -3,12 +3,16 @@ package com.example.bookurbook;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.icu.text.Edits;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.bookurbook.models.Admin;
 import com.example.bookurbook.models.Chat;
@@ -42,11 +46,17 @@ public class MyChatsActivity extends AppCompatActivity {
     private String otherUsername;
     private RecyclerView recyclerView;
     private MyChatsAdapter myChatsAdapter;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_chats);
+
+        toolbar = findViewById(R.id.toolbar_my_chats);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
@@ -66,7 +76,8 @@ public class MyChatsActivity extends AppCompatActivity {
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error)
             {
                 if (error != null) {
-                    System.out.println("Listen failed.");
+                    Toast chatError = Toast.makeText(MyChatsActivity.this,"Something is wrong. Please check your Internet connection.", Toast.LENGTH_LONG);
+                    chatError.show();
                     return;
                 }
                 chatList = new ArrayList<Chat>();
@@ -97,24 +108,33 @@ public class MyChatsActivity extends AppCompatActivity {
                                     }
                                     else
                                     {
-                                        System.out.println("hata");
+                                        Toast chatError = Toast.makeText(MyChatsActivity.this,"Something is wrong. Please check your Internet connection.", Toast.LENGTH_LONG);
+                                        chatError.show();
                                     }
+                                    //Update GUI
                                     Collections.sort(chatList);
                                     buildRecyclerView();
-                                    //Update GUI
-                                    //Test
-                                   for ( int i = 0; i < chatList.size(); i++ )
-                                    {
-                                        System.out.println("for: " + i);
-                                        System.out.println(chatList.get(i).getUser1().getUsername());
-                                        System.out.println(chatList.get(i).getUser2().getUsername());
-                                    }
                                 }
                             });
                     }
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        Intent pass = new Intent(MyChatsActivity.this, MainMenuActivity.class);
+        pass.putExtra("currentUser", currentUser);
+        startActivity(pass);
+        finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        onBackPressed();
+        return super.onOptionsItemSelected(item);
     }
 
     private void buildRecyclerView()
@@ -126,7 +146,3 @@ public class MyChatsActivity extends AppCompatActivity {
         myChatsAdapter.notifyDataSetChanged();
     }
 }
-
-/*
-     GUI ( Kaan or someone available )
-*/

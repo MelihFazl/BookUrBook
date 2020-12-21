@@ -8,42 +8,19 @@
     tools:context=".SettingsActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/top_toolbar"
+
+        android:id="@+id/settingsToolbar"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="#589114"
+        android:elevation="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_height="?attr/actionBarSize">
-
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="SETTINGS"
-                android:textColor="@color/white"
-                android:textSize="20dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/blocked_users"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:background="@drawable/blocked_users"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintVertical_bias="0.0">
 
     </androidx.appcompat.widget.Toolbar>
-
     <Button
         android:id="@+id/logout"
         android:layout_width="165dp"
@@ -57,7 +34,8 @@
         app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.731" />
+
+        app:layout_constraintVertical_bias="0.851" />
 
     <Button
         android:id="@+id/selectImage"
@@ -71,7 +49,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.451" />
+
+        app:layout_constraintVertical_bias="0.451" /><![CDATA[
+
+        app:layout_constraintVertical_bias="0.432" />
+
+
+    app:layout_constraintVertical_bias="0.586" />
+
+
+
+
+    ]]>
 
     <Button
         android:id="@+id/resetPassword"
@@ -85,22 +74,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.595"
-        app:layout_constraintHorizontal_bias="0.5"/>
+
+        app:layout_constraintVertical_bias="0.591" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profilepic"
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:layout_gravity="center"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="76dp"
         android:src="@drawable/user"
         app:civ_border_color="@color/white"
         app:civ_border_width="0dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/top_toolbar" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo_big" />
+
 
     <TextView
         android:id="@+id/userdetails"
@@ -115,8 +106,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.334" />
+        app:layout_constraintTop_toBottomOf="@+id/profilepic"
+        app:layout_constraintVertical_bias="0.046" />
 
+    <Button
+        android:id="@+id/blocked_users"
+        android:layout_width="225dp"
+        android:layout_height="90dp"
+        android:text="Blocked Users"
+        android:textSize="20sp"
+        app:backgroundTint="#FF7E67"
+        app:layout_constraintBottom_toTopOf="@+id/logout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/resetPassword"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

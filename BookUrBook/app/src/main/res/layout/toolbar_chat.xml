@@ -3,28 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#589114"
-    android:elevation="4dp">
-
-    <ImageButton
-        android:id="@+id/wishlistButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center|right"
-        android:src="@drawable/baseline_favorite_black_18dp"
-        tools:src="@drawable/baseline_favorite_black_18dp" />
+    android:elevation="4dp"
+    android:id="@+id/toolbar_chat">
 
     <ImageButton
         android:id="@+id/reportButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center|right"
-        android:src="@drawable/baseline_report_problem_black_18dp" />
+        android:src="@android:drawable/stat_notify_error"/>
 
     <ImageButton
         android:id="@+id/homeButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center|right"
         android:src="@drawable/ic_action_name" />
 

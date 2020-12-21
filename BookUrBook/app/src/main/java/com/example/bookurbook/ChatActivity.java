@@ -3,13 +3,26 @@ package com.example.bookurbook;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.bookurbook.models.Admin;
 import com.example.bookurbook.models.Chat;
 import com.example.bookurbook.models.Message;
+import com.example.bookurbook.models.Post;
+import com.example.bookurbook.models.PostList;
 import com.example.bookurbook.models.RegularUser;
 import com.example.bookurbook.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,18 +45,24 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ChatActivity extends AppCompatActivity
+public class ChatActivity extends AppCompatActivity implements ReportPostDialogListener
 {
     //variables
     private User currentUser;
     private FirebaseFirestore db;
     private CollectionReference msgRef;
-    private String otherUsername;
     private Chat currentChat;
     private ArrayList<Message> messages;
     private Date date;
     private SimpleDateFormat dateFormat;
     private SimpleDateFormat timeFormat;
+    private RecyclerView recyclerView;
+    private MessageAdapter messageAdapter;
+    private ImageView sendButton;
+    private EditText messageBox;
+    private Toolbar toolbar;
+    private ImageButton homeButton;
+    private ImageButton reportButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -63,7 +82,18 @@ public class ChatActivity extends AppCompatActivity
 
         currentChat = (Chat) getIntent().getSerializableExtra("clickedChat");
         dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        timeFormat = new SimpleDateFormat("hh:mm");
+        timeFormat = new SimpleDateFormat("HH:mm");
+        sendButton = findViewById(R.id.send_message_button);
+        messageBox = findViewById(R.id.message_box);
+        homeButton = findViewById(R.id.homeButton);
+        reportButton = findViewById(R.id.reportButton);
+
+        toolbar = findViewById(R.id.toolbar_chat);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("Chat with " + currentChat.getUser2().getUsername());
+
         msgRef = db.collection("messages").document(currentChat.getChatID()).collection("messagetree");
         msgRef.addSnapshotListener(new EventListener<QuerySnapshot>()
         {
@@ -72,7 +102,8 @@ public class ChatActivity extends AppCompatActivity
             {
                 if ( error != null)
                 {
-                    System.out.println("Listen failed.");
+                    Toast chatError = Toast.makeText(ChatActivity.this,"Something is wrong. Please check your Internet connection.", Toast.LENGTH_LONG);
+                    chatError.show();
                     return;
                 }
                     messages = new ArrayList<Message>();
@@ -84,6 +115,9 @@ public class ChatActivity extends AppCompatActivity
                         messages.add(msgData);
                     }
 
+                    Collections.sort(messages);
+                    buildRecyclerView();
+
                     for ( int i = 0; i < messages.size(); i++ )
                     {
                         System.out.println("for: " + i);
@@ -94,13 +128,46 @@ public class ChatActivity extends AppCompatActivity
                     }
                     Collections.sort(messages);
                     //Create gui by using messages
-                    //Message sending
-                    /* date = new Date();
-                    Message message = new Message(currentUser.getUsername(), messageBox.getText(), dateFormat.format(date), timeFormat.format(date);
-                    sendMessageToDatabase( message , date );
-                     */
             }
         });
+
+
+        //Message sending
+        sendButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                date = new Date();
+                Message message = new Message(currentUser.getUsername(), messageBox.getText().toString(), dateFormat.format(date), timeFormat.format(date));
+                sendMessageToDatabase( message , date );
+                messageBox.setText("");
+            }
+        });
+
+        homeButton.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                Intent startIntent = new Intent(ChatActivity.this, MainMenuActivity.class);
+                startIntent.putExtra("currentUser" , currentUser);
+                startActivity(startIntent);
+            }
+        });
+
+        reportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openPostReportDialog();
+            }
+        });
+    }
+
+    private void buildRecyclerView()
+    {
+        recyclerView = findViewById(R.id.my_chats_recycler_id);
+        messageAdapter = new MessageAdapter(ChatActivity.this, messages, currentChat);
+        recyclerView.setAdapter(messageAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(ChatActivity.this));
+        messageAdapter.notifyDataSetChanged();
     }
 
     public void sendMessageToDatabase( Message msg, Date msgdate )
@@ -117,7 +184,7 @@ public class ChatActivity extends AppCompatActivity
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task)
             {
-                db.collection("chats").document(currentChat.getUser1() + "," + currentChat.getUser2())
+                db.collection("chats").document(currentChat.getChatID())
                         .update(chatData).addOnSuccessListener(new OnSuccessListener<Void>()
                 {
                     @Override
@@ -128,5 +195,41 @@ public class ChatActivity extends AppCompatActivity
                 });
             }
         });
+    }
+
+    public void openPostReportDialog()
+    {
+        ReportDialog dialog = new ReportDialog();
+        dialog.show(getSupportFragmentManager(), "");
+    }
+
+    @Override
+    public void applyTexts(String description, String category) {
+        currentChat.getUser2().report(description, category);
+        currentChat.getUser2().setReportNum(currentUser.getReportNum()+1);
+        //System.out.println(post.getReports().get(0).getDescription());
+        //System.out.println(post.getReports().get(0).getCategory());
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent pass;
+        if((boolean) getIntent().getExtras().get("fromPostActivity")) {
+            pass = new Intent(ChatActivity.this, PostActivity.class);
+            pass.putExtra("postlist", (PostList) getIntent().getSerializableExtra("postlist"));
+            pass.putExtra("post", (Post) getIntent().getSerializableExtra("post"));
+            pass.putExtra("fromPostList", true);
+        }
+        else
+            pass = new Intent(ChatActivity.this, MyChatsActivity.class);
+        pass.putExtra("currentUser", currentUser);
+        startActivity(pass);
+        finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        onBackPressed();
+        return super.onOptionsItemSelected(item);
     }
 }

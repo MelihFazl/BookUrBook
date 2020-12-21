@@ -7,17 +7,25 @@
     android:background="#e3c6bf"
     tools:context=".MainMenuActivity">
 
-    <View
-        android:id="@+id/topbar"
-        android:layout_width="wrap_content"
-        android:layout_height="70dp"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/mainMenuToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="#589114"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:elevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/wishlist"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center|right"
+            android:src="@drawable/wishlisticon" />
+
+    </androidx.appcompat.widget.Toolbar>
 
     <View
         android:id="@+id/botleft"
@@ -176,43 +184,17 @@
         app:layout_constraintTop_toTopOf="@+id/topright"
         app:layout_constraintVertical_bias="0.944" />
 
-    <TextView
-        android:id="@+id/textView20"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"
-        android:text="MAIN MENU"
-        android:textColor="#FFFFFF"
-        android:textSize="29sp"
-        app:layout_constraintBottom_toBottomOf="@+id/topbar"
-        app:layout_constraintEnd_toEndOf="@+id/topbar"
-        app:layout_constraintStart_toStartOf="@+id/topbar"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/wishlist"
-        android:layout_width="100dp"
-        android:layout_height="60dp"
-        app:layout_constraintBottom_toBottomOf="@+id/topbar"
-        app:layout_constraintEnd_toEndOf="@+id/topbar"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/textView20"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.42"
-        app:srcCompat="@drawable/wishlist"
-        app:tint="@color/white" />
-
     <ImageButton
         android:id="@+id/adminPanelButton"
         android:layout_width="276dp"
         android:layout_height="61dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
-        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/topbar"
-        app:layout_constraintVertical_bias="0.889"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.919"
         app:srcCompat="@drawable/fui_idp_button_background_twitter" />
 
     <TextView

@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -43,6 +44,7 @@ public class CreatePostActivity extends AppCompatActivity {
     private FirebaseStorage storage;
     private FirebaseFirestore db;
     private boolean isPhotoPicked;
+    private boolean isPostListPreviousActivity;
     Toolbar toolbar;
     EditText postTitleCreatePost;
     Spinner spinner;
@@ -65,6 +67,7 @@ public class CreatePostActivity extends AppCompatActivity {
             currentUser = (RegularUser)getIntent().getSerializableExtra("currentUser");
 
         postList = (PostList) getIntent().getSerializableExtra("postlist");
+        isPostListPreviousActivity = (Boolean) getIntent().getExtras().get("fromPostList");
         isPhotoPicked = false;
 
         db = FirebaseFirestore.getInstance();
@@ -100,9 +103,10 @@ public class CreatePostActivity extends AppCompatActivity {
         postDescriptionCreatePost = findViewById(R.id.postDescriptionCreatePost);
         homeButton = findViewById(R.id.homeButtonCreatePost);
         homeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
+            @Override public void onClick(View v) {
+                Intent startIntent = new Intent(CreatePostActivity.this, MainMenuActivity.class);
+                startIntent.putExtra("currentUser" , currentUser);
+                startActivity(startIntent);
             }
         });
 
@@ -200,9 +204,12 @@ public class CreatePostActivity extends AppCompatActivity {
                                     db.collection("posts").document(post.getId()).set(newData).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
-                                            Intent pass = new Intent(CreatePostActivity.this, MyPostsActivity.class);
+                                            Intent pass;
+                                            if(isPostListPreviousActivity)
+                                                 pass = new Intent(CreatePostActivity.this, PostListActivity.class);
+                                            else
+                                                 pass = new Intent(CreatePostActivity.this, MyPostsActivity.class);
                                             postList.addPost(post);
-                                            ;
                                             pass.putExtra("currentUser", currentUser);
                                             pass.putExtra("postlist", postList);
                                             startActivity(pass);
@@ -264,11 +271,20 @@ public class CreatePostActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent pass = new Intent(CreatePostActivity.this, MyPostsActivity.class);
+        Intent pass;
+        if(isPostListPreviousActivity)
+            pass = new Intent(CreatePostActivity.this, PostListActivity.class);
+        else
+            pass = new Intent(CreatePostActivity.this, MyPostsActivity.class);
         pass.putExtra("postlist", postList);
         pass.putExtra("currentUser", currentUser);
-        System.out.println("PASSLENEN" + postList.getPostArray().get(0).getTitle());
         startActivity(pass);
         finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        onBackPressed();
+        return super.onOptionsItemSelected(item);
     }
 }
