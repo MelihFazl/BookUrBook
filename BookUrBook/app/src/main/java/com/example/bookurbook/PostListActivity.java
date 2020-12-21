@@ -58,11 +58,16 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
     private User currentUser;
     private User currentPostOwner;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_list);
+
+        toolbar = findViewById(R.id.postListToolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("Post List");
 
 
         // for database purposes
@@ -81,7 +86,6 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
 
 
         createPostButton = findViewById(R.id.createPostButton);
-
         searchView = findViewById(R.id.search_id);
         recyclerView = findViewById(R.id.recycler_id);
         toolbar = findViewById(R.id.toolbar);
@@ -91,10 +95,6 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
         ZtoAbutton = findViewById(R.id.ZtoA_button);
         resetButton = findViewById(R.id.reset_button);
         filterButton = findViewById(R.id.filterButton);
-
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);   // implement this later so that it goes back to the previous screen
-
 
         postListAdapter = new PostListAdapter(this, postList, currentUser);   // had to make it final, maybe change it later?
         recyclerView.setAdapter(postListAdapter);
@@ -190,12 +190,20 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
     public void onBackPressed() {
         Intent pass = new Intent(PostListActivity.this, MainMenuActivity.class);
         pass.putExtra("currentUser", currentUser);
+        pass.putExtra("postlist", postList);
         startActivity(pass);
         finish();
     }
 
     @Override
-    public void filterThePosts(String uni, String course, int lowPrice, int highPrice) {
-
+    public boolean onOptionsItemSelected(MenuItem item) {
+        onBackPressed();
+        return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void filterThePosts(String uni, String course, int lowPrice, int highPrice) {
+        postListAdapter.filterResults(uni, course, lowPrice, highPrice);
+    }
+
 }

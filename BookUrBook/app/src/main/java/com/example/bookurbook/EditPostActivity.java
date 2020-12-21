@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -78,9 +79,6 @@ public class EditPostActivity extends AppCompatActivity {
         System.out.println(currentUser.getEmail() + "EDİTLİYORUZ HAYDİ BAKALIIIM");
         id = post.getId();
 
-
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_post);
 
@@ -128,9 +126,10 @@ public class EditPostActivity extends AppCompatActivity {
 
         homeButton = findViewById(R.id.homeButton);
         homeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
+            @Override public void onClick(View v) {
+                Intent startIntent = new Intent(EditPostActivity.this, MainMenuActivity.class);
+                startIntent.putExtra("currentUser" , currentUser);
+                startActivity(startIntent);
             }
         });
         deleteButton = findViewById(R.id.deleteButton);
@@ -350,8 +349,21 @@ public class EditPostActivity extends AppCompatActivity {
                         }
                     });
                 }
-
-
     }
 
+    @Override
+    public void onBackPressed()
+    {
+        Intent pass = new Intent(EditPostActivity.this, MyPostsActivity.class);
+        pass.putExtra("currentUser", currentUser);
+        pass.putExtra("postlist", postList);
+        startActivity(pass);
+        finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        onBackPressed();
+        return super.onOptionsItemSelected(item);
+    }
 }
