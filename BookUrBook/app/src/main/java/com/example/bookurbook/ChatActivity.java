@@ -37,6 +37,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,6 +52,7 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
     //variables
     private User currentUser;
     private FirebaseFirestore db;
+    private FirebaseAuth auth;
     private CollectionReference msgRef;
     private Chat currentChat;
     private ArrayList<Message> messages;
@@ -73,6 +75,7 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
         setContentView(R.layout.activity_chat);
 
         db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
         if(getIntent().getSerializableExtra("currentUser") instanceof Admin)
         {
             currentUser = (Admin) getIntent().getSerializableExtra("currentUser");
@@ -143,6 +146,7 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
                                 if( usersBlockedByOther != null && usersBlockedByOther.contains(currentUser.getUsername()))
                                 {
                                     Toast chatError = Toast.makeText(ChatActivity.this,"You are blocked by this user.", Toast.LENGTH_LONG);
+                                    chatError.show();
                                 }
                                 else
                                 {
@@ -181,7 +185,29 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
             @Override
             public void onClick(View v)
             {
-                //Will be implemented soon
+                db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        List<String> blockedUsernames = Collections.emptyList();
+                        blockedUsernames = (List<String>) documentSnapshot.get("blockedusers");
+                        blockedUsernames.add(currentChat.getUser2().getUsername());
+                        ArrayList<String> toBePassed = getIntent().getStringArrayListExtra("blockedUsernames");
+                        toBePassed.add(currentChat.getUser2().getUsername());
+                        HashMap<String, Object> newData = new HashMap<>();
+                        newData.put("blockedusers", blockedUsernames);
+                        db.collection("users").document(auth.getCurrentUser().getUid()).set(newData, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(ChatActivity.this, currentChat.getUser2().getUsername() + " has been blocked.", Toast.LENGTH_SHORT).show();
+                                Intent pass = new Intent(ChatActivity.this, MyChatsActivity.class);
+                                pass.putExtra("currentUser", currentUser);
+                                pass.putExtra("blockedUsernames", toBePassed);
+                                startActivity(pass);
+                            }
+                        });
+
+                    }
+                });
             }
         });
     }
