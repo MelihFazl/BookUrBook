@@ -184,6 +184,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
             layout = (LinearLayout)  itemView.findViewById(R.id.row_post);
         }
     }
+<<<<<<< Updated upstream
     public void filterResults(String uni, String course, int lowPrice, int highPrice)
     {
         PostList filteredList = list;
@@ -203,4 +204,35 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
         notifyDataSetChanged();
     }
 
+=======
+
+    public void filterResults(String uni, String course, int lowPrice, int highPrice)
+    {
+        PostList filteredList = list;
+        //List<Post> filteredList = new ArrayList<>(list.getPostArray()); // THİS V WORKS
+
+
+        if (!uni.equals("Other")) {
+            filteredList = filteredList.filterByUniversity(uni);
+            //filteredList = list.filterByUniversity(uni).getPostArray(); // THİS V WORKS
+            System.out.println("UNI CHECK");
+        }
+        if (!course.equals("Other")) {
+            filteredList = filteredList.filterByCourse(course);
+            //filteredList = list.filterByCourse(course).getPostArray(); // THİS V WORKS
+            System.out.println("COURSE CHECK");
+
+        }
+        if (lowPrice != -1 || highPrice != -1) {
+            filteredList = filteredList.filterByPrice(lowPrice, highPrice);
+            //filteredList = list.filterByPrice(lowPrice, highPrice).getPostArray(); // THİS V WORKS
+            System.out.println("PRICE CHECK");
+
+        }
+
+        postListHolder = new ArrayList<>(filteredList.getPostArray());
+        //postListHolder = new ArrayList<>(filteredList); // THİS V WORKS
+        notifyDataSetChanged();
+    }
+>>>>>>> Stashed changes
 }

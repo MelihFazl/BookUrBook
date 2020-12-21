@@ -196,12 +196,15 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
     }
 
     @Override
+<<<<<<< Updated upstream
     public boolean onOptionsItemSelected(MenuItem item) {
         onBackPressed();
         return super.onOptionsItemSelected(item);
     }
 
     @Override
+=======
+>>>>>>> Stashed changes
     public void filterThePosts(String uni, String course, int lowPrice, int highPrice) {
         postListAdapter.filterResults(uni, course, lowPrice, highPrice);
     }
