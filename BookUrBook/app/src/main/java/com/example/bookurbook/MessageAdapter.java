@@ -36,16 +36,16 @@ public class MessageAdapter<currentChat> extends RecyclerView.Adapter<MessageAda
     public MessageAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View view;
         if ( viewType == MSG_TYPE_RIGHT)
         {
-            View view = layoutInflater.inflate(R.layout.message_right, parent, false);
-            return new MessageAdapter.ViewHolder(view);
+            view = layoutInflater.inflate(R.layout.message_right, parent, false);
         }
         else
         {
-            View view = layoutInflater.inflate(R.layout.message_left, parent, false);
-            return new MessageAdapter.ViewHolder(view);
+            view = layoutInflater.inflate(R.layout.message_left, parent, false);
         }
+        return new ViewHolder(view);
     }
 
     @Override

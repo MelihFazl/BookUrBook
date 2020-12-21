@@ -17,11 +17,15 @@ import com.example.bookurbook.models.PostList;
 import com.example.bookurbook.models.RegularUser;
 import com.example.bookurbook.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainMenuActivity extends AppCompatActivity {
@@ -121,8 +125,20 @@ public class MainMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent pass = new Intent(MainMenuActivity.this, MyChatsActivity.class);
-                pass.putExtra("currentUser", currentUser);
-                startActivity(pass);
+                db.collection("users").document(auth.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>()
+                {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot)
+                    {
+
+                        List<String> blockedUsernamesList = (List<String>)documentSnapshot.get("blockedusers");
+                        ArrayList<String> blockedUsernames = new ArrayList<String>();
+                        blockedUsernames.addAll(blockedUsernamesList);
+                        pass.putExtra("blockedUsernames", blockedUsernames);
+                        pass.putExtra("currentUser", currentUser);
+                        startActivity(pass);
+                    }
+                });
             }
         });
 
