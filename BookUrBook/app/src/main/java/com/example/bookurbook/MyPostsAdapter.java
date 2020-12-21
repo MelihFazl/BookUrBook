@@ -98,6 +98,7 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.ViewHold
                 Intent intent = new Intent(context, PostActivity.class);
                 intent.putExtra("post", myPosts.get(position));
                 intent.putExtra("currentUser", myPosts.get(position).getOwner());
+                intent.putExtra("fromPostList",false);
                 PostList postlist = new PostList();
                 for(int i = 0; i < myPosts.size(); i++)
                 {

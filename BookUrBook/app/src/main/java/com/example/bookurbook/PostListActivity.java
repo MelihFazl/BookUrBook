@@ -203,7 +203,7 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
 
     @Override
     public void filterThePosts(String uni, String course, int lowPrice, int highPrice) {
-
+        postListAdapter.filterResults(uni, course, lowPrice, highPrice);
     }
 
 }

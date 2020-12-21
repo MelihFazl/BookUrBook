@@ -190,7 +190,9 @@ public class MainMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent adminPanel = new Intent(MainMenuActivity.this,AdminPanelActivity.class);
+                adminPanel.putExtra("currentUser", currentUser);
                 startActivity(adminPanel);
+                finish();
             }
         });
 

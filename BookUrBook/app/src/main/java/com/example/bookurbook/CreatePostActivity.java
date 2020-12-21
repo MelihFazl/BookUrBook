@@ -103,9 +103,10 @@ public class CreatePostActivity extends AppCompatActivity {
         postDescriptionCreatePost = findViewById(R.id.postDescriptionCreatePost);
         homeButton = findViewById(R.id.homeButtonCreatePost);
         homeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
+            @Override public void onClick(View v) {
+                Intent startIntent = new Intent(CreatePostActivity.this, MainMenuActivity.class);
+                startIntent.putExtra("currentUser" , currentUser);
+                startActivity(startIntent);
             }
         });
 

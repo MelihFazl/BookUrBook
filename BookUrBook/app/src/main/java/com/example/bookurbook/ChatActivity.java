@@ -7,7 +7,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -18,6 +21,8 @@ import android.widget.Toast;
 import com.example.bookurbook.models.Admin;
 import com.example.bookurbook.models.Chat;
 import com.example.bookurbook.models.Message;
+import com.example.bookurbook.models.Post;
+import com.example.bookurbook.models.PostList;
 import com.example.bookurbook.models.RegularUser;
 import com.example.bookurbook.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -40,7 +45,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ChatActivity extends AppCompatActivity
+public class ChatActivity extends AppCompatActivity implements ReportPostDialogListener
 {
     //variables
     private User currentUser;
@@ -56,6 +61,8 @@ public class ChatActivity extends AppCompatActivity
     private ImageView sendButton;
     private EditText messageBox;
     private Toolbar toolbar;
+    private ImageButton homeButton;
+    private ImageButton reportButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -78,11 +85,15 @@ public class ChatActivity extends AppCompatActivity
         timeFormat = new SimpleDateFormat("HH:mm");
         sendButton = findViewById(R.id.send_message_button);
         messageBox = findViewById(R.id.message_box);
+        homeButton = findViewById(R.id.homeButton);
+        reportButton = findViewById(R.id.reportButton);
+
         toolbar = findViewById(R.id.toolbar_chat);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Chat with " + currentChat.getUser2().getUsername());
+
         msgRef = db.collection("messages").document(currentChat.getChatID()).collection("messagetree");
         msgRef.addSnapshotListener(new EventListener<QuerySnapshot>()
         {
@@ -133,6 +144,21 @@ public class ChatActivity extends AppCompatActivity
                 messageBox.setText("");
             }
         });
+
+        homeButton.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                Intent startIntent = new Intent(ChatActivity.this, MainMenuActivity.class);
+                startIntent.putExtra("currentUser" , currentUser);
+                startActivity(startIntent);
+            }
+        });
+
+        reportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openPostReportDialog();
+            }
+        });
     }
 
     private void buildRecyclerView()
@@ -169,5 +195,41 @@ public class ChatActivity extends AppCompatActivity
                 });
             }
         });
+    }
+
+    public void openPostReportDialog()
+    {
+        ReportDialog dialog = new ReportDialog();
+        dialog.show(getSupportFragmentManager(), "");
+    }
+
+    @Override
+    public void applyTexts(String description, String category) {
+        currentChat.getUser2().report(description, category);
+        currentChat.getUser2().setReportNum(currentUser.getReportNum()+1);
+        //System.out.println(post.getReports().get(0).getDescription());
+        //System.out.println(post.getReports().get(0).getCategory());
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent pass;
+        if((boolean) getIntent().getExtras().get("fromPostActivity")) {
+            pass = new Intent(ChatActivity.this, PostActivity.class);
+            pass.putExtra("postlist", (PostList) getIntent().getSerializableExtra("postlist"));
+            pass.putExtra("post", (Post) getIntent().getSerializableExtra("post"));
+            pass.putExtra("fromPostList", true);
+        }
+        else
+            pass = new Intent(ChatActivity.this, MyChatsActivity.class);
+        pass.putExtra("currentUser", currentUser);
+        startActivity(pass);
+        finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        onBackPressed();
+        return super.onOptionsItemSelected(item);
     }
 }
