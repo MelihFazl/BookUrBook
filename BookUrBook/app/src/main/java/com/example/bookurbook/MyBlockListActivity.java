@@ -53,9 +53,9 @@ public class MyBlockListActivity extends AppCompatActivity {
     public void add() //silinecek
     {
 
-
         //blockedUsers =  currentUser.getBlockedUsers().getUserArray(); //userliste eklendi silincek
        // blockedUsers =  currentUser.getBlockedUsers().getUserArray(); //userliste eklendi silincek
+
 
     }
 

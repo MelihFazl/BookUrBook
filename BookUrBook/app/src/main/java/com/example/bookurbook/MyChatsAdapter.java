@@ -26,12 +26,14 @@ public class MyChatsAdapter extends RecyclerView.Adapter<MyChatsAdapter.MyChatsV
     private ArrayList<Chat> chatsList;
     private Context context;
     private User currentUser;
+    private ArrayList<String> blockedUsernames;
 
-    public MyChatsAdapter(Context c, ArrayList<Chat> list,  User currentUser)
+    public MyChatsAdapter(Context c, ArrayList<Chat> list,  User currentUser, ArrayList<String> blockedUsernames)
     {
         chatsList = new ArrayList<>(list);
         context = c;
         this.currentUser = currentUser;
+        this.blockedUsernames = blockedUsernames;
     }
 
 
@@ -61,6 +63,7 @@ public class MyChatsAdapter extends RecyclerView.Adapter<MyChatsAdapter.MyChatsV
                     pass.putExtra("currentUser", currentUser);
                     pass.putExtra("fromPostActivity",false);
                     pass.putExtra("clickedChat", exampleChat);
+                    pass.putExtra("blockedUsernames", blockedUsernames);
                     context.startActivity(pass);
                 }
             }
