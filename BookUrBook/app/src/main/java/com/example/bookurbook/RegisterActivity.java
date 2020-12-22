@@ -133,7 +133,7 @@ public class RegisterActivity extends AppCompatActivity {
                     else
                     {
                         Toast.makeText(RegisterActivity.this, "Your verification code has been sent to your email.",  Toast.LENGTH_LONG);
-                        JavaMailAPI javaMailAPI = new JavaMailAPI(RegisterActivity.this,email,VERIFICATION_SUBJECT, VERIFICATION_MAIL);
+                        JavaMailAPI javaMailAPI = new JavaMailAPI(RegisterActivity.this, email, VERIFICATION_SUBJECT, VERIFICATION_MAIL);
                         javaMailAPI.execute();
                         Intent pass = new Intent(RegisterActivity.this, VerificationActivity.class);
                         pass.putExtra("username", username);

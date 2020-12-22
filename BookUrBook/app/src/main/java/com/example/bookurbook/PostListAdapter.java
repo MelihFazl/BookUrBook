@@ -73,7 +73,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
                 pass.putExtra("currentUser", currentUser);
                 pass.putExtra("postlist", list);
                 pass.putExtra("post", examplePost);
-                pass.putExtra("fromPostList", true);
+                pass.putExtra("previousActivity", 1);
                 context.startActivity(pass);
             }
         });
