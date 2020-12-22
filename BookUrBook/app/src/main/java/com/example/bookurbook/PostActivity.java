@@ -63,9 +63,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         TextView postDescriptionTextView;
         ImageButton reportButton;
         ImageButton wishlistButton;
-
         ImageButton chatButton;
-
         ImageButton homeButton;
 
         ImageView postPic;
@@ -89,8 +87,12 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
             currentUser = (RegularUser) getIntent().getSerializableExtra("currentUser");
         postList = (PostList) getIntent().getSerializableExtra("postlist");
 
+        if(post.getOwner().getUsername().equals(currentUser.getUsername()))
+            chatButton.setVisibility(View.GONE);
+
         if( (boolean) (getIntent().getExtras().get("fromPostList")))
         isPostListPreviousActivity = (boolean) getIntent().getExtras().get("fromPostList"); //does not get fromPostList intent?
+
 
 
         postPic = findViewById(R.id.postImageView);
