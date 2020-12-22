@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.bookurbook.models.Chat;
 import com.example.bookurbook.models.PostList;
 import com.example.bookurbook.models.User;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ public class MyChatsAdapter extends RecyclerView.Adapter<MyChatsAdapter.MyChatsV
     private Context context;
     private User currentUser;
     private ArrayList<String> blockedUsernames;
+    private FirebaseFirestore db;
 
     public MyChatsAdapter(Context c, ArrayList<Chat> list,  User currentUser, ArrayList<String> blockedUsernames)
     {
@@ -52,6 +55,10 @@ public class MyChatsAdapter extends RecyclerView.Adapter<MyChatsAdapter.MyChatsV
         holder.userName.setText(exampleChat.getUser2().getUsername());
         holder.latestChat.setText(exampleChat.getLastMessageInFromDB());  // maybe this will be getLastMessageInFromDb ??
         Picasso.get().load(exampleChat.getUser2().getAvatar()).into(holder.userAvatar);
+        if ( !exampleChat.isReadByUser1() )
+        {
+            holder.newMessageIcon.setVisibility(View.VISIBLE);
+        }
         holder.layout.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -80,6 +87,7 @@ public class MyChatsAdapter extends RecyclerView.Adapter<MyChatsAdapter.MyChatsV
 
         // variables
         ImageView userAvatar;
+        ImageView newMessageIcon;
         TextView userName;
         TextView latestChat;
         private LinearLayout layout;
@@ -90,6 +98,7 @@ public class MyChatsAdapter extends RecyclerView.Adapter<MyChatsAdapter.MyChatsV
             userName = itemView.findViewById(R.id.my_chats_username);
             latestChat = itemView.findViewById(R.id.my_chats_latest_message);
             layout = (LinearLayout) itemView.findViewById(R.id.chat_layout_id);
+            newMessageIcon = itemView.findViewById(R.id.new_message_icon);
         }
     }
 
