@@ -21,7 +21,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/blockList"
+        android:id="@+id/wishList"
         android:layout_width="400dp"
         android:layout_height="674dp"
         android:layout_marginLeft="15dp"

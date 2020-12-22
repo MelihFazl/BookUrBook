@@ -25,6 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -95,8 +96,8 @@ public class MainMenuActivity extends AppCompatActivity {
                                         db.collection("users").whereEqualTo("username", document.getString("username")).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                             @Override
                                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                FirebaseFirestore db;
-                                                for (DocumentSnapshot doc : task.getResult()) {
+                                                for (DocumentSnapshot doc : task.getResult())
+                                                {
                                                     currentPostOwner = new RegularUser(doc.getString("username"), doc.getString("email"), doc.getString("avatar"));
                                                 }
                                                 if (!document.getBoolean("sold")) {
@@ -201,10 +202,58 @@ public class MainMenuActivity extends AppCompatActivity {
                 startActivity(pass);
             }
         });
+
         wishlist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainMenuActivity.this, WishlistActivity.class));
+                postList = new PostList();
+                Intent pass = new Intent(MainMenuActivity.this, WishlistActivity.class);
+                db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                        db.collection("posts").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            System.out.println("complete OLDU");
+                                if (task.isSuccessful()) {
+                                    System.out.println("success oldu.");
+                                    for (DocumentSnapshot document : task.getResult()) {
+                                        db.collection("users").whereEqualTo("username", document.getString("username")).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                List<String> wished = (List<String>) documentSnapshot.get("wishlist");
+                                                for (DocumentSnapshot doc : task.getResult())
+                                                {
+                                                    currentPostOwner = new RegularUser(doc.getString("username"), doc.getString("email"), doc.getString("avatar"));
+                                                }
+                                                if (!document.getBoolean("sold")) {
+                                                    if (wished.contains(document.getString("id"))) {
+                                                        postList.addPost(new Post(document.getString("description"), document.getString("title"), document.getString("university")
+                                                                , document.getString("course"), document.getLong("price").intValue(), document.getString("picture"), currentPostOwner, (String) document.get("id")));
+                                                    }
+                                                }
+                                                currentUser.setWishList(postList.getPostArray());
+                                                pass.putExtra("currentUser", currentUser);
+                                                startActivity(pass);
+                                                finish();
+                                            }
+
+                                        });
+
+                                    }
+                                }
+                                else
+                                    {
+                                    pass.putExtra("currentUser", currentUser);
+
+                                }
+                            }
+                        });
+
+                    }
+
+                });
             }
         });
 

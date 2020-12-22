@@ -35,8 +35,8 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         //inner class properties
-        private TextView postName, seller, price, likeButton;
-        private ImageView photo;
+        private TextView postName, seller, price;
+        private ImageView photo, likeButton;
 
         //inner class constructor
         public ViewHolder(View view) {
@@ -59,14 +59,14 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.postName.setText(posts.get(position).getTitle());
-        holder.seller.setText(posts.get(position).getOwner().toString());
+        holder.seller.setText(posts.get(position).getOwner().getUsername());
         Picasso.get().load(posts.get(position).getPicture()).into(holder.photo);
         holder.price.setText(Integer.toString(posts.get(position).getPrice()) + "₺");
         holder.likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, posts.get(position).getTitle() + " has been removed from WishList", Toast.LENGTH_SHORT).show();
-                currentUser.getWishList().deletePost(posts.get(position));
+                currentUser.getWishList().remove(posts.get(position));
                 Intent pass = new Intent(context, WishlistActivity.class);
                 pass.putExtra("currentUser", currentUser);
                 context.startActivity(pass);

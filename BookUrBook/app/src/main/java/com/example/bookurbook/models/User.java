@@ -16,14 +16,16 @@ public abstract class User implements Reportable, Serializable
     private String avatar;
     private UserSpecPostList userPostList;
     private ArrayList<User> blockedUsers;
+    private ArrayList<Post> wishList;
 
     //constructor
-    public User(String username, String email, String avatar)///PASSWORD AS PARAMETER-DATABASE?? //yes of course!.
+    public User(String username, String email, String avatar)
     {
         this.username = username;
         this.email = email;
         this.avatar = avatar;
         reports = new ArrayList<Report>();
+        wishList = new ArrayList<Post>();
         userPostList = new UserSpecPostList(this);
         blockedUsers = new ArrayList<User>();
         reportNum = 0;
@@ -35,6 +37,10 @@ public abstract class User implements Reportable, Serializable
     public void setUsername(String username) {
         this.username = username;
 
+    }
+
+    public ArrayList<Post> getWishList() {
+        return wishList;
     }
 
     public int getReportNum() {
@@ -49,10 +55,6 @@ public abstract class User implements Reportable, Serializable
     {
         return email;
     }
-
-    //public UserDatabaseConnection getUdb() {
-      //  return udb;
-    //}
 
     public void setEmail(String email)
     {
@@ -89,6 +91,10 @@ public abstract class User implements Reportable, Serializable
         this.avatar = avatar;
     }
 
+    public void setWishList(ArrayList<Post> wishList) {
+        this.wishList = wishList;
+    }
+
     public UserSpecPostList getUserPostList()
     {
         return userPostList;
@@ -108,35 +114,6 @@ public abstract class User implements Reportable, Serializable
     {
         this.blockedUsers = blockedUsers;
     }
-
-    /**public FirebaseAuth getAuth()
-     {
-     return auth;
-     }
-
-     public void setAuth(FirebaseAuth auth)
-     {
-     this.auth = auth;
-     }
-
-     public FirebaseFirestore getDatabase()
-     {
-     return database;
-     }
-
-
-     public void setDatabase(FirebaseFirestore database)
-     {
-     this.database = database;
-     }
-     */
-
-    /**
-     public void changePassword()
-     {
-     throw new UnsupportedOperationException("The method is not implemented yet.");
-     }
-     */
 
     public void blockUser(User user)
     {
