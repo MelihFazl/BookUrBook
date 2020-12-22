@@ -58,6 +58,7 @@ public class WelcomeActivity extends AppCompatActivity {
                             currentUser.setAvatar(documentSnapshot.getString("avatar"));
                         } else
                             currentUser.setAvatar("https://firebasestorage.googleapis.com/v0/b/bookurbook-a02e4.appspot.com/o/images%2Fprofile_pictures%2Fdefault.jpg?alt=media&token=a54505f6-0d24-40cd-a626-e39a655254c6");
+
                         Intent pass = new Intent(WelcomeActivity.this, MainMenuActivity.class);
                         pass.putExtra("currentUser", currentUser);
                         startActivity(pass);

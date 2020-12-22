@@ -1,5 +1,4 @@
 package com.example.bookurbook;
-import com.example.bookurbook.ReportDialog;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,13 +12,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.content.DialogInterface;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageButton;
 
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,15 +24,20 @@ import com.example.bookurbook.models.Post;
 import com.example.bookurbook.models.PostList;
 import com.example.bookurbook.models.RegularUser;
 import com.example.bookurbook.models.User;
-import com.example.bookurbook.models.WishList;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PostActivity extends AppCompatActivity implements ReportPostDialogListener {
@@ -46,9 +45,9 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
     private Post post;
     private PostList postList;
     private User currentUser;
-    private WishList wishlist;
     private FirebaseFirestore db;
-    private boolean isPostListPreviousActivity;
+    private FirebaseAuth auth;
+    private int previousActivity;
 
 
     @Override
@@ -79,6 +78,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         getSupportActionBar().setTitle("Post");
         chatButton = findViewById(R.id.chat_image_button);
         db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
 
         post = (Post) getIntent().getSerializableExtra("post");
         if (getIntent().getSerializableExtra("currentUser") instanceof Admin)
@@ -87,11 +87,8 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
             currentUser = (RegularUser) getIntent().getSerializableExtra("currentUser");
         postList = (PostList) getIntent().getSerializableExtra("postlist");
 
-        if(post.getOwner().getUsername().equals(currentUser.getUsername()))
-            chatButton.setVisibility(View.GONE);
 
-        if( (boolean) (getIntent().getExtras().get("fromPostList")))
-        isPostListPreviousActivity = (boolean) getIntent().getExtras().get("fromPostList"); //does not get fromPostList intent?
+        previousActivity = (Integer) getIntent().getExtras().get("previousActivity"); //does not get fromPostList intent?
 
 
 
@@ -114,7 +111,14 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         postPriceTextView.setText("Price: " + post.getPrice() + "");
         postDescriptionTextView.setText(post.getDescription());
         Picasso.get().load(post.getPicture()).into(postPic);
-        System.out.println(post.getPicture() + "link");
+        if(post.getOwner().getUsername().equals(currentUser.getUsername()))
+        {
+            chatButton.setVisibility(View.INVISIBLE);
+            wishlistButton.setVisibility(View.INVISIBLE);
+            reportButton.setVisibility(View.INVISIBLE);
+        }
+
+
 
         if (post.getOwner().getReports().size() >= 10)
             badRepAlert();
@@ -126,14 +130,28 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
          */
         wishlistButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if (wishlist.findPost(post)) {
-                    wishlist.deletePost(post);
-                    Toast.makeText(PostActivity.this, "You have deleted the item from the wishlist", Toast.LENGTH_LONG).show();
-                } else {
-                    wishlist.addPost(post);
-                    Toast.makeText(PostActivity.this, "You have added the item to the wishlist", Toast.LENGTH_LONG).show();
-                }
+            public void onClick(View v)
+            {
+                db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        List<String> wishlist = Collections.emptyList();
+                        wishlist = (List<String>) documentSnapshot.get("wishlist");
+                        if(!wishlist.contains(post.getId()))
+                        {
+                            wishlist.add(post.getId());
+                        }
+                        HashMap<String, Object> newData = new HashMap<>();
+                        newData.put("wishlist", wishlist);
+                        db.collection("users").document(auth.getCurrentUser().getUid()).set(newData, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(PostActivity.this, post.getTitle() + " has been added your WishList", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                    }
+                });
             }
         });
 
@@ -279,10 +297,12 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
 
     public void onBackPressed() {
         Intent pass;
-        if(isPostListPreviousActivity)
-        pass = new Intent(PostActivity.this, PostListActivity.class);
-        else
+        if(previousActivity == 1)
+            pass = new Intent(PostActivity.this, PostListActivity.class);
+        else if(previousActivity == 2)
             pass = new Intent(PostActivity.this, MyPostsActivity.class);
+        else
+            pass = new Intent(PostActivity.this, WishlistActivity.class);
         pass.putExtra("postlist", postList);
         pass.putExtra("currentUser", currentUser);
         startActivity(pass);
