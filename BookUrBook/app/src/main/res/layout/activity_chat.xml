@@ -17,7 +17,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
     <ImageButton
         android:id="@+id/reportButton"
         android:layout_width="50dp"
@@ -44,11 +43,13 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/my_chats_recycler_id"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/message_send_layout"
         android:layout_below="@+id/toolbar_chat"
         android:layout_marginBottom="-2dp"
+
         android:background="#e3c6bf"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -82,6 +83,7 @@
             android:hint="Type your message..."
             android:textSize="16sp"
             android:layout_centerVertical="true"/>
+
 
         <ImageView
             android:id="@+id/send_message_button"

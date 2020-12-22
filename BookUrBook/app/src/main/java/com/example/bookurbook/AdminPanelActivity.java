@@ -38,42 +38,20 @@ public class AdminPanelActivity extends AppCompatActivity {
     }
     public void setProperties()
     {
-        //currentUser = (User) getIntent().getSerializableExtra("currentUser");
-        add();
+        currentUser = (User) getIntent().getSerializableExtra("currentUser");
         this.recyclerView = findViewById(R.id.reportList);
-        adapter = new ReportsAdapter(getBaseContext(), reportedUsers);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+       // adapter = new ReportsAdapter(getBaseContext(), reportedUsers);
+       // recyclerView.setAdapter(adapter);
+       // recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
     }
-    public void add() //silinecek
-    {
-        /*
-        currentUser = new RegularUser("miri","miray.ayerdem@ug.bilkent.edu.tr", "https://i.ytimg.com/vi/tIBN6kXHb_I/hqdefault.jpg");
-        currentUser.report("ahahaahh", "ahlaksızlık");
-        currentUser.report("zaaa", "mhhhh");
-        User user = new RegularUser("kaan","kaan.tek@ug.bilkent.edu.tr", "https://i.ytimg.com/vi/tIBN6kXHb_I/hqdefault.jpg");
-        user.report("amannn", "pehhh");
-        reportedUsers = new ArrayList<User>();
-        reportedUsers.add(currentUser);
-        reportedUsers.add(user);*/
 
-        currentUser = new RegularUser("miri","miray.ayerdem@ug.bilkent.edu.tr", "https://i.ytimg.com/vi/tIBN6kXHb_I/hqdefault.jpg");
-        currentUser.report("ahahaahh", "ahlaksızlık");
-        currentUser.report("zaaa", "mhhhh");
-        User user = new RegularUser("kaan","kaan.tek@ug.bilkent.edu.tr", "https://i.ytimg.com/vi/tIBN6kXHb_I/hqdefault.jpg");
-        user.report("amannn", "pehhh");
-        //currentUser.getBlockedUsers().addUser(new RegularUser("kerem","k.sahin@ug.bilkent.edu.tr", "https://i.ytimg.com/vi/tIBN6kXHb_I/hqdefault.jpg"));
-        //currentUser.getBlockedUsers().addUser(new RegularUser("melih","melih.keskin@ug.bilkent.edu.tr", "https://i.ytimg.com/vi/tIBN6kXHb_I/hqdefault.jpg"));
-        //currentUser.getBlockedUsers().addUser(new RegularUser("ferhat","ferhat.korkmaz@ug.bilkent.edu.tr", "https://i.ytimg.com/vi/tIBN6kXHb_I/hqdefault.jpg"));
-        //reportedUsers =  currentUser.getBlockedUsers().getUserArray();
-    }
 
     @Override
     public void onBackPressed()
     {
         Intent pass = new Intent(AdminPanelActivity.this, MainMenuActivity.class);
-        pass.putExtra("currentUser", currentUser);
+        //pass.putExtra("currentUser", currentUser);
         startActivity(pass);
         finish();
     }
