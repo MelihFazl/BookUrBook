@@ -49,6 +49,7 @@ public class MyChatsActivity extends AppCompatActivity {
     private MyChatsAdapter myChatsAdapter;
     private ArrayList<String> blockedUsernames;
     private Toolbar toolbar;
+    private int otherIs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,9 +89,15 @@ public class MyChatsActivity extends AppCompatActivity {
                     if (doc != null && (doc.getString("username1").equals(currentUser.getUsername()) || doc.getString("username2").equals(currentUser.getUsername())))
                         {
                             if ( doc.getString("username1").equals(currentUser.getUsername()))
+                            {
                                 otherUsername = doc.getString("username2");
+                                otherIs = 2;
+                            }
                             else
+                            {
                                 otherUsername = doc.getString("username1");
+                                otherIs = 1;
+                            }
                             db.collection("users").whereEqualTo("username", otherUsername)
                                     .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
                             {
@@ -107,6 +114,16 @@ public class MyChatsActivity extends AppCompatActivity {
                                                         document.getString("email"), document.getString("avatar")), doc.getId());
                                                 chat.setLastMessageContentInDB(doc.getString("lastmessage"));
                                                 chat.setDate(doc.getDate("lastmessagedate"));
+                                                if ( otherIs == 2 )
+                                                {
+                                                    chat.setReadByUser1(doc.getBoolean("readbyuser1"));
+                                                    chat.setReadByUser2(doc.getBoolean("readbyuser2"));
+                                                }
+                                                else
+                                                {
+                                                    chat.setReadByUser1(doc.getBoolean("readbyuser2"));
+                                                    chat.setReadByUser2(doc.getBoolean("readbyuser1"));
+                                                }
                                                 chatList.add(chat);
                                            }
                                         }

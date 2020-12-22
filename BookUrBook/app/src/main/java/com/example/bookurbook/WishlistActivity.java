@@ -3,11 +3,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
+
 import com.example.bookurbook.models.Admin;
+import com.example.bookurbook.models.Post;
 import com.example.bookurbook.models.PostList;
 import com.example.bookurbook.models.RegularUser;
 import com.example.bookurbook.models.User;
+
+import java.util.ArrayList;
 
 public class WishlistActivity extends AppCompatActivity {
     //properties
@@ -15,18 +22,19 @@ public class WishlistActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     WishlistAdapter adapter;
     User currentUser;
-    PostList wishlist;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wishlist);
-        toolbar = findViewById(R.id.wishlistToolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("Wishlist");
+        //toolbar = findViewById(R.id.wishlistToolbar);
+        //setSupportActionBar(toolbar);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayShowHomeEnabled(true);
+        //getSupportActionBar().setTitle("Wishlist");
+        setProperties();
     }
 
     public void setProperties(){
@@ -35,14 +43,14 @@ public class WishlistActivity extends AppCompatActivity {
         else
             currentUser = (RegularUser)getIntent().getSerializableExtra("currentUser");
 
-        //wishlist = (PostList) getIntent().getSerializableExtra("postlist");
+
         recyclerView = findViewById(R.id.wishList);
-        adapter = new WishlistAdapter(WishlistActivity.this, wishlist.getPostArray(), currentUser);
+        adapter = new WishlistAdapter(WishlistActivity.this, currentUser.getWishList(), currentUser);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    /**@Override
+
     public void onBackPressed()
     {
         Intent pass = new Intent(WishlistActivity.this, MainMenuActivity.class);
@@ -55,6 +63,6 @@ public class WishlistActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         onBackPressed();
         return super.onOptionsItemSelected(item);
-    }*/
+    }
 
 }

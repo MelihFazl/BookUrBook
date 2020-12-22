@@ -80,14 +80,15 @@ public class VerificationActivity extends AppCompatActivity {
                        {
                            if(task.isSuccessful())
                            {
-                               List<String> blocked = Collections.emptyList();
+                               List<String> empty= Collections.emptyList();
                                HashMap<String, Object> newUserData = new HashMap<>();
                                HashMap<String, Object> topUserInfo = new HashMap<>();
                                newUserData.put("username", username);
                                newUserData.put("email", email);
                                newUserData.put("banned", false);
                                newUserData.put("admin", false);
-                               newUserData.put("blockedusers", blocked);
+                               newUserData.put("blockedusers", empty);
+                               newUserData.put("wishlist", empty);
                                newUserData.put("avatar", "https://firebasestorage.googleapis.com/v0/b/bookurbook-a02e4.appspot.com/o/images%2Fprofile_pictures%2Fdefault.jpg?alt=media&token=a54505f6-0d24-40cd-a626-e39a655254c6");
                                db.collection("users").document(auth.getCurrentUser().getUid()).set(newUserData);
                                Toast.makeText(VerificationActivity.this, "Your account has been created. You are being to login menu in 2 seconds.", Toast.LENGTH_LONG).show();
