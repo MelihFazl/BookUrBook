@@ -168,6 +168,14 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
         homeButton.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 Intent startIntent = new Intent(ChatActivity.this, MainMenuActivity.class);
+                if ( currentChat.getChatID().indexOf(currentUser.getUsername()) == 0)
+                {
+                    db.collection("chats").document(currentChat.getChatID()).update("readbyuser1", true);
+                }
+                else
+                {
+                    db.collection("chats").document(currentChat.getChatID()).update("readbyuser2", true);
+                }
                 startIntent.putExtra("currentUser" , currentUser);
                 startActivity(startIntent);
             }
@@ -230,6 +238,16 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
         data.put("date", msgdate);
         chatData.put("lastmessage", msg.getContent());
         chatData.put("lastmessagedate", msgdate);
+        if( currentChat.getChatID().indexOf(currentUser.getUsername()) == 0)
+        {
+            chatData.put("readbyuser1", true);
+            chatData.put("readbyuser2", false);
+        }
+        else
+        {
+            chatData.put("readbyuser1", false);
+            chatData.put("readbyuser2", true);
+        }
         msgRef.add(data).addOnCompleteListener(new OnCompleteListener<DocumentReference>()
         {
             @Override
@@ -275,6 +293,15 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
             pass = new Intent(ChatActivity.this, MyChatsActivity.class);
         pass.putExtra("currentUser", currentUser);
         pass.putExtra("blockedUsernames", getIntent().getStringArrayListExtra("blockedUsernames"));
+
+        if ( currentChat.getChatID().indexOf(currentUser.getUsername()) == 0)
+        {
+            db.collection("chats").document(currentChat.getChatID()).update("readbyuser1", true);
+        }
+        else
+        {
+            db.collection("chats").document(currentChat.getChatID()).update("readbyuser2", true);
+        }
         startActivity(pass);
         finish();
     }

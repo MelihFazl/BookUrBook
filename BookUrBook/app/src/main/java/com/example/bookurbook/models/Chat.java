@@ -13,6 +13,8 @@ public class Chat implements Serializable, Comparable<Chat>
     String lastMessageContentInDB;
     Date date;
     String chatID;
+    boolean readByUser1;
+    boolean readByUser2;
 
     //constructor
     public Chat(User user1, User user2, String chatID)
@@ -21,6 +23,8 @@ public class Chat implements Serializable, Comparable<Chat>
         this.user2 = user2;
         this.chatID = chatID;
         messages = new ArrayList<Message>();
+        readByUser1 = true;
+        readByUser2 = true;
     }
 
     //methods
@@ -108,4 +112,23 @@ public class Chat implements Serializable, Comparable<Chat>
         return chatID;
     }
 
+    public boolean isReadByUser1()
+    {
+        return readByUser1;
+    }
+
+    public boolean isReadByUser2()
+    {
+        return readByUser2;
+    }
+
+    public void setReadByUser1(boolean readByUser1)
+    {
+        this.readByUser1 = readByUser1;
+    }
+
+    public void setReadByUser2(boolean readByUser2)
+    {
+        this.readByUser2 = readByUser2;
+    }
 }
