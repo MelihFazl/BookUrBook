@@ -35,7 +35,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         //inner class properties
-        private TextView postName, seller, price;
+        private TextView postName, seller, price, likeButton;
         private ImageView photo;
 
         //inner class constructor
@@ -45,6 +45,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
             this.seller = view.findViewById(R.id.postSeller);
             this.price = view.findViewById(R.id.priceText);
             this.photo = view.findViewById(R.id.postImageView);
+            this.likeButton = view.findViewById(R.id.like_btn);
         }
     }
 
@@ -61,11 +62,21 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
         holder.seller.setText(posts.get(position).getOwner().toString());
         Picasso.get().load(posts.get(position).getPicture()).into(holder.photo);
         holder.price.setText(Integer.toString(posts.get(position).getPrice()) + "₺");
+        holder.likeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context, posts.get(position).getTitle() + " has been removed from WishList", Toast.LENGTH_SHORT).show();
+                currentUser.getWishList().deletePost(posts.get(position));
+                Intent pass = new Intent(context, WishlistActivity.class);
+                pass.putExtra("currentUser", currentUser);
+                context.startActivity(pass);
+            }
+        });
 
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return posts.size();
     }
 }
