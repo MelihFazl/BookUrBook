@@ -37,6 +37,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
 
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/new_message_icon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/new_message_icon"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/my_chats_username"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:visibility="invisible"/>
 
                 <ImageView
                     android:id="@+id/my_chats_avatar"
@@ -51,10 +60,10 @@
                 <TextView
                     android:id="@+id/my_chats_latest_message"
                     android:layout_width="230dp"
-                    android:layout_height="39dp"
+                    android:layout_height="30dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginLeft="16dp"
-                    android:text="this is the latest message"
+                    android:text="this is the latest message falan filan inter"
                     android:textSize="20dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

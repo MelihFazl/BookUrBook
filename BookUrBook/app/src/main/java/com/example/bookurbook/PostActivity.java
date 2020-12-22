@@ -212,6 +212,8 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
                                             chatData.put("username2", currentUser.getUsername());
                                             chatData.put("lastmessage", "");
                                             chatData.put("lastmessagedate", new Date());
+                                            chatData.put("readbyuser1", true);
+                                            chatData.put("readbyuser2", true);
                                             db.collection("chats").document(chat.getChatID()).set(chatData);
                                             pass.putExtra("currentUser", currentUser);
                                             pass.putExtra("clickedChat", chat);
