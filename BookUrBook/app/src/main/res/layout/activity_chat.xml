@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -17,37 +17,39 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+    <ImageButton
+        android:id="@+id/reportButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center|right"
+        android:src="@drawable/baseline_report_problem_black_18dp" />
 
-        <ImageButton
-            android:id="@+id/reportButton"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center|right"
-            android:src="@drawable/baseline_report_problem_black_18dp" />
+    <ImageButton
+        android:id="@+id/blockButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center|right"
+        android:src="@drawable/baseline_block_black_18dp" />
 
-        <ImageButton
-            android:id="@+id/blockButton"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center|right"
-            android:src="@drawable/baseline_block_black_18dp" />
-
-        <ImageButton
-            android:id="@+id/homeButton"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center|right"
-            android:src="@drawable/ic_action_name" />
-
+    <ImageButton
+        android:id="@+id/homeButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center|right"
+        android:src="@drawable/ic_action_name" />
 
     </androidx.appcompat.widget.Toolbar>
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/my_chats_recycler_id"
-        android:layout_width="414dp"
-        android:layout_height="540dp"
-        android:layout_marginBottom="68dp"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/message_send_layout"
+        android:layout_below="@+id/toolbar_chat"
+        android:layout_marginBottom="-2dp"
+
         android:background="#e3c6bf"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -57,39 +59,43 @@
         app:layout_constraintTop_toTopOf="@+id/toolbar_chat"
         app:layout_constraintVertical_bias="0.448" />
 
-    <ImageView
-        android:id="@+id/send_message_button"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginRight="12dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/message_send_image"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/my_chats_recycler_id"
-        app:layout_constraintVertical_bias="0.88"
-        tools:ignore="MissingConstraints" />
+    <RelativeLayout
+        android:id="@+id/message_send_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:background="#e3c6bf"
+        android:layout_alignParentBottom="true">
 
-    <EditText
-        android:id="@+id/message_box"
-        style="@style/Widget.AppCompat.AutoCompleteTextView"
-        android:layout_width="325dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:background="@drawable/rounded_edittext"
-        android:ems="10"
-        android:hint="Type your message..."
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/send_message_button"
-        app:layout_constraintHorizontal_bias="0.571"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/my_chats_recycler_id"
-        app:layout_constraintVertical_bias="0.813" />
+        <EditText
+            android:id="@+id/message_box"
+            style="@style/Widget.AppCompat.AutoCompleteTextView"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_toStartOf="@+id/send_message_button"
+            android:layout_toLeftOf="@+id/send_message_button"
+            android:background="@drawable/rounded_edittext"
+            android:ems="10"
+            android:hint="Type your message..."
+            android:textSize="16sp"
+            android:layout_centerVertical="true"/>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/send_message_button"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/message_send_image"
+            android:scaleType="fitXY"
+            tools:ignore="MissingConstraints"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+</RelativeLayout>

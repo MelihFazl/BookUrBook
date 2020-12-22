@@ -37,12 +37,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ChatActivity extends AppCompatActivity implements ReportPostDialogListener
@@ -50,6 +52,7 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
     //variables
     private User currentUser;
     private FirebaseFirestore db;
+    private FirebaseAuth auth;
     private CollectionReference msgRef;
     private Chat currentChat;
     private ArrayList<Message> messages;
@@ -63,6 +66,7 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
     private Toolbar toolbar;
     private ImageButton homeButton;
     private ImageButton reportButton;
+    private ImageButton blockButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -71,6 +75,7 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
         setContentView(R.layout.activity_chat);
 
         db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
         if(getIntent().getSerializableExtra("currentUser") instanceof Admin)
         {
             currentUser = (Admin) getIntent().getSerializableExtra("currentUser");
@@ -87,6 +92,7 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
         messageBox = findViewById(R.id.message_box);
         homeButton = findViewById(R.id.homeButton);
         reportButton = findViewById(R.id.reportButton);
+        blockButton = findViewById(R.id.blockButton);
 
         toolbar = findViewById(R.id.toolbar_chat);
         setSupportActionBar(toolbar);
@@ -114,23 +120,12 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
                         msgData.setDate(doc.getDate("date"));
                         messages.add(msgData);
                     }
-
+                    //Create gui by using messages
                     Collections.sort(messages);
                     buildRecyclerView();
-
-                    for ( int i = 0; i < messages.size(); i++ )
-                    {
-                        System.out.println("for: " + i);
-                        System.out.println(messages.get(i).getContent());
-                        System.out.println(messages.get(i).getMessageDate());
-                        System.out.println(messages.get(i).getMessageTime());
-                        System.out.println(messages.get(i).getSentBy());
-                    }
-                    Collections.sort(messages);
-                    //Create gui by using messages
+                    recyclerView.scrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
             }
         });
-
 
         //Message sending
         sendButton.setOnClickListener(new View.OnClickListener()
@@ -138,10 +133,35 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
             @Override
             public void onClick(View v)
             {
-                date = new Date();
-                Message message = new Message(currentUser.getUsername(), messageBox.getText().toString(), dateFormat.format(date), timeFormat.format(date));
-                sendMessageToDatabase( message , date );
-                messageBox.setText("");
+                db.collection("users").whereEqualTo("username", currentChat.getUser2().getUsername()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+                {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task)
+                    {
+                        if( task.isSuccessful())
+                        {
+                            for( DocumentSnapshot doc :task.getResult() )
+                            {
+                                List<String> usersBlockedByOther = (List<String>) doc.get("blockedusers");
+                                if( usersBlockedByOther != null && usersBlockedByOther.contains(currentUser.getUsername()))
+                                {
+                                    Toast chatError = Toast.makeText(ChatActivity.this,"You are blocked by this user.", Toast.LENGTH_LONG);
+                                    chatError.show();
+                                }
+                                else
+                                {
+                                    date = new Date();
+                                    Message message = new Message(currentUser.getUsername(), messageBox.getText().toString(), dateFormat.format(date), timeFormat.format(date));
+                                    if( !messageBox.getText().toString().equals("") )
+                                    {
+                                        sendMessageToDatabase(message, date);
+                                        messageBox.setText("");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
             }
         });
 
@@ -157,6 +177,37 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
             @Override
             public void onClick(View v) {
                 openPostReportDialog();
+            }
+        });
+
+        blockButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        List<String> blockedUsernames = Collections.emptyList();
+                        blockedUsernames = (List<String>) documentSnapshot.get("blockedusers");
+                        blockedUsernames.add(currentChat.getUser2().getUsername());
+                        ArrayList<String> toBePassed = getIntent().getStringArrayListExtra("blockedUsernames");
+                        toBePassed.add(currentChat.getUser2().getUsername());
+                        HashMap<String, Object> newData = new HashMap<>();
+                        newData.put("blockedusers", blockedUsernames);
+                        db.collection("users").document(auth.getCurrentUser().getUid()).set(newData, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(ChatActivity.this, currentChat.getUser2().getUsername() + " has been blocked.", Toast.LENGTH_SHORT).show();
+                                Intent pass = new Intent(ChatActivity.this, MyChatsActivity.class);
+                                pass.putExtra("currentUser", currentUser);
+                                pass.putExtra("blockedUsernames", toBePassed);
+                                startActivity(pass);
+                            }
+                        });
+
+                    }
+                });
             }
         });
     }
@@ -223,6 +274,7 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
         else
             pass = new Intent(ChatActivity.this, MyChatsActivity.class);
         pass.putExtra("currentUser", currentUser);
+        pass.putExtra("blockedUsernames", getIntent().getStringArrayListExtra("blockedUsernames"));
         startActivity(pass);
         finish();
     }

@@ -21,11 +21,15 @@ import android.widget.Toast;
 import com.example.bookurbook.models.Admin;
 import com.example.bookurbook.models.RegularUser;
 import com.example.bookurbook.models.User;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -33,13 +37,17 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 public class SettingsActivity extends AppCompatActivity {
 
 
     private Button logout;
     private Button select;
+    private Button blocklist;
     private TextView userDetails;
     private ImageView profilePic;
     private Uri imageUri;
@@ -61,6 +69,7 @@ public class SettingsActivity extends AppCompatActivity {
     {
         logout = findViewById(R.id.logout);
         select = findViewById(R.id.selectImage);
+        blocklist = findViewById(R.id.blocked_users);
         profilePic = findViewById(R.id.profilepic);
         userDetails = findViewById(R.id.userdetails);
 
@@ -100,6 +109,48 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 choosePicture();
+            }
+        });
+        blocklist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentUser.setBlockedUsers(new ArrayList<User>());
+            db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                List<String> blockedUsernames = Collections.emptyList();
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        blockedUsernames = (List<String> )documentSnapshot.get("blockedusers");
+                        if(blockedUsernames.size() == 0)
+                        {
+                            Intent pass = new Intent(SettingsActivity.this, MyBlockListActivity.class);
+                            pass.putExtra("currentUser", currentUser);
+                            startActivity(pass);
+                            finish();
+                        }
+                        for(int i = 0; blockedUsernames.size() > i; i++)
+                        {
+                            db.collection("users").whereEqualTo("username", blockedUsernames.get(i)).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    for(DocumentSnapshot doc : task.getResult())
+                                    {   User toBeAdded;
+                                        if(doc.getBoolean("admin"))
+                                            toBeAdded = new Admin(doc.getString("username"), doc.getString("email"), doc.getString("avatar"));
+                                        else
+                                            toBeAdded = new RegularUser(doc.getString("username"), doc.getString("email"), doc.getString("avatar"));
+                                        if(!currentUser.getBlockedUsers().contains(toBeAdded))
+                                           currentUser.blockUser(toBeAdded);
+                                    }
+                                    Intent pass = new Intent(SettingsActivity.this, MyBlockListActivity.class);
+                                    pass.putExtra("currentUser", currentUser);
+                                    startActivity(pass);
+                                    finish();
+
+                                }
+                            });
+                        }
+                    }
+                });
             }
         });
     }

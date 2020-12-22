@@ -9,7 +9,7 @@
     tools:context=".MyBlockListActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/myBlocklistToolbar"
+        android:id="@+id/toolbarblocklist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#589114"

@@ -23,7 +23,10 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
@@ -64,8 +67,8 @@ public class VerificationActivity extends AppCompatActivity {
         String email = bundle.getString("email");
         String password = bundle.getString("password");
         String code = bundle.getString("code");
-        final String VERIFICATION_SUBJECT = " Your BookURBook verification code";
-        final String VERIFICATION_MAIL = "Your BookURBook verification code is " +  code + ".";
+        final String VERIFICATION_SUBJECT = " Your BookUrBook verification code";
+        final String VERIFICATION_MAIL = "Your BookUrBook verification code is " +  code + ".";
         verify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,16 +80,17 @@ public class VerificationActivity extends AppCompatActivity {
                        {
                            if(task.isSuccessful())
                            {
-                               Toast.makeText(VerificationActivity.this, "Your account has been created. You are being taken to the main menu.", Toast.LENGTH_LONG).show();
-
+                               List<String> blocked = Collections.emptyList();
                                HashMap<String, Object> newUserData = new HashMap<>();
                                HashMap<String, Object> topUserInfo = new HashMap<>();
                                newUserData.put("username", username);
                                newUserData.put("email", email);
                                newUserData.put("banned", false);
                                newUserData.put("admin", false);
+                               newUserData.put("blockedusers", blocked);
                                newUserData.put("avatar", "https://firebasestorage.googleapis.com/v0/b/bookurbook-a02e4.appspot.com/o/images%2Fprofile_pictures%2Fdefault.jpg?alt=media&token=a54505f6-0d24-40cd-a626-e39a655254c6");
                                db.collection("users").document(auth.getCurrentUser().getUid()).set(newUserData);
+                               Toast.makeText(VerificationActivity.this, "Your account has been created. You are being to login menu in 2 seconds.", Toast.LENGTH_LONG).show();
 
 
                                new CountDownTimer(2000, 1000)
