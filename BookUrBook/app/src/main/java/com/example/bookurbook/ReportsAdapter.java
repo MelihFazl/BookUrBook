@@ -11,13 +11,21 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.bookurbook.models.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.ViewHolder>{
     private ArrayList<User> reportedUsers;
     private User user;
     private Context context;
+    private FirebaseFirestore db;
 
 
     public ReportsAdapter(Context context, ArrayList<User> users) {
@@ -53,6 +61,7 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ReportsAdapter.ViewHolder holder, int position) {
         holder.username.setText(reportedUsers.get(position).getUsername());
+        db = FirebaseFirestore.getInstance();
         Picasso.get().load(reportedUsers.get(position).getAvatar()).into(holder.photo);
         holder.reportNumber.setText((reportedUsers.get(position).getReportNum() + ""));
         holder.bannedButton.setOnClickListener(new View.OnClickListener() {
@@ -62,11 +71,43 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.ViewHold
                     reportedUsers.get(position).setBanned(false);
                     holder.bannedView.setVisibility(View.INVISIBLE);
                     Toast.makeText(context, reportedUsers.get(position).getUsername() + "'s ban has been removed", Toast.LENGTH_SHORT).show();
+                    db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            String id;
+                            for(QueryDocumentSnapshot doc : task.getResult())
+                            {
+                                if(doc.getString("username").equals(reportedUsers.get(position).getUsername()))
+                                {
+                                    id = doc.getId();
+                                    HashMap<String, Object> newData = new HashMap<>();
+                                    newData.put("banned", false);
+                                    db.collection("users").document(id).set(newData, SetOptions.merge());
+                                }
+                            }
+                        }
+                    });
                 }
                 else {
                     reportedUsers.get(position).setBanned(true);
                     holder.bannedView.setVisibility(View.VISIBLE);
                     Toast.makeText(context, reportedUsers.get(position).getUsername() + " has been banned", Toast.LENGTH_SHORT).show();
+                    db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            String id;
+                            for(QueryDocumentSnapshot doc : task.getResult())
+                            {
+                                if(doc.getString("username").equals(reportedUsers.get(position).getUsername()))
+                                {
+                                    id = doc.getId();
+                                    HashMap<String, Object> newData = new HashMap<>();
+                                    newData.put("banned", true);
+                                    db.collection("users").document(id).set(newData, SetOptions.merge());
+                                }
+                            }
+                        }
+                    });
                 }
                     }
                 });
