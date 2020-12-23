@@ -104,6 +104,7 @@ public class MainMenuActivity extends AppCompatActivity {
                                                     if (!blockedUsernames.contains(currentPostOwner.getUsername())) {
                                                         postList.addPost(new Post(document.getString("description"), document.getString("title"), document.getString("university")
                                                                 , document.getString("course"), document.getLong("price").intValue(), document.getString("picture"), currentPostOwner, (String) document.get("id")));
+                                                        postList.getPostArray().get(postList.getPostArray().size() - 1).setReportNum(document.getLong("reports").intValue());
                                                     }
                                                 }
                                                 pass.putExtra("currentUser", currentUser);
@@ -215,9 +216,7 @@ public class MainMenuActivity extends AppCompatActivity {
                         db.collection("posts").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            System.out.println("complete OLDU");
                                 if (task.isSuccessful()) {
-                                    System.out.println("success oldu.");
                                     for (DocumentSnapshot document : task.getResult()) {
                                         db.collection("users").whereEqualTo("username", document.getString("username")).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                             @Override
@@ -244,7 +243,7 @@ public class MainMenuActivity extends AppCompatActivity {
                                     }
                                 }
                                 else
-                                    {
+                                {
                                     pass.putExtra("currentUser", currentUser);
 
                                 }
