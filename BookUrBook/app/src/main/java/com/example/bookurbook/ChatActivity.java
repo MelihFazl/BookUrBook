@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.bookurbook.MailAPISource.JavaMailAPI;
 import com.example.bookurbook.models.Admin;
 import com.example.bookurbook.models.Chat;
 import com.example.bookurbook.models.Message;
@@ -276,8 +277,31 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
     public void applyTexts(String description, String category) {
         currentChat.getUser2().report(description, category);
         currentChat.getUser2().setReportNum(currentUser.getReportNum()+1);
-        //System.out.println(post.getReports().get(0).getDescription());
-        //System.out.println(post.getReports().get(0).getCategory());
+        String reportDetails = "";
+        for(int i = 0; messages.size() > i; i++)
+        {
+            if(messages.get(i).getSentBy().equals(currentChat.getUser1().getUsername()))
+                reportDetails = reportDetails + currentChat.getUser1().getUsername() + ": " + messages.get(i).getContent() + " \uD83D\uDD52 sent in " + messages.get(i).getMessageDate() + "\n\n";
+            else
+                reportDetails = reportDetails + currentChat.getUser2().getUsername() + ": " + messages.get(i).getContent() + " \uD83D\uDD52 sent in " + messages.get(i).getMessageDate() + "\n\n";
+        }
+        reportDetails = reportDetails + " This report is categorized as " + category + " and described as " + description + ".";
+        JavaMailAPI reportPost = new JavaMailAPI(ChatActivity.this, "vvcbookurbook@gmail.com", currentChat.getUser2().getUsername() + " CHAT REPORT", reportDetails);
+        reportPost.execute();
+        db.collection("users").whereEqualTo("username", currentChat.getUser2().getUsername()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for(DocumentSnapshot doc : task.getResult())
+                {
+                    String reportedUserID = doc.getId();
+                    int currentReportCount = doc.getLong("reports").intValue() + 1;
+                    HashMap<String, Object> newData = new HashMap<>();
+                    newData.put("reports", currentReportCount);
+                    db.collection("users").document(reportedUserID).set(newData, SetOptions.merge());
+                }
+
+            }
+        });
     }
 
     @Override
