@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.example.bookurbook.models.Admin;
 import com.example.bookurbook.models.RegularUser;
 import com.example.bookurbook.models.User;
 
@@ -38,11 +39,12 @@ public class AdminPanelActivity extends AppCompatActivity {
     }
     public void setProperties()
     {
-        currentUser = (User) getIntent().getSerializableExtra("currentUser");
+        currentUser = (Admin) getIntent().getSerializableExtra("currentUser");
+        reportedUsers = (ArrayList<User>) getIntent().getSerializableExtra("userlist");
         this.recyclerView = findViewById(R.id.reportList);
-       // adapter = new ReportsAdapter(getBaseContext(), reportedUsers);
-       // recyclerView.setAdapter(adapter);
-       // recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new ReportsAdapter(getBaseContext(), reportedUsers);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
     }
 
@@ -51,7 +53,7 @@ public class AdminPanelActivity extends AppCompatActivity {
     public void onBackPressed()
     {
         Intent pass = new Intent(AdminPanelActivity.this, MainMenuActivity.class);
-        //pass.putExtra("currentUser", currentUser);
+        pass.putExtra("currentUser", currentUser);
         startActivity(pass);
         finish();
     }
