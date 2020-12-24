@@ -94,9 +94,13 @@ public class MyChatsActivity extends AppCompatActivity {
                     if (doc != null && (doc.getString("username1").equals(currentUser.getUsername()) || doc.getString("username2").equals(currentUser.getUsername())))
                         {
                             if ( doc.getString("username1").equals(currentUser.getUsername()))
+                            {
                                 otherUsername = doc.getString("username2");
+                            }
                             else
+                            {
                                 otherUsername = doc.getString("username1");
+                            }
                             db.collection("users").whereEqualTo("username", otherUsername)
                                     .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
                             {
@@ -113,6 +117,16 @@ public class MyChatsActivity extends AppCompatActivity {
                                                         document.getString("email"), document.getString("avatar")), doc.getId());
                                                 chat.setLastMessageContentInDB(doc.getString("lastmessage"));
                                                 chat.setDate(doc.getDate("lastmessagedate"));
+                                                if ( doc.getId().indexOf(currentUser.getUsername()) == 0)
+                                                {
+                                                    chat.setReadByUser1(doc.getBoolean("readbyuser1"));
+                                                    chat.setReadByUser2(doc.getBoolean("readbyuser2"));
+                                                }
+                                                else
+                                                {
+                                                    chat.setReadByUser1(doc.getBoolean("readbyuser2"));
+                                                    chat.setReadByUser2(doc.getBoolean("readbyuser1"));
+                                                }
                                                 chatList.add(chat);
                                            }
                                         }

@@ -18,6 +18,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.bookurbook.MailAPISource.JavaMailAPI;
+import com.example.bookurbook.SendNotificationPack.APIService;
+import com.example.bookurbook.SendNotificationPack.Client;
+import com.example.bookurbook.SendNotificationPack.Data;
+import com.example.bookurbook.SendNotificationPack.MyResponse;
+import com.example.bookurbook.SendNotificationPack.NotificationSender;
 import com.example.bookurbook.models.Admin;
 import com.example.bookurbook.models.Chat;
 import com.example.bookurbook.models.Message;
@@ -47,6 +53,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class ChatActivity extends AppCompatActivity implements ReportPostDialogListener
 {
     //variables
@@ -67,6 +77,8 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
     private ImageButton homeButton;
     private ImageButton reportButton;
     private ImageButton blockButton;
+    private APIService apiService;
+    private String otherUserID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -76,6 +88,7 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
 
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
+        apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
         if(getIntent().getSerializableExtra("currentUser") instanceof Admin)
         {
             currentUser = (Admin) getIntent().getSerializableExtra("currentUser");
@@ -157,6 +170,31 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
                                         sendMessageToDatabase(message, date);
                                         messageBox.setText("");
                                     }
+                                    db.collection("users").whereEqualTo("username", currentChat.getUser2().getUsername()).get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+                                            {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task)
+                                                {
+                                                    if (task != null)
+                                                    {
+                                                        for (DocumentSnapshot document : task.getResult())
+                                                        {
+                                                            otherUserID = document.getId();
+                                                        }
+
+                                                        db.collection("tokens").document(otherUserID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>()
+                                                        {
+                                                            @Override
+                                                            public void onSuccess(DocumentSnapshot documentSnapshot)
+                                                            {
+                                                                System.out.println("TOKEN: " + documentSnapshot.get("token").toString());
+                                                                sendNotifications(documentSnapshot.get("token").toString(), "You have a new message", currentUser.getUsername() + " has sent you a message.");
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                            });
                                 }
                             }
                         }
@@ -168,6 +206,14 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
         homeButton.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 Intent startIntent = new Intent(ChatActivity.this, MainMenuActivity.class);
+                if ( currentChat.getChatID().indexOf(currentUser.getUsername()) == 0)
+                {
+                    db.collection("chats").document(currentChat.getChatID()).update("readbyuser1", true);
+                }
+                else
+                {
+                    db.collection("chats").document(currentChat.getChatID()).update("readbyuser2", true);
+                }
                 startIntent.putExtra("currentUser" , currentUser);
                 startActivity(startIntent);
             }
@@ -230,6 +276,16 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
         data.put("date", msgdate);
         chatData.put("lastmessage", msg.getContent());
         chatData.put("lastmessagedate", msgdate);
+        if( currentChat.getChatID().indexOf(currentUser.getUsername()) == 0)
+        {
+            chatData.put("readbyuser1", true);
+            chatData.put("readbyuser2", false);
+        }
+        else
+        {
+            chatData.put("readbyuser1", false);
+            chatData.put("readbyuser2", true);
+        }
         msgRef.add(data).addOnCompleteListener(new OnCompleteListener<DocumentReference>()
         {
             @Override
@@ -258,8 +314,56 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
     public void applyTexts(String description, String category) {
         currentChat.getUser2().report(description, category);
         currentChat.getUser2().setReportNum(currentUser.getReportNum()+1);
-        //System.out.println(post.getReports().get(0).getDescription());
-        //System.out.println(post.getReports().get(0).getCategory());
+        String reportDetails = "";
+        for(int i = 0; messages.size() > i; i++)
+        {
+            if(messages.get(i).getSentBy().equals(currentChat.getUser1().getUsername()))
+                reportDetails = reportDetails + currentChat.getUser1().getUsername() + ": " + messages.get(i).getContent() + " \uD83D\uDD52 sent in " + messages.get(i).getMessageDate() + "\n\n";
+            else
+                reportDetails = reportDetails + currentChat.getUser2().getUsername() + ": " + messages.get(i).getContent() + " \uD83D\uDD52 sent in " + messages.get(i).getMessageDate() + "\n\n";
+        }
+        reportDetails = reportDetails + " This report is categorized as " + category + " and described as " + description + ".";
+        JavaMailAPI reportPost = new JavaMailAPI(ChatActivity.this, "vvcbookurbook@gmail.com", currentChat.getUser2().getUsername() + " CHAT REPORT", reportDetails);
+        reportPost.execute();
+        db.collection("users").whereEqualTo("username", currentChat.getUser2().getUsername()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for(DocumentSnapshot doc : task.getResult())
+                {
+                    String reportedUserID = doc.getId();
+                    int currentReportCount = doc.getLong("reports").intValue() + 1;
+                    HashMap<String, Object> newData = new HashMap<>();
+                    newData.put("reports", currentReportCount);
+                    db.collection("users").document(reportedUserID).set(newData, SetOptions.merge());
+                }
+
+            }
+        });
+    }
+
+    public void sendNotifications(String usertoken, String title, String message)
+    {
+        Data data = new Data(title, message);
+        NotificationSender sender = new NotificationSender(data, usertoken);
+        apiService.sendNotifcation(sender).enqueue(new Callback<MyResponse>()
+        {
+            @Override
+            public void onResponse(Call<MyResponse> call, Response<MyResponse> response)
+            {
+                if (response.code() == 200)
+                {
+                    if (response.body().success != 1)
+                    {
+                        Toast.makeText(ChatActivity.this, "Failed ", Toast.LENGTH_LONG);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MyResponse> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override
@@ -270,11 +374,21 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
             pass.putExtra("postlist", (PostList) getIntent().getSerializableExtra("postlist"));
             pass.putExtra("post", (Post) getIntent().getSerializableExtra("post"));
             pass.putExtra("fromPostList", true);
+            pass.putExtra("previousActivity", (Integer)getIntent().getExtras().get("previousActivity") );
         }
         else
             pass = new Intent(ChatActivity.this, MyChatsActivity.class);
         pass.putExtra("currentUser", currentUser);
         pass.putExtra("blockedUsernames", getIntent().getStringArrayListExtra("blockedUsernames"));
+
+        if ( currentChat.getChatID().indexOf(currentUser.getUsername()) == 0)
+        {
+            db.collection("chats").document(currentChat.getChatID()).update("readbyuser1", true);
+        }
+        else
+        {
+            db.collection("chats").document(currentChat.getChatID()).update("readbyuser2", true);
+        }
         startActivity(pass);
         finish();
     }
