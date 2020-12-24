@@ -27,6 +27,8 @@
         <activity android:name=".PostActivity" />
         <activity android:name=".MyBlockListActivity" />
         <activity android:name=".ChatActivity" />
+        <activity android:name=".AdminPanelActivity" />
+
 
 
         <activity
