@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PostListActivity"
     android:background="#e3c6bf"
-    >
+    tools:context=".PostListActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/postListToolbar"
@@ -29,12 +27,46 @@
 
     </androidx.appcompat.widget.Toolbar>
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+     app:layout_constraintGuide_percent="0.07"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineForFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+       app:layout_constraintGuide_percent="0.25" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="1" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="1" />
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="409dp"
-        android:layout_height="160dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="398dp"
+        android:layout_height="177dp"
+        app:layout_constraintBottom_toTopOf="@id/guidelineForFilter"
+        app:layout_constraintEnd_toEndOf="@id/guidelineRight"
+        app:layout_constraintStart_toStartOf="@id/guidelineLeft"
         app:layout_constraintTop_toTopOf="parent">
 
 
@@ -53,12 +85,13 @@
             android:id="@+id/LtoH_price_button"
             android:layout_width="90dp"
             android:layout_height="55dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginBottom="4dp"
             android:text="Low to High"
             android:textAllCaps="false"
             android:textSize="14dp"
-            app:layout_constraintBottom_toBottomOf="@+id/HtoL_price_button"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/HtoL_price_button"
             app:layout_constraintVertical_bias="0.0" />
@@ -67,24 +100,27 @@
             android:id="@+id/HtoL_price_button"
             android:layout_width="90dp"
             android:layout_height="55dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="4dp"
             android:text="High to Low"
             android:textAllCaps="false"
             android:textSize="14dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/LtoH_price_button"
             app:layout_constraintTop_toBottomOf="@+id/search_id" />
 
         <Button
             android:id="@+id/AtoZ_button"
-            android:layout_width="58dp"
-            android:layout_height="55dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginLeft="4dp"
+            android:layout_width="59dp"
+            android:layout_height="59dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="4dp"
             android:text="A-Z"
             android:textSize="14dp"
-            app:layout_constraintBottom_toBottomOf="@+id/HtoL_price_button"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/HtoL_price_button"
             app:layout_constraintTop_toTopOf="@+id/HtoL_price_button"
             app:layout_constraintVertical_bias="0.0" />
@@ -95,10 +131,10 @@
             android:layout_height="55dp"
             android:layout_marginStart="4dp"
             android:layout_marginLeft="4dp"
-            android:layout_marginBottom="3dp"
+            android:layout_marginBottom="4dp"
             android:text="Z-A"
             android:textSize="14dp"
-            app:layout_constraintBottom_toBottomOf="@+id/AtoZ_button"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/AtoZ_button"
             app:layout_constraintTop_toTopOf="@+id/AtoZ_button"
             app:layout_constraintVertical_bias="0.0" />
@@ -110,10 +146,10 @@
             android:layout_marginStart="4dp"
             android:layout_marginLeft="4dp"
             android:layout_marginTop="3dp"
-            android:layout_marginBottom="3dp"
+            android:layout_marginBottom="16dp"
             android:text="RESET"
             android:textSize="9dp"
-            app:layout_constraintBottom_toBottomOf="@+id/ZtoA_button"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ZtoA_button"
             app:layout_constraintTop_toTopOf="@+id/ZtoA_button" />
 
@@ -131,43 +167,45 @@
             app:iconifiedByDefault="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.146"
+            app:layout_constraintHorizontal_bias="0.163"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.467"
+            app:layout_constraintVertical_bias="0.468"
             app:queryHint="Search...">
 
         </androidx.appcompat.widget.SearchView>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="405dp"
-        android:layout_height="549dp"
-        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/recycler_layout"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-        app:layout_constraintVertical_bias="0.976">
+        app:layout_constraintEnd_toEndOf="@id/guidelineRight"
+        app:layout_constraintStart_toStartOf="@id/guidelineLeft"
+        app:layout_constraintTop_toBottomOf="@id/guidelineForFilter"
+        app:layout_constraintBottom_toTopOf="@id/guidelineBottom">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_id"
-            android:layout_width="408dp"
-            android:layout_height="538dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true"
+            android:layout_width="419dp"
+            android:layout_height="494dp"
             android:background="#e3c6bf"
             android:scrollbars="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.recyclerview.widget.RecyclerView>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
