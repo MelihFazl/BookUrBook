@@ -49,7 +49,6 @@ public class MyChatsActivity extends AppCompatActivity {
     private MyChatsAdapter myChatsAdapter;
     private ArrayList<String> blockedUsernames;
     private Toolbar toolbar;
-    private int otherIs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,14 +90,10 @@ public class MyChatsActivity extends AppCompatActivity {
                             if ( doc.getString("username1").equals(currentUser.getUsername()))
                             {
                                 otherUsername = doc.getString("username2");
-                                System.out.println(otherUsername + ": 2");
-                                otherIs = 2;
                             }
                             else
                             {
                                 otherUsername = doc.getString("username1");
-                                System.out.println(otherUsername + ": 1");
-                                otherIs = 1;
                             }
                             db.collection("users").whereEqualTo("username", otherUsername)
                                     .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
@@ -116,15 +111,13 @@ public class MyChatsActivity extends AppCompatActivity {
                                                         document.getString("email"), document.getString("avatar")), doc.getId());
                                                 chat.setLastMessageContentInDB(doc.getString("lastmessage"));
                                                 chat.setDate(doc.getDate("lastmessagedate"));
-                                                if ( otherIs == 2 )
+                                                if ( doc.getId().indexOf(currentUser.getUsername()) == 0)
                                                 {
-                                                    System.out.println(chat.getUser2().getUsername() + "-" + doc.get("readbyuser1"));
                                                     chat.setReadByUser1(doc.getBoolean("readbyuser1"));
                                                     chat.setReadByUser2(doc.getBoolean("readbyuser2"));
                                                 }
-                                                else if( otherIs == 1 )
+                                                else
                                                 {
-                                                    System.out.println(chat.getUser2().getUsername() + "-" + doc.get("readbyuser2"));
                                                     chat.setReadByUser1(doc.getBoolean("readbyuser2"));
                                                     chat.setReadByUser2(doc.getBoolean("readbyuser1"));
                                                 }
