@@ -112,7 +112,7 @@ public class MyChatsAdapter extends RecyclerView.Adapter<MyChatsAdapter.MyChatsV
 
                 for (Chat p : chatsListFull)
                 {
-                    if (p.getLastMessageInFromDB().contains(filterInput))
+                    if (p.getUser2().getUsername().toLowerCase().contains(filterInput))
                     {
                         filteredList.add(p);
                     }
