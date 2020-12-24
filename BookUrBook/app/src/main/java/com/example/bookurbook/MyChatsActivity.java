@@ -139,6 +139,7 @@ public class MyChatsActivity extends AppCompatActivity {
                                     //Update GUI
                                     Collections.sort(chatList);
                                     buildRecyclerView();
+                                    searchMyChats(myChatsAdapter);                                                                  // new
                                 }
                             });
                     }
@@ -174,7 +175,7 @@ public class MyChatsActivity extends AppCompatActivity {
     // new method
     public void searchMyChats(MyChatsAdapter adp)
     {
-        MyChatsAdapter adapter = adp;
+        final MyChatsAdapter adapter = adp;
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
