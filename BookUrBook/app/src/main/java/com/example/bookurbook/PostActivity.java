@@ -90,7 +90,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         postList = (PostList) getIntent().getSerializableExtra("postlist");
 
 
-        previousActivity = (Integer) getIntent().getExtras().get("previousActivity"); //does not get fromPostList intent?
+        previousActivity = (Integer) getIntent().getExtras().get("previousActivity"); //does not get fromPostList intent? //Wishlist is also a case for us now.
 
 
 
@@ -203,6 +203,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
                                 pass.putExtra("post",post);
                                 pass.putExtra("postlist", postList);
                                 pass.putExtra("clickedChat", chat);
+                                pass.putExtra("previousActivity", previousActivity);
                                 startActivity(pass);
                             }
                             else
@@ -222,6 +223,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
                                             pass.putExtra("post",post);
                                             pass.putExtra("postlist", postList);
                                             pass.putExtra("clickedChat", chat);
+                                            pass.putExtra("previousActivity", previousActivity);
                                             startActivity(pass);
                                         }
                                         else
@@ -241,6 +243,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
                                             pass.putExtra("post",post);
                                             pass.putExtra("postlist", postList);
                                             pass.putExtra("fromPostActivity", true);
+                                            pass.putExtra("previousActivity", previousActivity);
                                             startActivity(pass);
                                         }
 
@@ -332,7 +335,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
 
     public void onBackPressed() {
         Intent pass;
-        if(previousActivity == 1)
+        if(previousActivity == 1 )
             pass = new Intent(PostActivity.this, PostListActivity.class);
         else if(previousActivity == 2)
             pass = new Intent(PostActivity.this, MyPostsActivity.class);
@@ -342,6 +345,8 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         pass.putExtra("currentUser", currentUser);
         startActivity(pass);
         finish();
+
+
     }
 
     @Override
