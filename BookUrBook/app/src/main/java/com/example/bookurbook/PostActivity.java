@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 
 public class PostActivity extends AppCompatActivity implements ReportPostDialogListener {
+
     //instance variables
     private Post post;
     private PostList postList;
@@ -50,26 +51,21 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
     private FirebaseFirestore db;
     private FirebaseAuth auth;
     private int previousActivity;
-
+    private Toolbar toolbar;
+    private TextView postTitleTextView;
+    private TextView postSellerTextView;
+    private TextView postUniversityTextView;
+    private TextView postCourseTextView;
+    private TextView postPriceTextView;
+    private TextView postDescriptionTextView;
+    private ImageButton reportButton;
+    private ImageButton wishlistButton;
+    private ImageButton chatButton;
+    private ImageButton homeButton;
+    private ImageView postPic;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        //variables
-        Toolbar toolbar;
-        TextView postTitleTextView;
-        TextView postSellerTextView;
-        TextView postUniversityTextView;
-        TextView postCourseTextView;
-        TextView postPriceTextView;
-        TextView postDescriptionTextView;
-        ImageButton reportButton;
-        ImageButton wishlistButton;
-        ImageButton chatButton;
-        ImageButton homeButton;
-
-        ImageView postPic;
-
-
         //method code
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
@@ -78,6 +74,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Post");
+
         chatButton = findViewById(R.id.chat_image_button);
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
@@ -92,11 +89,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
 
         previousActivity = (Integer) getIntent().getExtras().get("previousActivity"); //does not get fromPostList intent? //Wishlist is also a case for us now.
 
-
-
         postPic = findViewById(R.id.postImageView);
-        //initialization
-        // post = new Post("This book is very nice :)", "MAT132 BOOK FOR CS STUDENTS", "Bilkent", "Math", 10, null, new RegularUser("Mehmet", "mehmet@ug.bilkent.edu.tr", null));
         postTitleTextView = findViewById(R.id.postTitleTextView);
         postSellerTextView = findViewById(R.id.postSellerTextView);
         postUniversityTextView = findViewById(R.id.postUniversityTextView);
@@ -113,13 +106,12 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         postPriceTextView.setText("Price: " + post.getPrice() + "");
         postDescriptionTextView.setText(post.getDescription());
         Picasso.get().load(post.getPicture()).into(postPic);
-        if(post.getOwner().getUsername().equals(currentUser.getUsername()))
-        {
-            chatButton.setVisibility(View.INVISIBLE);
-            wishlistButton.setVisibility(View.INVISIBLE);
-            reportButton.setVisibility(View.INVISIBLE);
-        }
 
+        if (post.getOwner().getUsername().equals(currentUser.getUsername())) {
+            chatButton.setVisibility(View.GONE);
+            wishlistButton.setVisibility(View.GONE);
+            reportButton.setVisibility(View.GONE);
+        }
 
 
         //if (post.getReportNum() >= 10) {
@@ -133,15 +125,13 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
          */
         wishlistButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         List<String> wishlist = Collections.emptyList();
                         wishlist = (List<String>) documentSnapshot.get("wishlist");
-                        if(!wishlist.contains(post.getId()))
-                        {
+                        if (!wishlist.contains(post.getId())) {
                             wishlist.add(post.getId());
                         }
                         HashMap<String, Object> newData = new HashMap<>();
@@ -169,9 +159,10 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         });
 
         homeButton.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 Intent startIntent = new Intent(PostActivity.this, MainMenuActivity.class);
-                startIntent.putExtra("currentUser" , currentUser);
+                startIntent.putExtra("currentUser", currentUser);
                 startActivity(startIntent);
             }
 
@@ -180,54 +171,41 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         /**
          * This button starts a chat with the post owner
          */
-        chatButton.setOnClickListener(new View.OnClickListener()
-        {
+        chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 db.collection("chats").document(currentUser.getUsername() + ", " + post.getOwner().getUsername())
-                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>()
-                {
+                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task)
-                    {
-                        if (task.isSuccessful())
-                        {
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
-                            if (document.exists())
-                            {
+                            if (document.exists()) {
                                 Intent pass = new Intent(PostActivity.this, ChatActivity.class);
                                 Chat chat = new Chat(currentUser, post.getOwner(), currentUser.getUsername() + ", " + post.getOwner().getUsername());
                                 pass.putExtra("currentUser", currentUser);
                                 pass.putExtra("fromPostActivity", true);
-                                pass.putExtra("post",post);
+                                pass.putExtra("post", post);
                                 pass.putExtra("postlist", postList);
                                 pass.putExtra("clickedChat", chat);
                                 pass.putExtra("previousActivity", previousActivity);
                                 startActivity(pass);
-                            }
-                            else
-                            {
+                            } else {
                                 db.collection("chats").document(post.getOwner().getUsername() + ", " + currentUser.getUsername())
-                                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>()
-                                {
+                                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                     @Override
-                                    public void onComplete(@NonNull Task<DocumentSnapshot> task)
-                                    {
-                                        if ( document.exists())
-                                        {
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if (document.exists()) {
                                             Intent pass = new Intent(PostActivity.this, ChatActivity.class);
                                             Chat chat = new Chat(currentUser, post.getOwner(), post.getOwner().getUsername() + ", " + currentUser.getUsername());
                                             pass.putExtra("currentUser", currentUser);
                                             pass.putExtra("fromPostActivity", true);
-                                            pass.putExtra("post",post);
+                                            pass.putExtra("post", post);
                                             pass.putExtra("postlist", postList);
                                             pass.putExtra("clickedChat", chat);
                                             pass.putExtra("previousActivity", previousActivity);
                                             startActivity(pass);
-                                        }
-                                        else
-                                        {
+                                        } else {
                                             Intent pass = new Intent(PostActivity.this, ChatActivity.class);
                                             Chat chat = new Chat(currentUser, post.getOwner(), post.getOwner().getUsername() + ", " + currentUser.getUsername());
                                             Map<String, Object> chatData = new HashMap<>();
@@ -240,7 +218,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
                                             db.collection("chats").document(chat.getChatID()).set(chatData);
                                             pass.putExtra("currentUser", currentUser);
                                             pass.putExtra("clickedChat", chat);
-                                            pass.putExtra("post",post);
+                                            pass.putExtra("post", post);
                                             pass.putExtra("postlist", postList);
                                             pass.putExtra("fromPostActivity", true);
                                             pass.putExtra("previousActivity", previousActivity);
@@ -250,10 +228,8 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
                                     }
                                 });
                             }
-                        }
-                        else
-                        {
-                            Toast chatError = Toast.makeText(PostActivity.this,"Something is wrong. Please check your Internet connection.", Toast.LENGTH_LONG);
+                        } else {
+                            Toast chatError = Toast.makeText(PostActivity.this, "Something is wrong. Please check your Internet connection.", Toast.LENGTH_LONG);
                         }
                     }
                 });
@@ -266,8 +242,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
     /**
      * This method is created in order to create a pop up dialog using ReportDialog class.
      */
-    public void openPostReportDialog()
-    {
+    public void openPostReportDialog() {
         ReportDialog dialog = new ReportDialog();
         dialog.show(getSupportFragmentManager(), "");
     }
@@ -275,16 +250,15 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
     @Override
     public void applyTexts(String description, String category) {
         post.report(description, category);
-        String reportDetails = currentUser.getUsername() + " has reported the following post: \nPost ID: " + post.getId() + "\nPost Title: " + post.getTitle() +"\nPost Owner: "
-                + post.getOwner().getUsername() +"\nPost Picture: " + post.getPicture() + "\nPost Description: " + post.getDescription() +".\n\nThis post has been reported in category "
+        String reportDetails = currentUser.getUsername() + " has reported the following post: \nPost ID: " + post.getId() + "\nPost Title: " + post.getTitle() + "\nPost Owner: "
+                + post.getOwner().getUsername() + "\nPost Picture: " + post.getPicture() + "\nPost Description: " + post.getDescription() + ".\n\nThis post has been reported in category "
                 + category + "\nwith the description: " + description;
         JavaMailAPI reportPost = new JavaMailAPI(PostActivity.this, "vvcbookurbook@gmail.com", post.getTitle() + " REPORT", reportDetails);
         reportPost.execute();
         db.collection("users").whereEqualTo("username", post.getOwner().getUsername()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                for(DocumentSnapshot doc : task.getResult())
-                {
+                for (DocumentSnapshot doc : task.getResult()) {
                     String reportedUserID = doc.getId();
                     int currentReportCount = doc.getLong("reports").intValue() + 1;
                     HashMap<String, Object> newData = new HashMap<>();
@@ -316,7 +290,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
      * This method creates a pop up dialog before entering the screen if the seller of the post
      * has been reported several times.
      */
-    public void badRepAlert(){
+    public void badRepAlert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(PostActivity.this);
         builder.setTitle("Attention");
         builder.setMessage("This user has been reported several times. Be careful with the user or the post.");
@@ -335,9 +309,9 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
 
     public void onBackPressed() {
         Intent pass;
-        if(previousActivity == 1 )
+        if (previousActivity == 1)
             pass = new Intent(PostActivity.this, PostListActivity.class);
-        else if(previousActivity == 2)
+        else if (previousActivity == 2)
             pass = new Intent(PostActivity.this, MyPostsActivity.class);
         else
             pass = new Intent(PostActivity.this, WishlistActivity.class);

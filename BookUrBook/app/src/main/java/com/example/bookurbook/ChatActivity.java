@@ -19,6 +19,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bookurbook.MailAPISource.JavaMailAPI;
+import com.example.bookurbook.SendNotificationPack.APIService;
+import com.example.bookurbook.SendNotificationPack.Client;
+import com.example.bookurbook.SendNotificationPack.Data;
+import com.example.bookurbook.SendNotificationPack.MyResponse;
+import com.example.bookurbook.SendNotificationPack.NotificationSender;
 import com.example.bookurbook.models.Admin;
 import com.example.bookurbook.models.Chat;
 import com.example.bookurbook.models.Message;
@@ -48,6 +53,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class ChatActivity extends AppCompatActivity implements ReportPostDialogListener
 {
     //variables
@@ -68,6 +77,8 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
     private ImageButton homeButton;
     private ImageButton reportButton;
     private ImageButton blockButton;
+    private APIService apiService;
+    private String otherUserID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -77,6 +88,7 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
 
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
+        apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
         if(getIntent().getSerializableExtra("currentUser") instanceof Admin)
         {
             currentUser = (Admin) getIntent().getSerializableExtra("currentUser");
@@ -158,6 +170,30 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
                                         sendMessageToDatabase(message, date);
                                         messageBox.setText("");
                                     }
+                                    db.collection("users").whereEqualTo("username", currentChat.getUser2().getUsername()).get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+                                            {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task)
+                                                {
+                                                    if (task != null)
+                                                    {
+                                                        for (DocumentSnapshot document : task.getResult())
+                                                        {
+                                                            otherUserID = document.getId();
+                                                        }
+
+                                                        db.collection("tokens").document(otherUserID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>()
+                                                        {
+                                                            @Override
+                                                            public void onSuccess(DocumentSnapshot documentSnapshot)
+                                                            {
+                                                                sendNotifications(documentSnapshot.get("token").toString(), "You have a new message", currentUser.getUsername() + " has sent you a message.");
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                            });
                                 }
                             }
                         }
@@ -299,6 +335,31 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
                     newData.put("reports", currentReportCount);
                     db.collection("users").document(reportedUserID).set(newData, SetOptions.merge());
                 }
+
+            }
+        });
+    }
+
+    public void sendNotifications(String usertoken, String title, String message)
+    {
+        Data data = new Data(title, message);
+        NotificationSender sender = new NotificationSender(data, usertoken);
+        apiService.sendNotifcation(sender).enqueue(new Callback<MyResponse>()
+        {
+            @Override
+            public void onResponse(Call<MyResponse> call, Response<MyResponse> response)
+            {
+                if (response.code() == 200)
+                {
+                    if (response.body().success != 1)
+                    {
+                        Toast.makeText(ChatActivity.this, "Failed ", Toast.LENGTH_LONG);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MyResponse> call, Throwable t) {
 
             }
         });

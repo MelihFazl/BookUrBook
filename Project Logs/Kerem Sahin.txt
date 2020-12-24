@@ -9,23 +9,28 @@ We have gathered with our team and did the necessary discussions and tasks for t
 I have installed Android Studio on my PC. Since we want to implement it on android, I watched minor tutorials about the basics of the Android Studio.
 
 # 2 November - 8 November #
-For the UI Report, I have gathered every element (UI Design, Descriptions...) that is done by my friends and put them into the report. I have edited the necessary parts and added descriptions where I was necessary.
+For the UI Report, I have gathered every element (UI Design, Descriptions...) that is done by my friends and put them into the report. I have edited 
+the necessary parts and added descriptions where I was necessary.
 
 # 9 November -15 November #
 ----Midterm Week-----
 
 # 16 November - 22 November #
-I started to go a bit deeper about the Android Studio tutorials. I have learned how to connect different pages and how to send object informations between those pages.
+I started to go a bit deeper about the Android Studio tutorials. I have learned how to connect different pages and how to send object informations 
+between those pages.
 
 # 23 November - 29 November #
 I started to plan how to implement the Model Classes for our upcoming project. 
 
 # 30 November - 6 December #
-We started to work on our Detailed Design. According to the Detailed Design we have created, I started to implement the Model Classes and gather some of the other Model Classes
+We started to work on our Detailed Design. According to the Detailed Design we have created, I started to implement the Model Classes and gather some 
+of the other Model Classes
 (Wishlist, Message, Chat) from Miray and Melih.
 
 # 7 December - 13 December #
-Model Classes were mostly finished. I started to look for minor mistakes, written the methods and connected the pieces from my friends. Model class was created faster than I thought so I also started to create layouts for the screens and I started working on trying to connect it with the model classes. I have also written the necessary activity classes.
+Model Classes were mostly finished. I started to look for minor mistakes, written the methods and connected the pieces from my friends. 
+Model class was created faster than I thought so I also started to create layouts for the screens and I started working on trying to connect it with the model classes. 
+I have also written the necessary activity classes.
 
 # 14 December - 20 December # //THIS WEEK
 Since we have 2 weeks left, I have shown most progression in this week. I have done the following things:

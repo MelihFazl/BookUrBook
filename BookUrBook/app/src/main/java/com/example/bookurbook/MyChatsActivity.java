@@ -3,6 +3,7 @@ package com.example.bookurbook;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,12 +50,14 @@ public class MyChatsActivity extends AppCompatActivity {
     private MyChatsAdapter myChatsAdapter;
     private ArrayList<String> blockedUsernames;
     private Toolbar toolbar;
-    private int otherIs;
+    private SearchView searchView;                                      // new
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_chats);
+
+        searchView = findViewById(R.id.search_id_for_my_chats);
 
         toolbar = findViewById(R.id.toolbar_my_chats);
         setSupportActionBar(toolbar);
@@ -66,6 +69,8 @@ public class MyChatsActivity extends AppCompatActivity {
 
         chatList = new ArrayList<Chat>();
         buildRecyclerView();
+
+        searchMyChats(myChatsAdapter);                                                                  // new
 
         if(getIntent().getSerializableExtra("currentUser") instanceof Admin)
             currentUser = (Admin)getIntent().getSerializableExtra("currentUser");
@@ -91,12 +96,10 @@ public class MyChatsActivity extends AppCompatActivity {
                             if ( doc.getString("username1").equals(currentUser.getUsername()))
                             {
                                 otherUsername = doc.getString("username2");
-                                otherIs = 2;
                             }
                             else
                             {
                                 otherUsername = doc.getString("username1");
-                                otherIs = 1;
                             }
                             db.collection("users").whereEqualTo("username", otherUsername)
                                     .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
@@ -114,7 +117,7 @@ public class MyChatsActivity extends AppCompatActivity {
                                                         document.getString("email"), document.getString("avatar")), doc.getId());
                                                 chat.setLastMessageContentInDB(doc.getString("lastmessage"));
                                                 chat.setDate(doc.getDate("lastmessagedate"));
-                                                if ( otherIs == 2 )
+                                                if ( doc.getId().indexOf(currentUser.getUsername()) == 0)
                                                 {
                                                     chat.setReadByUser1(doc.getBoolean("readbyuser1"));
                                                     chat.setReadByUser2(doc.getBoolean("readbyuser2"));
@@ -136,6 +139,7 @@ public class MyChatsActivity extends AppCompatActivity {
                                     //Update GUI
                                     Collections.sort(chatList);
                                     buildRecyclerView();
+                                    searchMyChats(myChatsAdapter);                                                                  // new
                                 }
                             });
                     }
@@ -166,5 +170,23 @@ public class MyChatsActivity extends AppCompatActivity {
         recyclerView.setAdapter(myChatsAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(MyChatsActivity.this));
         myChatsAdapter.notifyDataSetChanged();
+    }
+
+    // new method
+    public void searchMyChats(MyChatsAdapter adp)
+    {
+        final MyChatsAdapter adapter = adp;
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String s) {
+                adapter.getFilter().filter(s);
+                return false;
+            }
+        });
     }
 }
