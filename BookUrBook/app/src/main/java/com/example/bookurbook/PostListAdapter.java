@@ -184,6 +184,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
             layout = (LinearLayout)  itemView.findViewById(R.id.row_post);
         }
     }
+
     public void filterResults(String uni, String course, int lowPrice, int highPrice)
     {
         PostList filteredList = list;
@@ -203,4 +204,5 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
         postListHolder = new ArrayList<>(filteredList.getPostArray());
         notifyDataSetChanged();
     }
+
 }

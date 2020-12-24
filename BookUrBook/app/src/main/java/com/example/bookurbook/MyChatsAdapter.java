@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,6 +16,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookurbook.models.Chat;
+import com.example.bookurbook.models.Post;
 import com.example.bookurbook.models.PostList;
 import com.example.bookurbook.models.User;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -21,10 +24,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class MyChatsAdapter extends RecyclerView.Adapter<MyChatsAdapter.MyChatsViewHolder> {
+public class MyChatsAdapter extends RecyclerView.Adapter<MyChatsAdapter.MyChatsViewHolder> implements Filterable {
 
     // variables
+    private ArrayList<Chat> chatsListFull;
     private ArrayList<Chat> chatsList;
     private Context context;
     private User currentUser;
@@ -33,7 +38,8 @@ public class MyChatsAdapter extends RecyclerView.Adapter<MyChatsAdapter.MyChatsV
 
     public MyChatsAdapter(Context c, ArrayList<Chat> list,  User currentUser, ArrayList<String> blockedUsernames)
     {
-        chatsList = new ArrayList<>(list);
+        chatsList = list;
+        chatsListFull = new ArrayList<>(chatsList);
         context = c;
         this.currentUser = currentUser;
         this.blockedUsernames = blockedUsernames;
@@ -55,7 +61,6 @@ public class MyChatsAdapter extends RecyclerView.Adapter<MyChatsAdapter.MyChatsV
         holder.userName.setText(exampleChat.getUser2().getUsername());
         holder.latestChat.setText(exampleChat.getLastMessageInFromDB());  // maybe this will be getLastMessageInFromDb ??
         Picasso.get().load(exampleChat.getUser2().getAvatar()).into(holder.userAvatar);
-        System.out.println(exampleChat.getUser2().getUsername() + ":" + exampleChat.isReadByUser1());
         if ( !exampleChat.isReadByUser1() )
         {
             holder.newMessageIcon.setVisibility(View.VISIBLE);
@@ -84,6 +89,48 @@ public class MyChatsAdapter extends RecyclerView.Adapter<MyChatsAdapter.MyChatsV
     public int getItemCount() {
         return chatsList.size();
     }
+
+    // this part is new
+    @Override
+    public Filter getFilter() {
+        return exampleFilter;
+    }
+
+    // this part is new
+    private Filter exampleFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            List<Chat> filteredList = new ArrayList<>();
+
+            if (charSequence == null || charSequence.length() == 0)
+            {
+                filteredList.addAll(chatsListFull);
+            }
+            else
+            {
+                String filterInput = charSequence.toString().toLowerCase().trim();
+
+                for (Chat p : chatsListFull)
+                {
+                    if (p.getUser2().getUsername().toLowerCase().contains(filterInput))
+                    {
+                        filteredList.add(p);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            chatsList.clear();
+            chatsList.addAll((List) filterResults.values);
+            notifyDataSetChanged();
+        }
+    };
 
     public class MyChatsViewHolder extends RecyclerView.ViewHolder {
 
