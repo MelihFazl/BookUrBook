@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.bookurbook.SendNotificationPack.Token;
 import com.example.bookurbook.models.Admin;
 import com.example.bookurbook.models.RegularUser;
 import com.example.bookurbook.models.User;
@@ -27,6 +28,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FirebaseStorage;
 
 public class LoginActivity extends AppCompatActivity {
@@ -121,6 +123,7 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                                 else
                                     {
+                                        db.collection("tokens").document(auth.getUid()).set(new Token(FirebaseInstanceId.getInstance().getToken()));
                                         if (documentSnapshot.getBoolean("admin"))
                                         currentUser = new Admin(documentSnapshot.getString("username"), documentSnapshot.getString("email"), null);
                                     else
