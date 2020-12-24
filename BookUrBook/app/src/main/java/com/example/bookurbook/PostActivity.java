@@ -18,6 +18,7 @@ import android.content.DialogInterface;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.bookurbook.MailAPISource.JavaMailAPI;
 import com.example.bookurbook.models.Admin;
 import com.example.bookurbook.models.Chat;
 import com.example.bookurbook.models.Post;
@@ -30,6 +31,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.squareup.picasso.Picasso;
 
@@ -120,8 +122,9 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
 
 
 
-        if (post.getOwner().getReports().size() >= 10)
-            badRepAlert();
+        //if (post.getReportNum() >= 10) {
+        //  badRepAlert();
+        //}
 
 
         /**
@@ -166,11 +169,11 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         });
 
         homeButton.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View v) {
-        Intent startIntent = new Intent(PostActivity.this, MainMenuActivity.class);
-        startIntent.putExtra("currentUser" , currentUser);
-        startActivity(startIntent);
-        }
+            @Override public void onClick(View v) {
+                Intent startIntent = new Intent(PostActivity.this, MainMenuActivity.class);
+                startIntent.putExtra("currentUser" , currentUser);
+                startActivity(startIntent);
+            }
 
         });
 
@@ -269,9 +272,41 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
     @Override
     public void applyTexts(String description, String category) {
         post.report(description, category);
-        post.setReportNum(post.getReportNum()+1);
-        //System.out.println(post.getReports().get(0).getDescription());
-        //System.out.println(post.getReports().get(0).getCategory());
+        String reportDetails = currentUser.getUsername() + " has reported the following post: \nPost ID: " + post.getId() + "\nPost Title: " + post.getTitle() +"\nPost Owner: "
+                + post.getOwner().getUsername() +"\nPost Picture: " + post.getPicture() + "\nPost Description: " + post.getDescription() +".\n\nThis post has been reported in category "
+                + category + "\nwith the description: " + description;
+        JavaMailAPI reportPost = new JavaMailAPI(PostActivity.this, "vvcbookurbook@gmail.com", post.getTitle() + " REPORT", reportDetails);
+        reportPost.execute();
+        db.collection("users").whereEqualTo("username", post.getOwner().getUsername()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for(DocumentSnapshot doc : task.getResult())
+                {
+                    String reportedUserID = doc.getId();
+                    int currentReportCount = doc.getLong("reports").intValue() + 1;
+                    HashMap<String, Object> newData = new HashMap<>();
+                    newData.put("reports", currentReportCount);
+                    db.collection("users").document(reportedUserID).set(newData, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            int postReportCount = post.getReportNum();
+                            postReportCount = postReportCount + 1;
+                            post.setReportNum(postReportCount);
+                            HashMap<String, Object> postNewData = new HashMap<>();
+                            postNewData.put("reports", postReportCount);
+                            db.collection("posts").document(post.getId()).set(postNewData, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    System.out.println("Success");
+
+                                }
+                            });
+                        }
+                    });
+                }
+
+            }
+        });
     }
 
     /**
@@ -316,4 +351,3 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
     }
 
 }
-
