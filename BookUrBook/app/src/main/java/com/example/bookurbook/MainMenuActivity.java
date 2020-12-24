@@ -107,6 +107,13 @@ public class MainMenuActivity extends AppCompatActivity {
                                                         postList.getPostArray().get(postList.getPostArray().size() - 1).setReportNum(document.getLong("reports").intValue());
                                                     }
                                                 }
+                                                //When I added this code block, After creating a post app gave an error.
+                                                ///////
+                                                //List<String> blockedUsernamesList = (List<String>) documentSnapshot.get("blockedusers");
+                                                //ArrayList<String> blockedUsernames = new ArrayList<String>();
+                                                //blockedUsernames.addAll(blockedUsernamesList);
+                                                //pass.putExtra("blockedUsernames", blockedUsernames);
+                                                ///////
                                                 pass.putExtra("currentUser", currentUser);
                                                 pass.putExtra("postlist", postList);
                                                 startActivity(pass);
@@ -283,4 +290,8 @@ public class MainMenuActivity extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    public void onBackPressed()
+    {}
 }
