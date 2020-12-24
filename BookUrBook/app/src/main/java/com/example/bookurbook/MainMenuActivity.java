@@ -98,9 +98,10 @@ public class MainMenuActivity extends AppCompatActivity {
                                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                                 for (DocumentSnapshot doc : task.getResult()) {
                                                     currentPostOwner = new RegularUser(doc.getString("username"), doc.getString("email"), doc.getString("avatar"));
+                                                    currentPostOwner.setBanned(doc.getBoolean("banned"));
                                                 }
                                                 if (!document.getBoolean("sold")) {
-                                                    if (!blockedUsernames.contains(currentPostOwner.getUsername())) {
+                                                    if (!blockedUsernames.contains(currentPostOwner.getUsername()) && !currentPostOwner.isBanned()) {
                                                         postList.addPost(new Post(document.getString("description"), document.getString("title"), document.getString("university")
                                                                 , document.getString("course"), document.getLong("price").intValue(), document.getString("picture"), currentPostOwner, (String) document.get("id")));
                                                         postList.getPostArray().get(postList.getPostArray().size() - 1).setReportNum(document.getLong("reports").intValue());
@@ -163,6 +164,7 @@ public class MainMenuActivity extends AppCompatActivity {
                                         FirebaseFirestore db;
                                         for (DocumentSnapshot doc : task.getResult()) {
                                             currentPostOwner = new RegularUser(doc.getString("username"), doc.getString("email"), doc.getString("avatar"));
+
                                         }
                                         if (document.getString("username").equals(currentUser.getUsername())) {
                                             postList.addPost(new Post(document.getString("description"), document.getString("title"), document.getString("university")
@@ -217,9 +219,11 @@ public class MainMenuActivity extends AppCompatActivity {
                                                 List<String> wished = (List<String>) documentSnapshot.get("wishlist");
                                                 for (DocumentSnapshot doc : task.getResult()) {
                                                     currentPostOwner = new RegularUser(doc.getString("username"), doc.getString("email"), doc.getString("avatar"));
+                                                    currentPostOwner.setBanned(doc.getBoolean("banned"));
                                                 }
                                                 if (!document.getBoolean("sold")) {
-                                                    if (wished.contains(document.getString("id"))) {
+                                                    if (wished.contains(document.getString("id")) && !currentPostOwner.isBanned())
+                                                    {
                                                         postList.addPost(new Post(document.getString("description"), document.getString("title"), document.getString("university")
                                                                 , document.getString("course"), document.getLong("price").intValue(), document.getString("picture"), currentPostOwner, (String) document.get("id")));
                                                     }
