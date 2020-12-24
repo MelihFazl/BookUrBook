@@ -312,7 +312,7 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
             pass.putExtra("postlist", (PostList) getIntent().getSerializableExtra("postlist"));
             pass.putExtra("post", (Post) getIntent().getSerializableExtra("post"));
             pass.putExtra("fromPostList", true);
-            pass.putExtra("previousActivity", 4);
+            pass.putExtra("previousActivity", (Integer)getIntent().getExtras().get("previousActivity") );
         }
         else
             pass = new Intent(ChatActivity.this, MyChatsActivity.class);
