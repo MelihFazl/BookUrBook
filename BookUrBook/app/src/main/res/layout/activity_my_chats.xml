@@ -16,7 +16,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/my_chats_recycler_id"
         android:layout_width="409dp"
-        android:layout_height="729dp"
+        android:layout_height="675dp"
         android:background="#e3c6bf"
         android:scrollbars="vertical"
         app:layout_constraintStart_toStartOf="parent"

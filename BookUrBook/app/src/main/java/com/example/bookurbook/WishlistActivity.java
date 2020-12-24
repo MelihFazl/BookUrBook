@@ -29,11 +29,11 @@ public class WishlistActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wishlist);
-        //toolbar = findViewById(R.id.wishlistToolbar);
-        //setSupportActionBar(toolbar);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //getSupportActionBar().setDisplayShowHomeEnabled(true);
-        //getSupportActionBar().setTitle("Wishlist");
+        toolbar = findViewById(R.id.wishlistToolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("Wishlist");
         setProperties();
     }
 
