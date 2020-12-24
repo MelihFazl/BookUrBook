@@ -103,7 +103,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         postSellerTextView.setText("Seller: " + post.getOwner().getUsername());
         postUniversityTextView.setText("University: " + post.getUniversity());
         postCourseTextView.setText("Course: " + post.getCourse());
-        postPriceTextView.setText("Price: " + post.getPrice() + "");
+        postPriceTextView.setText("Price: " + post.getPrice() + "₺");
         postDescriptionTextView.setText(post.getDescription());
         Picasso.get().load(post.getPicture()).into(postPic);
 
