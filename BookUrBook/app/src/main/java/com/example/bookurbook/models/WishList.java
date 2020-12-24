@@ -11,7 +11,7 @@ public class WishList implements Serializable{
     public WishList(User user)
     {
         this.user = user;
-        posts = new ArrayList<Post>();
+        posts = user.getWishList();
     }
 
     public void addPost(Post post)

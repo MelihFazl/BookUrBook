@@ -22,9 +22,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -48,10 +50,10 @@ public class MainMenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
-        if(getIntent().getSerializableExtra("currentUser") instanceof Admin)
-            currentUser = (Admin)getIntent().getSerializableExtra("currentUser");
+        if (getIntent().getSerializableExtra("currentUser") instanceof Admin)
+            currentUser = (Admin) getIntent().getSerializableExtra("currentUser");
         else
-            currentUser = (RegularUser)getIntent().getSerializableExtra("currentUser");
+            currentUser = (RegularUser) getIntent().getSerializableExtra("currentUser");
         toolbar = findViewById(R.id.mainMenuToolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Main Menu");
@@ -62,8 +64,7 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
 
-    public void init()
-    {
+    public void init() {
         topleft = findViewById(R.id.topleft);
         topright = findViewById(R.id.topright);
         botleft = findViewById(R.id.botleft);
@@ -72,7 +73,7 @@ public class MainMenuActivity extends AppCompatActivity {
         adminPanelButton = findViewById(R.id.adminPanelButton);
         adminPanelTextView = findViewById(R.id.adminPanelTextView);
 
-        if( currentUser instanceof Admin ){
+        if (currentUser instanceof Admin) {
             adminPanelButton.setVisibility(View.VISIBLE);
             adminPanelTextView.setVisibility(View.VISIBLE);
         }
@@ -95,7 +96,6 @@ public class MainMenuActivity extends AppCompatActivity {
                                         db.collection("users").whereEqualTo("username", document.getString("username")).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                             @Override
                                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                FirebaseFirestore db;
                                                 for (DocumentSnapshot doc : task.getResult()) {
                                                     currentPostOwner = new RegularUser(doc.getString("username"), doc.getString("email"), doc.getString("avatar"));
                                                 }
@@ -103,6 +103,7 @@ public class MainMenuActivity extends AppCompatActivity {
                                                     if (!blockedUsernames.contains(currentPostOwner.getUsername())) {
                                                         postList.addPost(new Post(document.getString("description"), document.getString("title"), document.getString("university")
                                                                 , document.getString("course"), document.getLong("price").intValue(), document.getString("picture"), currentPostOwner, (String) document.get("id")));
+                                                        postList.getPostArray().get(postList.getPostArray().size() - 1).setReportNum(document.getLong("reports").intValue());
                                                     }
                                                 }
                                                 pass.putExtra("currentUser", currentUser);
@@ -131,13 +132,11 @@ public class MainMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent pass = new Intent(MainMenuActivity.this, MyChatsActivity.class);
-                db.collection("users").document(auth.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>()
-                {
+                db.collection("users").document(auth.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot)
-                    {
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
 
-                        List<String> blockedUsernamesList = (List<String>)documentSnapshot.get("blockedusers");
+                        List<String> blockedUsernamesList = (List<String>) documentSnapshot.get("blockedusers");
                         ArrayList<String> blockedUsernames = new ArrayList<String>();
                         blockedUsernames.addAll(blockedUsernamesList);
                         pass.putExtra("blockedUsernames", blockedUsernames);
@@ -156,22 +155,18 @@ public class MainMenuActivity extends AppCompatActivity {
                 db.collection("posts").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful())
-                        {
-                            for (DocumentSnapshot document : task.getResult())
-                            {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : task.getResult()) {
                                 db.collection("users").whereEqualTo("username", document.getString("username")).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                         FirebaseFirestore db;
-                                        for(DocumentSnapshot doc: task.getResult())
-                                        {
+                                        for (DocumentSnapshot doc : task.getResult()) {
                                             currentPostOwner = new RegularUser(doc.getString("username"), doc.getString("email"), doc.getString("avatar"));
                                         }
-                                        if(document.getString("username").equals(currentUser.getUsername()))
-                                        {
+                                        if (document.getString("username").equals(currentUser.getUsername())) {
                                             postList.addPost(new Post(document.getString("description"), document.getString("title"), document.getString("university")
-                                                    , document.getString("course"), document.getLong("price").intValue(), document.getString("picture"), currentPostOwner, (String)document.get("id")));
+                                                    , document.getString("course"), document.getLong("price").intValue(), document.getString("picture"), currentPostOwner, (String) document.get("id")));
                                             postList.getPostArray().get(postList.getPostArray().size() - 1).setSold(document.getBoolean("sold"));
                                         }
                                         pass.putExtra("currentUser", currentUser);
@@ -201,18 +196,83 @@ public class MainMenuActivity extends AppCompatActivity {
                 startActivity(pass);
             }
         });
+
         wishlist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainMenuActivity.this, WishlistActivity.class));
+                postList = new PostList();
+                Intent pass = new Intent(MainMenuActivity.this, WishlistActivity.class);
+                db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                        db.collection("posts").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (DocumentSnapshot document : task.getResult()) {
+                                        db.collection("users").whereEqualTo("username", document.getString("username")).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                List<String> wished = (List<String>) documentSnapshot.get("wishlist");
+                                                for (DocumentSnapshot doc : task.getResult()) {
+                                                    currentPostOwner = new RegularUser(doc.getString("username"), doc.getString("email"), doc.getString("avatar"));
+                                                }
+                                                if (!document.getBoolean("sold")) {
+                                                    if (wished.contains(document.getString("id"))) {
+                                                        postList.addPost(new Post(document.getString("description"), document.getString("title"), document.getString("university")
+                                                                , document.getString("course"), document.getLong("price").intValue(), document.getString("picture"), currentPostOwner, (String) document.get("id")));
+                                                    }
+                                                }
+                                                currentUser.setWishList(postList.getPostArray());
+                                                pass.putExtra("currentUser", currentUser);
+                                                startActivity(pass);
+                                                finish();
+                                            }
+
+                                        });
+
+                                    }
+                                } else {
+                                    pass.putExtra("currentUser", currentUser);
+
+                                }
+                            }
+                        });
+
+                    }
+
+                });
             }
         });
 
         adminPanelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent adminPanel = new Intent(MainMenuActivity.this,AdminPanelActivity.class);
+                ArrayList<User> reportedUsers = new ArrayList<User>();
+                Intent adminPanel = new Intent(MainMenuActivity.this, AdminPanelActivity.class);
                 adminPanel.putExtra("currentUser", currentUser);
+                db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for (QueryDocumentSnapshot doc : task.getResult())
+                        {
+                            if(doc.getLong("reports").intValue() > 0)
+                            {
+                                if(doc.getBoolean("admin"))
+                                    reportedUsers.add(new Admin(doc.getString("username"), doc.getString("email"), doc.getString("avatar")));
+                                else
+                                    reportedUsers.add(new RegularUser(doc.getString("username"), doc.getString("email"), doc.getString("avatar")));
+                                reportedUsers.get(reportedUsers.size() - 1).setReportNum(doc.getLong("reports").intValue());
+                                reportedUsers.get(reportedUsers.size() -1).setBanned(doc.getBoolean("banned"));
+                            }
+                        }
+                        adminPanel.putExtra("userlist", reportedUsers);
+                        startActivity(adminPanel);
+                        finish();
+                    }
+                });
+                adminPanel.putExtra("userlist", reportedUsers);
                 startActivity(adminPanel);
                 finish();
             }

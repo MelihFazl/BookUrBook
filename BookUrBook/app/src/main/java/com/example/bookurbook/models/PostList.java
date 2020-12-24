@@ -3,6 +3,7 @@ import android.widget.ImageView;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class PostList implements Filterable, Sortable, Serializable
 {
