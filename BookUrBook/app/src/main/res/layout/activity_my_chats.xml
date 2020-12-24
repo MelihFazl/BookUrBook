@@ -13,10 +13,32 @@
         layout="@layout/toolbar_my_chats" />
 
 
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/search_id_for_my_chats"
+        android:layout_width="350dp"
+        android:layout_height="28dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/white"
+
+        app:iconifiedByDefault="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.07999998"
+        app:queryHint="Search...">
+
+    </androidx.appcompat.widget.SearchView>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/my_chats_recycler_id"
-        android:layout_width="409dp"
-        android:layout_height="729dp"
+        android:layout_width="411dp"
+        android:layout_height="634dp"
+        android:layout_marginTop="44dp"
         android:background="#e3c6bf"
         android:scrollbars="vertical"
         app:layout_constraintStart_toStartOf="parent"
