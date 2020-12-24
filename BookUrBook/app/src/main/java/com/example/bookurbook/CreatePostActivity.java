@@ -45,26 +45,26 @@ public class CreatePostActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private boolean isPhotoPicked;
     private boolean isPostListPreviousActivity;
-    Toolbar toolbar;
-    EditText postTitleCreatePost;
-    Spinner spinner;
-    Spinner spinner2;
-    EditText postPrice;
-    EditText postDescriptionCreatePost;
-    ImageButton homeButton;
-    ImageButton applyButton;
-    ImageView photoUpload;
-    Uri imageUri;
+    private Toolbar toolbar;
+    private EditText postTitleCreatePost;
+    private Spinner spinner;
+    private Spinner spinner2;
+    private EditText postPrice;
+    private EditText postDescriptionCreatePost;
+    private ImageButton homeButton;
+    private ImageButton applyButton;
+    private ImageView photoUpload;
+    private Uri imageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //variables
 
         //method code
-        if(getIntent().getSerializableExtra("currentUser") instanceof Admin)
-            currentUser = (Admin)getIntent().getSerializableExtra("currentUser");
+        if (getIntent().getSerializableExtra("currentUser") instanceof Admin)
+            currentUser = (Admin) getIntent().getSerializableExtra("currentUser");
         else
-            currentUser = (RegularUser)getIntent().getSerializableExtra("currentUser");
+            currentUser = (RegularUser) getIntent().getSerializableExtra("currentUser");
 
         postList = (PostList) getIntent().getSerializableExtra("postlist");
         isPostListPreviousActivity = (Boolean) getIntent().getExtras().get("fromPostList");
@@ -101,11 +101,13 @@ public class CreatePostActivity extends AppCompatActivity {
 
         postPrice = findViewById(R.id.postPriceCreatePost);
         postDescriptionCreatePost = findViewById(R.id.postDescriptionCreatePost);
+
         homeButton = findViewById(R.id.homeButtonCreatePost);
         homeButton.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 Intent startIntent = new Intent(CreatePostActivity.this, MainMenuActivity.class);
-                startIntent.putExtra("currentUser" , currentUser);
+                startIntent.putExtra("currentUser", currentUser);
                 startActivity(startIntent);
             }
         });
@@ -122,15 +124,13 @@ public class CreatePostActivity extends AppCompatActivity {
                 builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int which) {
-                        if(postTitleCreatePost.getText().toString().equals("")) {
+                        if (postTitleCreatePost.getText().toString().equals("")) {
                             Toast.makeText(CreatePostActivity.this, "You need to enter a title!", Toast.LENGTH_LONG).show();
                             dialog.dismiss();
-                        }
-                        else if (postPrice.getText().toString().equals("")){
+                        } else if (postPrice.getText().toString().equals("")) {
                             Toast.makeText(CreatePostActivity.this, "You need to enter the price!", Toast.LENGTH_LONG).show();
                             dialog.dismiss();
-                        }
-                        else {
+                        } else {
 
                             updateDatabase();
                             Toast.makeText(CreatePostActivity.this, "You have successfully created the post!", Toast.LENGTH_LONG).show();
@@ -153,8 +153,8 @@ public class CreatePostActivity extends AppCompatActivity {
         });
 
     }
-    private void choosePicture()
-    {
+
+    private void choosePicture() {
         Intent galleryOpen = new Intent();
         galleryOpen.setType("image/*");
         galleryOpen.setAction(Intent.ACTION_GET_CONTENT);
@@ -201,14 +201,15 @@ public class CreatePostActivity extends AppCompatActivity {
                                     newData.put("username", post.getOwner().getUsername());
                                     newData.put("id", post.getId());
                                     newData.put("sold", false);
+                                    newData.put("reports", 0);
                                     db.collection("posts").document(post.getId()).set(newData).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             Intent pass;
-                                            if(isPostListPreviousActivity)
-                                                 pass = new Intent(CreatePostActivity.this, PostListActivity.class);
+                                            if (isPostListPreviousActivity)
+                                                pass = new Intent(CreatePostActivity.this, PostListActivity.class);
                                             else
-                                                 pass = new Intent(CreatePostActivity.this, MyPostsActivity.class);
+                                                pass = new Intent(CreatePostActivity.this, MyPostsActivity.class);
                                             postList.addPost(post);
                                             pass.putExtra("currentUser", currentUser);
                                             pass.putExtra("postlist", postList);
@@ -226,9 +227,7 @@ public class CreatePostActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "FAIL", Toast.LENGTH_LONG).show();
                         }
                     });
-        }
-        else
-        {
+        } else {
             HashMap<String, Object> newData = new HashMap();
             post = new Post(postDescriptionCreatePost.getText().toString(), postTitleCreatePost.getText().toString()
                     , spinner.getSelectedItem().toString(), spinner2.getSelectedItem().toString(), Integer.parseInt(postPrice.getText().toString())
@@ -257,6 +256,7 @@ public class CreatePostActivity extends AppCompatActivity {
             });
         }
     }
+
     protected String randomKeyGenerator() {
         String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
         StringBuilder salt = new StringBuilder();
@@ -272,7 +272,7 @@ public class CreatePostActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent pass;
-        if(isPostListPreviousActivity)
+        if (isPostListPreviousActivity)
             pass = new Intent(CreatePostActivity.this, PostListActivity.class);
         else
             pass = new Intent(CreatePostActivity.this, MyPostsActivity.class);

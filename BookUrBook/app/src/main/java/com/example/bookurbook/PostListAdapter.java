@@ -73,7 +73,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
                 pass.putExtra("currentUser", currentUser);
                 pass.putExtra("postlist", list);
                 pass.putExtra("post", examplePost);
-                pass.putExtra("fromPostList", true);
+                pass.putExtra("previousActivity", 1);
                 context.startActivity(pass);
             }
         });
@@ -184,6 +184,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
             layout = (LinearLayout)  itemView.findViewById(R.id.row_post);
         }
     }
+
     public void filterResults(String uni, String course, int lowPrice, int highPrice)
     {
         PostList filteredList = list;
@@ -203,4 +204,5 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
         postListHolder = new ArrayList<>(filteredList.getPostArray());
         notifyDataSetChanged();
     }
+
 }

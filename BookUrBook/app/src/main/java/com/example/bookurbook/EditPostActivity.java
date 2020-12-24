@@ -19,6 +19,11 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.bookurbook.SendNotificationPack.APIService;
+import com.example.bookurbook.SendNotificationPack.Client;
+import com.example.bookurbook.SendNotificationPack.Data;
+import com.example.bookurbook.SendNotificationPack.MyResponse;
+import com.example.bookurbook.SendNotificationPack.NotificationSender;
 import com.example.bookurbook.models.Admin;
 import com.example.bookurbook.models.Post;
 import com.example.bookurbook.models.PostList;
@@ -28,7 +33,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
@@ -37,6 +44,11 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class EditPostActivity extends AppCompatActivity {
     //instance variables
@@ -57,6 +69,7 @@ public class EditPostActivity extends AppCompatActivity {
     ImageButton deleteButton;
     ImageButton applyButton;
     private boolean picChanged;
+    private APIService apiService;
     String id;
 
 
@@ -76,6 +89,7 @@ public class EditPostActivity extends AppCompatActivity {
         postList = (PostList) getIntent().getSerializableExtra("postlist");
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
+        apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
         System.out.println(currentUser.getEmail() + "EDİTLİYORUZ HAYDİ BAKALIIIM");
         id = post.getId();
 
@@ -259,8 +273,36 @@ public class EditPostActivity extends AppCompatActivity {
 
     }
     private void updateDatabase() {
-        if (picChanged) {
+        boolean priceChanged = post.getPrice() != Integer.parseInt(postPrice.getText().toString());
+        if ( priceChanged )
+        {
+            db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+            {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task)
+                {
+                    if ( task.isSuccessful() )
+                    {
+                        for ( QueryDocumentSnapshot doc : task.getResult() )
+                        {
+                            List<String> list = (List<String>) doc.get("wishlist");
+                            if( list != null && list.contains(post.getId()))
+                            {
+                                db.collection("tokens").document(doc.getId()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>()
+                                {
+                                    @Override
+                                    public void onSuccess(DocumentSnapshot documentSnapshot)
+                                    {
+                                        sendNotifications(documentSnapshot.get("token").toString(), "Price of a post in your wishlist has changed.", post.getTitle() + "'s price has changed.");
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }
+            });
 
+        if (picChanged) {
 
             StorageReference picRef = storage.getReference().child("posts/post_picture/" + post.getId());
             picRef.putFile(imageUri)
@@ -349,6 +391,32 @@ public class EditPostActivity extends AppCompatActivity {
                         }
                     });
                 }
+            }
+    }
+
+    public void sendNotifications(String usertoken, String title, String message)
+    {
+        Data data = new Data(title, message);
+        NotificationSender sender = new NotificationSender(data, usertoken);
+        apiService.sendNotifcation(sender).enqueue(new Callback<MyResponse>()
+        {
+            @Override
+            public void onResponse(Call<MyResponse> call, Response<MyResponse> response)
+            {
+                if (response.code() == 200)
+                {
+                    if (response.body().success != 1)
+                    {
+                        Toast.makeText(EditPostActivity.this, "Failed ", Toast.LENGTH_LONG);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MyResponse> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override
