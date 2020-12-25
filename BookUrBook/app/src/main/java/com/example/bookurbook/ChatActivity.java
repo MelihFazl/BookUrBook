@@ -188,7 +188,6 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
                                                             @Override
                                                             public void onSuccess(DocumentSnapshot documentSnapshot)
                                                             {
-                                                                System.out.println("TOKEN: " + documentSnapshot.get("token").toString());
                                                                 sendNotifications(documentSnapshot.get("token").toString(), "You have a new message", currentUser.getUsername() + " has sent you a message.");
                                                             }
                                                         });

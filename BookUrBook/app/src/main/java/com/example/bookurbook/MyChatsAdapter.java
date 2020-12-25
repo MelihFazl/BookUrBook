@@ -61,7 +61,6 @@ public class MyChatsAdapter extends RecyclerView.Adapter<MyChatsAdapter.MyChatsV
         holder.userName.setText(exampleChat.getUser2().getUsername());
         holder.latestChat.setText(exampleChat.getLastMessageInFromDB());  // maybe this will be getLastMessageInFromDb ??
         Picasso.get().load(exampleChat.getUser2().getAvatar()).into(holder.userAvatar);
-        System.out.println(exampleChat.getUser2().getUsername() + ":" + exampleChat.isReadByUser1());
         if ( !exampleChat.isReadByUser1() )
         {
             holder.newMessageIcon.setVisibility(View.VISIBLE);

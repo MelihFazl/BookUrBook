@@ -27,7 +27,6 @@ public class MyFireBaseMessagingService extends FirebaseMessagingService {
         String CHANNEL_NAME = "MESSAGE";
 
         NotificationManagerCompat manager = NotificationManagerCompat.from(getApplicationContext());
-        System.out.println("builderdeyik");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME,
                     NotificationManager.IMPORTANCE_DEFAULT);
@@ -35,7 +34,7 @@ public class MyFireBaseMessagingService extends FirebaseMessagingService {
         }
 
         Notification notification = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
-                .setSmallIcon(R.drawable.new_message_icon)
+                .setSmallIcon(R.drawable.logo_big)
                 .setContentTitle(title)
                 .setAutoCancel(false)
                 .setContentText(message)
