@@ -31,6 +31,7 @@ public class Post implements Reportable, Serializable {
         this.owner = owner;
         sold = false;
         reports = new ArrayList<>();
+        reportNum = 0;
     }
 
     //getters

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bookurbook.MailAPISource.JavaMailAPI;
+import com.example.bookurbook.SendNotificationPack.Token;
 import com.example.bookurbook.models.Admin;
 import com.example.bookurbook.models.RegularUser;
 import com.example.bookurbook.models.User;
@@ -22,6 +23,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -92,6 +94,7 @@ public class VerificationActivity extends AppCompatActivity {
                                newUserData.put("reports", 0);
                                newUserData.put("avatar", "https://firebasestorage.googleapis.com/v0/b/bookurbook-a02e4.appspot.com/o/images%2Fprofile_pictures%2Fdefault.jpg?alt=media&token=a54505f6-0d24-40cd-a626-e39a655254c6");
                                db.collection("users").document(auth.getCurrentUser().getUid()).set(newUserData);
+                               db.collection("tokens").document(auth.getUid()).set(new Token(FirebaseInstanceId.getInstance().getToken()));
                                Toast.makeText(VerificationActivity.this, "Your account has been created. You are being to login menu in 2 seconds.", Toast.LENGTH_LONG).show();
 
 
