@@ -49,9 +49,9 @@ public class MyPostsActivity extends AppCompatActivity {
      */
     public void setProperties(){
         if(getIntent().getSerializableExtra("currentUser") instanceof Admin)
-            currentUser = (Admin)getIntent().getSerializableExtra("currentUser");
+            currentUser = (Admin) getIntent().getSerializableExtra("currentUser");
         else
-            currentUser = (RegularUser)getIntent().getSerializableExtra("currentUser");
+            currentUser = (RegularUser) getIntent().getSerializableExtra("currentUser");
 
         postList = (PostList) getIntent().getSerializableExtra("postlist");
 

@@ -48,6 +48,7 @@ public class WishlistActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.wishList);
         adapter = new WishlistAdapter(WishlistActivity.this, currentUser.getWishList(), currentUser);
+
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

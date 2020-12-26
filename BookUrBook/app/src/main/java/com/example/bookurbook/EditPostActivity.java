@@ -78,14 +78,15 @@ public class EditPostActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         //variables
 
-
         picChanged = false;
         //method code
         post = (Post) getIntent().getSerializableExtra("post");
         if(getIntent().getSerializableExtra("currentUser") instanceof Admin)
-            currentUser = (Admin)getIntent().getSerializableExtra("currentUser");
+        {
+            currentUser = (Admin) getIntent().getSerializableExtra("currentUser");
+        }
         else
-            currentUser = (RegularUser)getIntent().getSerializableExtra("currentUser");
+            currentUser = (RegularUser) getIntent().getSerializableExtra("currentUser");
         postList = (PostList) getIntent().getSerializableExtra("postlist");
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
