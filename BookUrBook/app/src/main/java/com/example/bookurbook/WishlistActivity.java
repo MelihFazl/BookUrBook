@@ -36,12 +36,15 @@ public class WishlistActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Wishlist");
         setProperties();
     }
-
+    /**
+     * This method will set the properties according to the currentUser
+     */
     public void setProperties(){
         if(getIntent().getSerializableExtra("currentUser") instanceof Admin)
             currentUser = (Admin)getIntent().getSerializableExtra("currentUser");
         else
             currentUser = (RegularUser)getIntent().getSerializableExtra("currentUser");
+
 
         recyclerView = findViewById(R.id.wishList);
         adapter = new WishlistAdapter(WishlistActivity.this, currentUser.getWishList(), currentUser);

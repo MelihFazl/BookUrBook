@@ -1,6 +1,7 @@
 package com.example.bookurbook;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookurbook.models.Post;
@@ -29,13 +31,14 @@ import java.util.HashMap;
 import java.util.List;
 
 public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHolder>{
+    //properties
     private ArrayList<Post> posts;
     private User currentUser;
     private Context context;
     private FirebaseFirestore db;
     private FirebaseAuth auth;
 
-
+    //constructor
     public WishlistAdapter(Context context, ArrayList<Post> posts, User currentUser) {
         this.posts = posts;
         this.context = context;
@@ -78,29 +81,46 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
         holder.likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        List<String> wishlist = Collections.emptyList();
-                        wishlist = (List<String>) documentSnapshot.get("wishlist");
-                        wishlist.remove(posts.get(position).getId());
-                        HashMap<String, Object> newData = new HashMap<>();
-                        newData.put("wishlist", wishlist);
-                        db.collection("users").document(auth.getCurrentUser().getUid()).set(newData, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Confirm");
+                builder.setMessage("Are you sure that you want to remove " + posts.get(position).getTitle() + " from your wishlist?");
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                             @Override
-                            public void onSuccess(Void aVoid)
-                            {
-                                Toast.makeText(context, posts.get(position).getTitle() + " has been removed from your WishList", Toast.LENGTH_SHORT).show();
-                                currentUser.getWishList().remove(posts.get(position));
-                                Intent pass = new Intent(context, WishlistActivity.class);
-                                pass.putExtra("currentUser", currentUser);
-                                context.startActivity(pass);
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                List<String> wishlist = Collections.emptyList();
+                                wishlist = (List<String>) documentSnapshot.get("wishlist");
+                                wishlist.remove(posts.get(position).getId());
+                                HashMap<String, Object> newData = new HashMap<>();
+                                newData.put("wishlist", wishlist);
+                                db.collection("users").document(auth.getCurrentUser().getUid()).set(newData, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Toast.makeText(context, posts.get(position).getTitle() + " has been removed from your wishlist", Toast.LENGTH_SHORT).show();
+                                        currentUser.getWishList().remove(posts.get(position));
+                                        Intent pass = new Intent(context, WishlistActivity.class);
+                                        pass.putExtra("currentUser", currentUser);
+                                        context.startActivity(pass);
+                                    }
+                                });
                             }
                         });
                     }
                 });
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
             }
         });
+
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,3 +145,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
         return posts.size();
     }
 }
+
+
+
+
