@@ -16,14 +16,19 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+/**
+ * This is an adapter for the recycler view in ChatActivity to present messages
+ */
 public class MessageAdapter<currentChat> extends RecyclerView.Adapter<MessageAdapter.ViewHolder>
 {
+    //variables
     public static final int MSG_TYPE_LEFT = 0;
     public static final int MSG_TYPE_RIGHT = 1;
     private Context context;
     private ArrayList<Message> messages;
     private Chat currentChat;
 
+    //constructors
     public MessageAdapter(Context c, ArrayList<Message> messages, Chat currentChat)
     {
         this.context = c;
@@ -37,11 +42,11 @@ public class MessageAdapter<currentChat> extends RecyclerView.Adapter<MessageAda
     {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View view;
-        if ( viewType == MSG_TYPE_RIGHT)
+        if ( viewType == MSG_TYPE_RIGHT) //Send by current user
         {
             view = layoutInflater.inflate(R.layout.message_right, parent, false);
         }
-        else
+        else //Send by other user
         {
             view = layoutInflater.inflate(R.layout.message_left, parent, false);
         }
@@ -52,7 +57,6 @@ public class MessageAdapter<currentChat> extends RecyclerView.Adapter<MessageAda
     public void onBindViewHolder(@NonNull MessageAdapter.ViewHolder holder, int position)
     {
         Message msg = messages.get(position);
-
         holder.showMessage.setText(msg.getContent());
         holder.showDate.setText(msg.getMessageDate() + " " + msg.getMessageTime());
         Picasso.get().load(currentChat.getUser2().getAvatar()).into(holder.messageImage);
@@ -83,11 +87,11 @@ public class MessageAdapter<currentChat> extends RecyclerView.Adapter<MessageAda
     @Override
     public int getItemViewType(int position)
     {
-        if ( messages.get(position).getSentBy().equals(currentChat.getUser1().getUsername()) )
+        if ( messages.get(position).getSentBy().equals(currentChat.getUser1().getUsername()) ) //Send by current user
         {
             return MSG_TYPE_RIGHT;
         }
-        else
+        else //Send by other user
         {
             return MSG_TYPE_LEFT;
         }

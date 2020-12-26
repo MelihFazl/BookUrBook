@@ -296,9 +296,9 @@ public class EditPostActivity extends AppCompatActivity
 
     private void updateDatabase()
     {
-        boolean priceChanged = post.getPrice() != Integer.parseInt(postPrice.getText().toString());
+        boolean priceChanged = post.getPrice() != Integer.parseInt(postPrice.getText().toString()); //if price has changed
         if (priceChanged)
-        {
+        {   //Send notification to users who added this post to their wishlists.
             db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
             {
                 @Override
@@ -306,13 +306,13 @@ public class EditPostActivity extends AppCompatActivity
                 {
                     if (task.isSuccessful())
                     {
-                        for (QueryDocumentSnapshot doc : task.getResult())
+                        for (QueryDocumentSnapshot doc : task.getResult()) //check all users
                         {
                             List<String> list = (List<String>) doc.get("wishlist");
-                            if (list != null && list.contains(post.getId()))
+                            if (list != null && list.contains(post.getId())) //if the user added this post to his wishlist
                             {
                                 db.collection("tokens").document(doc.getId()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>()
-                                {
+                                { //get the device token of that user
                                     @Override
                                     public void onSuccess(DocumentSnapshot documentSnapshot)
                                     {
@@ -422,6 +422,12 @@ public class EditPostActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * To send notification to other user by using database and SendNotificationPack
+     * @param usertoken device token of  other user
+     * @param title notification title
+     * @param message notification message
+     */
     public void sendNotifications(String usertoken, String title, String message)
     {
         Data data = new Data(title, message);
