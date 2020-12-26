@@ -22,12 +22,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.ViewHolder>{
+    //properties
     private ArrayList<User> reportedUsers;
     private User user;
     private Context context;
     private FirebaseFirestore db;
 
-
+    //constructor
     public ReportsAdapter(Context context, ArrayList<User> users) {
         this.reportedUsers = users;
         this.context = context;
@@ -63,7 +64,14 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.ViewHold
         holder.username.setText(reportedUsers.get(position).getUsername());
         db = FirebaseFirestore.getInstance();
         Picasso.get().load(reportedUsers.get(position).getAvatar()).into(holder.photo);
+
         holder.reportNumber.setText((reportedUsers.get(position).getReportNum() + ""));
+        if(reportedUsers.get(position).isBanned())
+            holder.bannedView.setVisibility(View.VISIBLE);
+        else
+            holder.bannedView.setVisibility(View.INVISIBLE);
+        holder.reportNumber.setText("Report Number: " + (reportedUsers.get(position).getReportNum()));
+
         holder.bannedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

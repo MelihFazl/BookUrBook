@@ -23,15 +23,14 @@ import com.squareup.picasso.Picasso;
 
 public class MyPostsActivity extends AppCompatActivity {
 
-    ImageButton add;
+    private ImageButton add;
     private Toolbar toolbar;
-    RecyclerView recyclerView;
-    ImageView img;
-    TextView username, userType;
-    MyPostsAdapter adp;
-    PostList postList;
-    UserSpecPostList userSpecPostList;
-    User currentUser;
+    private RecyclerView recyclerView;
+    private ImageView img;
+    private TextView username, userType;
+    private MyPostsAdapter adp;
+    private PostList postList;
+    private User currentUser;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,9 +49,9 @@ public class MyPostsActivity extends AppCompatActivity {
      */
     public void setProperties(){
         if(getIntent().getSerializableExtra("currentUser") instanceof Admin)
-            currentUser = (Admin)getIntent().getSerializableExtra("currentUser");
+            currentUser = (Admin) getIntent().getSerializableExtra("currentUser");
         else
-            currentUser = (RegularUser)getIntent().getSerializableExtra("currentUser");
+            currentUser = (RegularUser) getIntent().getSerializableExtra("currentUser");
 
         postList = (PostList) getIntent().getSerializableExtra("postlist");
 
@@ -83,7 +82,6 @@ public class MyPostsActivity extends AppCompatActivity {
     public void setElements()
     {
         username.setText(currentUser.getUsername());
-        //Picasso.get().load(currentUser.getAvatar()).into(img);
         if(currentUser instanceof RegularUser)
             userType.setText("Regular User");
         else
@@ -100,6 +98,9 @@ public class MyPostsActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * This method will be called when ad button is clicked
+     */
     public void addPost()
     {
         Intent intent = new Intent(getBaseContext(), CreatePostActivity.class);

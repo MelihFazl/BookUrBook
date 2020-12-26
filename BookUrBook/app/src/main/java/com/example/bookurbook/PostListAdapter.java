@@ -45,7 +45,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
         currentUser = user;
         this.list = list;
         postListHolder = list.getPostArray(); // buraya bak
-        postListHolderFull = new ArrayList<>(postListHolder);
+        postListHolderFull = new ArrayList<>(list.getPostArray());
         context = c;
     }
 
@@ -92,39 +92,32 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
 
     public void sort(View v)                                    // changed here, TEST this
     {
-        // will these work hmmmmmmmmmmmm ??  guess no ?
-        // ArrayList<Post> filteredList = new ArrayList<>(list.getPostArray());
+
         PostList filteredList = list;
 
+        if (v.getId() != R.id.reset_button) {
 
-        if (v.getId() == R.id.AtoZ_button) {
+            if (v.getId() == R.id.AtoZ_button)
+                filteredList.sortByLetter(true);
 
-            //list.sortByLetter(true);
-            filteredList.sortByLetter(true);
-        }
-        else if (v.getId() == R.id.ZtoA_button) {
-            //list.sortByLetter(false);
-            filteredList.sortByLetter(false);
-        }
-        else if (v.getId() == R.id.LtoH_price_button) {
-            //list.sortByPrice(true);
-            filteredList.sortByPrice(true);
+            else if (v.getId() == R.id.ZtoA_button)
+                filteredList.sortByLetter(false);
 
-        }
-        else if (v.getId() == R.id.HtoL_price_button) {
-            //list.sortByPrice(false);
-            filteredList.sortByPrice(false);
+            else if (v.getId() == R.id.LtoH_price_button)
+                filteredList.sortByPrice(true);
 
+            else if (v.getId() == R.id.HtoL_price_button)
+                filteredList.sortByPrice(false);
+
+            postListHolder = new ArrayList<>(filteredList.getPostArray());
+            notifyDataSetChanged();
         }
-        else if (v.getId() == R.id.reset_button) {                  // doesn't work after the first click !!!!!!
-            //list.setPostArray(postListHolderFull);
-            filteredList.setPostArray(postListHolderFull);
+        else
+        {
+            postListHolder = new ArrayList<>(postListHolderFull);
+            notifyDataSetChanged();
         }
 
-        //postListHolder = new ArrayList<>(list.getPostArray());
-        postListHolder = new ArrayList<>(filteredList.getPostArray());
-
-        notifyDataSetChanged();
     }
 
     private Filter exampleFilter = new Filter() {
@@ -184,6 +177,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
             layout = (LinearLayout)  itemView.findViewById(R.id.row_post);
         }
     }
+
     public void filterResults(String uni, String course, int lowPrice, int highPrice)
     {
         PostList filteredList = list;
@@ -203,4 +197,5 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
         postListHolder = new ArrayList<>(filteredList.getPostArray());
         notifyDataSetChanged();
     }
+
 }

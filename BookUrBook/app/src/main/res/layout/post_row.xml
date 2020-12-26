@@ -15,14 +15,14 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginStart="21dp"
-        android:layout_marginLeft="21dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="5dp"
-        android:layout_marginEnd="21dp"
-        android:layout_marginRight="21dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
         android:layout_marginBottom="5dp"
         app:cardBackgroundColor="#EAE4C4"
-        app:cardCornerRadius="4dp"
+        app:cardCornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,16 +36,18 @@
             <TextView
                 android:id="@+id/postText"
                 android:layout_width="175dp"
-                android:layout_height="41dp"
+                android:layout_height="30dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_marginTop="24dp"
                 android:text="Post name"
                 android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.512"
                 app:layout_constraintStart_toEndOf="@+id/postImageView"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.137" />
 
             <TextView
                 android:id="@+id/postSeller"
@@ -57,10 +59,12 @@
                 android:layout_marginTop="1dp"
                 android:text="Seller text"
                 android:textSize="15dp"
+                app:layout_constraintBottom_toTopOf="@+id/priceText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/postText"
-                app:layout_constraintTop_toBottomOf="@+id/postText" />
+                app:layout_constraintTop_toBottomOf="@+id/postText"
+                app:layout_constraintVertical_bias="1.0" />
 
             <TextView
                 android:id="@+id/priceText"

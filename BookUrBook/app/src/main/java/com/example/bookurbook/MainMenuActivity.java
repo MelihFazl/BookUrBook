@@ -58,6 +58,7 @@ public class MainMenuActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Main Menu");
         init();
+
         db = FirebaseFirestore.getInstance();//initin üstünde olabilir hatırlayamadım
         auth = FirebaseAuth.getInstance();//initin üstünde olabilir hatırlayamadım
         System.out.println("Main Menu Current User email:  " + currentUser.getEmail());
@@ -98,14 +99,22 @@ public class MainMenuActivity extends AppCompatActivity {
                                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                                 for (DocumentSnapshot doc : task.getResult()) {
                                                     currentPostOwner = new RegularUser(doc.getString("username"), doc.getString("email"), doc.getString("avatar"));
+                                                    currentPostOwner.setBanned(doc.getBoolean("banned"));
                                                 }
                                                 if (!document.getBoolean("sold")) {
-                                                    if (!blockedUsernames.contains(currentPostOwner.getUsername())) {
+                                                    if (!blockedUsernames.contains(currentPostOwner.getUsername()) && !currentPostOwner.isBanned()) {
                                                         postList.addPost(new Post(document.getString("description"), document.getString("title"), document.getString("university")
                                                                 , document.getString("course"), document.getLong("price").intValue(), document.getString("picture"), currentPostOwner, (String) document.get("id")));
                                                         postList.getPostArray().get(postList.getPostArray().size() - 1).setReportNum(document.getLong("reports").intValue());
                                                     }
                                                 }
+                                                //When I added this code block, After creating a post app gave an error.
+                                                ///////
+                                                //List<String> blockedUsernamesList = (List<String>) documentSnapshot.get("blockedusers");
+                                                //ArrayList<String> blockedUsernames = new ArrayList<String>();
+                                                //blockedUsernames.addAll(blockedUsernamesList);
+                                                //pass.putExtra("blockedUsernames", blockedUsernames);
+                                                ///////
                                                 pass.putExtra("currentUser", currentUser);
                                                 pass.putExtra("postlist", postList);
                                                 startActivity(pass);
@@ -163,10 +172,11 @@ public class MainMenuActivity extends AppCompatActivity {
                                         FirebaseFirestore db;
                                         for (DocumentSnapshot doc : task.getResult()) {
                                             currentPostOwner = new RegularUser(doc.getString("username"), doc.getString("email"), doc.getString("avatar"));
+
                                         }
                                         if (document.getString("username").equals(currentUser.getUsername())) {
                                             postList.addPost(new Post(document.getString("description"), document.getString("title"), document.getString("university")
-                                                    , document.getString("course"), document.getLong("price").intValue(), document.getString("picture"), currentPostOwner, (String) document.get("id")));
+                                                    , document.getString("course"), document.getLong("price").intValue(), document.getString("picture"), currentUser, (String) document.get("id")));
                                             postList.getPostArray().get(postList.getPostArray().size() - 1).setSold(document.getBoolean("sold"));
                                         }
                                         pass.putExtra("currentUser", currentUser);
@@ -217,9 +227,11 @@ public class MainMenuActivity extends AppCompatActivity {
                                                 List<String> wished = (List<String>) documentSnapshot.get("wishlist");
                                                 for (DocumentSnapshot doc : task.getResult()) {
                                                     currentPostOwner = new RegularUser(doc.getString("username"), doc.getString("email"), doc.getString("avatar"));
+                                                    currentPostOwner.setBanned(doc.getBoolean("banned"));
                                                 }
                                                 if (!document.getBoolean("sold")) {
-                                                    if (wished.contains(document.getString("id"))) {
+                                                    if (wished.contains(document.getString("id")) && !currentPostOwner.isBanned())
+                                                    {
                                                         postList.addPost(new Post(document.getString("description"), document.getString("title"), document.getString("university")
                                                                 , document.getString("course"), document.getLong("price").intValue(), document.getString("picture"), currentPostOwner, (String) document.get("id")));
                                                     }
@@ -279,4 +291,8 @@ public class MainMenuActivity extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    public void onBackPressed()
+    {}
 }

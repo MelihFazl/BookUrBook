@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:background="#589114"
         android:elevation="4dp"
+        app:title="Settings"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,6 +22,36 @@
         app:layout_constraintVertical_bias="0.0">
 
     </androidx.appcompat.widget.Toolbar>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="1" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3"/>
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="1" />
     <Button
         android:id="@+id/logout"
         android:layout_width="165dp"
@@ -29,11 +60,12 @@
         android:text="LOGOUT"
         android:textSize="25sp"
         app:backgroundTint="#AF0505"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.508"
+        app:layout_constraintHorizontal_bias="0.5"
+        android:layout_marginBottom="50dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/blocked_users"
+        app:layout_constraintBottom_toTopOf="@id/guidelineBottom"
 
         app:layout_constraintVertical_bias="0.851" />
 
@@ -45,22 +77,14 @@
         android:text="Change Profıle Picture"
         android:textSize="20sp"
         app:backgroundTint="#FF7E67"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/resetPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/userdetails"
+        app:layout_constraintTop_toBottomOf="@id/guidelineTop"
+        android:layout_marginTop="37dp"
+        app:layout_constraintVertical_bias="0.5" />
 
-        app:layout_constraintVertical_bias="0.451" /><![CDATA[
-
-        app:layout_constraintVertical_bias="0.432" />
-
-
-    app:layout_constraintVertical_bias="0.586" />
-
-
-
-
-    ]]>
 
     <Button
         android:id="@+id/resetPassword"
@@ -70,44 +94,47 @@
         android:text="Reset Password"
         android:textSize="20sp"
         app:backgroundTint="#FF7E67"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/blocked_users"
+        app:layout_constraintEnd_toEndOf="@id/guidelineRight"
+        app:layout_constraintStart_toStartOf="@id/guidelineLeft"
+        app:layout_constraintTop_toBottomOf="@id/selectImage"
+        android:layout_marginTop="10dp"
+        app:layout_constraintVertical_bias="0.5" />
 
-        app:layout_constraintVertical_bias="0.591" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profilepic"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_gravity="center"
-        android:layout_marginTop="76dp"
         android:src="@drawable/user"
         app:civ_border_color="@color/white"
         app:civ_border_width="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/guidelineBottom"
+        app:layout_constraintEnd_toEndOf="@id/guidelineRight"
         app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guidelineLeft"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.127"
         app:srcCompat="@drawable/logo_big" />
-
 
     <TextView
         android:id="@+id/userdetails"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="215dp"
+        android:layout_height="28dp"
         android:fontFamily="@font/actor"
         android:gravity="center"
         android:text="Username"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profilepic"
-        app:layout_constraintVertical_bias="0.046" />
+        app:layout_constraintVertical_bias="0.038"
+        app:layout_constraintBottom_toTopOf="@id/guidelineTop"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="@id/guidelineRight"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@id/guidelineLeft" />
+
 
     <Button
         android:id="@+id/blocked_users"
@@ -116,10 +143,10 @@
         android:text="Blocked Users"
         android:textSize="20sp"
         app:backgroundTint="#FF7E67"
-        app:layout_constraintBottom_toTopOf="@+id/logout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guidelineRight"
+        app:layout_constraintStart_toStartOf="@id/guidelineLeft"
         app:layout_constraintTop_toBottomOf="@+id/resetPassword"
-        app:layout_constraintVertical_bias="0.0" />
+        android:layout_marginTop="10dp"
+        app:layout_constraintHorizontal_bias="0.5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

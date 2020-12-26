@@ -29,29 +29,26 @@ public class WishlistActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wishlist);
-        //toolbar = findViewById(R.id.wishlistToolbar);
-        //setSupportActionBar(toolbar);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //getSupportActionBar().setDisplayShowHomeEnabled(true);
-        //getSupportActionBar().setTitle("Wishlist");
+        toolbar = findViewById(R.id.wishlistToolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("Wishlist");
         setProperties();
     }
-
+    /**
+     * This method will set the properties according to the currentUser
+     */
     public void setProperties(){
         if(getIntent().getSerializableExtra("currentUser") instanceof Admin)
             currentUser = (Admin)getIntent().getSerializableExtra("currentUser");
         else
             currentUser = (RegularUser)getIntent().getSerializableExtra("currentUser");
 
-<<<<<<< Updated upstream
 
         recyclerView = findViewById(R.id.wishList);
         adapter = new WishlistAdapter(WishlistActivity.this, currentUser.getWishList(), currentUser);
-=======
-        //wishlist = (PostList) getIntent().getSerializableExtra("postlist");
-        //recyclerView = findViewById(R.id.wishList);
-        adapter = new WishlistAdapter(WishlistActivity.this, wishlist.getPostArray(), currentUser);
->>>>>>> Stashed changes
+
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

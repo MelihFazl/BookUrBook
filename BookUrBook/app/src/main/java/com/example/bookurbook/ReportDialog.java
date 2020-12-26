@@ -56,7 +56,7 @@ public class ReportDialog extends AppCompatDialogFragment {
         try {
             listener = (ReportPostDialogListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + "must implement ExampleDialogListener");
+            throw new ClassCastException(context.toString() + "must implement ReportDialogListener");
         }
     }
 
