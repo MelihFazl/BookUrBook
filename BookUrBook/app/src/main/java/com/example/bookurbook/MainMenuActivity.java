@@ -109,12 +109,12 @@ public class MainMenuActivity extends AppCompatActivity {
                                                     }
                                                 }
                                                 //When I added this code block, After creating a post app gave an error.
-                                                ///////
-                                                //List<String> blockedUsernamesList = (List<String>) documentSnapshot.get("blockedusers");
-                                                //ArrayList<String> blockedUsernames = new ArrayList<String>();
-                                                //blockedUsernames.addAll(blockedUsernamesList);
-                                                //pass.putExtra("blockedUsernames", blockedUsernames);
-                                                ///////
+                                                /**
+                                                List<String> blockedUsernamesList = (List<String>) documentSnapshot.get("blockedusers");
+                                                ArrayList<String> blockedUsernames = new ArrayList<String>();
+                                                blockedUsernames.addAll(blockedUsernamesList);
+                                                pass.putExtra("blockedUsernames", blockedUsernames);
+                                                 */
                                                 pass.putExtra("currentUser", currentUser);
                                                 pass.putExtra("postlist", postList);
                                                 startActivity(pass);
