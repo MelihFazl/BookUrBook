@@ -63,7 +63,7 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.ViewHold
         holder.username.setText(reportedUsers.get(position).getUsername());
         db = FirebaseFirestore.getInstance();
         Picasso.get().load(reportedUsers.get(position).getAvatar()).into(holder.photo);
-        holder.reportNumber.setText((reportedUsers.get(position).getReportNum() + ""));
+        holder.reportNumber.setText("Report Number: " + (reportedUsers.get(position).getReportNum()));
         holder.bannedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
