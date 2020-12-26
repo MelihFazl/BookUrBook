@@ -385,9 +385,13 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
                 for (DocumentSnapshot doc : task.getResult())
                 {
                     String reportedUserID = doc.getId();
-                    int currentReportCount = doc.getLong("reports").intValue() + 1;
+                    List<String> reporters = (List<String>) doc.get("reporters");
+                    if(!reporters.contains(currentUser.getUsername()))
+                    {
+                        reporters.add(currentUser.getUsername());
+                    }
                     HashMap<String, Object> newData = new HashMap<>();
-                    newData.put("reports", currentReportCount);
+                    newData.put("reporters", reporters);
                     db.collection("users").document(reportedUserID).set(newData, SetOptions.merge());
                 }
 

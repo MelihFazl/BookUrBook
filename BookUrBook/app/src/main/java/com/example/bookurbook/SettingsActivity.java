@@ -44,7 +44,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity implements FeedbackDialogListener {
 
 
     private Button logout;
@@ -60,6 +60,7 @@ public class SettingsActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private Intent pass;
     private Toolbar toolbar;
+    private Button sendFeedback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +75,7 @@ public class SettingsActivity extends AppCompatActivity {
         blocklist = findViewById(R.id.blocked_users);
         profilePic = findViewById(R.id.profilepic);
         userDetails = findViewById(R.id.userdetails);
+        sendFeedback = findViewById(R.id.sendFeedback);
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
@@ -156,6 +158,13 @@ public class SettingsActivity extends AppCompatActivity {
                 });
             }
         });
+
+        sendFeedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openFeedbackDialog();
+            }
+        });
     }
 
     private void choosePicture()
@@ -219,5 +228,18 @@ public class SettingsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         onBackPressed();
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * This method is created in order to create a pop up dialog using FeedbackDialog class.
+     */
+    public void openFeedbackDialog() {
+        FeedbackDialog dialog = new FeedbackDialog();
+        dialog.show(getSupportFragmentManager(), "");
+    }
+
+    @Override
+    public void applyTexts(String description) {
+        //FERHAT BURAYA YAPCAN XD
     }
 }

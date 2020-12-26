@@ -58,9 +58,8 @@ public class MainMenuActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Main Menu");
         init();
-
-        db = FirebaseFirestore.getInstance();//initin üstünde olabilir hatırlayamadım
-        auth = FirebaseAuth.getInstance();//initin üstünde olabilir hatırlayamadım
+        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
         System.out.println("Main Menu Current User email:  " + currentUser.getEmail());
     }
 
@@ -100,21 +99,14 @@ public class MainMenuActivity extends AppCompatActivity {
                                                 for (DocumentSnapshot doc : task.getResult()) {
                                                     currentPostOwner = new RegularUser(doc.getString("username"), doc.getString("email"), doc.getString("avatar"));
                                                     currentPostOwner.setBanned(doc.getBoolean("banned"));
+                                                    currentPostOwner.setReportNum(((List<String>)doc.get("reporters")).size());
                                                 }
                                                 if (!document.getBoolean("sold")) {
                                                     if (!blockedUsernames.contains(currentPostOwner.getUsername()) && !currentPostOwner.isBanned()) {
                                                         postList.addPost(new Post(document.getString("description"), document.getString("title"), document.getString("university")
                                                                 , document.getString("course"), document.getLong("price").intValue(), document.getString("picture"), currentPostOwner, (String) document.get("id")));
-                                                        postList.getPostArray().get(postList.getPostArray().size() - 1).setReportNum(document.getLong("reports").intValue());
                                                     }
                                                 }
-                                                //When I added this code block, After creating a post app gave an error.
-                                                ///////
-                                                //List<String> blockedUsernamesList = (List<String>) documentSnapshot.get("blockedusers");
-                                                //ArrayList<String> blockedUsernames = new ArrayList<String>();
-                                                //blockedUsernames.addAll(blockedUsernamesList);
-                                                //pass.putExtra("blockedUsernames", blockedUsernames);
-                                                ///////
                                                 pass.putExtra("currentUser", currentUser);
                                                 pass.putExtra("postlist", postList);
                                                 startActivity(pass);
@@ -228,6 +220,7 @@ public class MainMenuActivity extends AppCompatActivity {
                                                 for (DocumentSnapshot doc : task.getResult()) {
                                                     currentPostOwner = new RegularUser(doc.getString("username"), doc.getString("email"), doc.getString("avatar"));
                                                     currentPostOwner.setBanned(doc.getBoolean("banned"));
+                                                    currentPostOwner.setReportNum(((List<String>)doc.get("reporters")).size());
                                                 }
                                                 if (!document.getBoolean("sold")) {
                                                     if (wished.contains(document.getString("id")) && !currentPostOwner.isBanned())
@@ -269,13 +262,13 @@ public class MainMenuActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         for (QueryDocumentSnapshot doc : task.getResult())
                         {
-                            if(doc.getLong("reports").intValue() > 0)
+                            if(((List<String>)doc.get("reporters")).size() > 0)
                             {
                                 if(doc.getBoolean("admin"))
                                     reportedUsers.add(new Admin(doc.getString("username"), doc.getString("email"), doc.getString("avatar")));
                                 else
                                     reportedUsers.add(new RegularUser(doc.getString("username"), doc.getString("email"), doc.getString("avatar")));
-                                reportedUsers.get(reportedUsers.size() - 1).setReportNum(doc.getLong("reports").intValue());
+                                reportedUsers.get(reportedUsers.size() - 1).setReportNum(((List<String>)doc.get("reporters")).size());
                                 reportedUsers.get(reportedUsers.size() -1).setBanned(doc.getBoolean("banned"));
                             }
                         }
