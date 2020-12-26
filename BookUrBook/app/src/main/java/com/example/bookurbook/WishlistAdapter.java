@@ -115,6 +115,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
                 }
                 intent.putExtra("postlist", postlist);
                 context.startActivity(intent);
+
             }
         });
 
