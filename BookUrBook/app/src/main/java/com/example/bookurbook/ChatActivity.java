@@ -79,6 +79,7 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
     private ImageButton blockButton;
     private APIService apiService;
     private String otherUserID;
+    private ArrayList<String> toBePassed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -236,21 +237,32 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
                         List<String> blockedUsernames = Collections.emptyList();
                         blockedUsernames = (List<String>) documentSnapshot.get("blockedusers");
                         blockedUsernames.add(currentChat.getUser2().getUsername());
-                        ArrayList<String> toBePassed = getIntent().getStringArrayListExtra("blockedUsernames");
-                        toBePassed.add(currentChat.getUser2().getUsername());
+                        if(!((boolean) getIntent().getExtras().get("fromPostActivity")))
+                        {
+                            toBePassed = getIntent().getStringArrayListExtra("blockedUsernames");
+                            toBePassed.add(currentChat.getUser2().getUsername());
+                        }
                         HashMap<String, Object> newData = new HashMap<>();
                         newData.put("blockedusers", blockedUsernames);
                         db.collection("users").document(auth.getCurrentUser().getUid()).set(newData, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 Toast.makeText(ChatActivity.this, currentChat.getUser2().getUsername() + " has been blocked.", Toast.LENGTH_SHORT).show();
-                                Intent pass = new Intent(ChatActivity.this, MyChatsActivity.class);
-                                pass.putExtra("currentUser", currentUser);
-                                pass.putExtra("blockedUsernames", toBePassed);
-                                startActivity(pass);
+                                if((boolean) getIntent().getExtras().get("fromPostActivity"))
+                                {
+                                    Intent pass = new Intent(ChatActivity.this, MainMenuActivity.class);
+                                    pass.putExtra("currentUser", currentUser);
+                                    startActivity(pass);
+                                }
+                                else
+                                {
+                                    Intent pass = new Intent(ChatActivity.this, MyChatsActivity.class);
+                                    pass.putExtra("currentUser", currentUser);
+                                    pass.putExtra("blockedUsernames", toBePassed);
+                                    startActivity(pass);
+                                }
                             }
                         });
-
                     }
                 });
             }
