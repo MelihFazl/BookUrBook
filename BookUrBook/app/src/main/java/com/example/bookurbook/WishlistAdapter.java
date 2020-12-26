@@ -78,7 +78,6 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
         holder.likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-<<<<<<< Updated upstream
                 db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -116,13 +115,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
                 }
                 intent.putExtra("postlist", postlist);
                 context.startActivity(intent);
-=======
-                Toast.makeText(context, posts.get(position).getTitle() + " has been removed from WishList", Toast.LENGTH_SHORT).show();
-                //currentUser.getWishList().deletePost(posts.get(position));
-                Intent pass = new Intent(context, WishlistActivity.class);
-                pass.putExtra("currentUser", currentUser);
-                context.startActivity(pass);
->>>>>>> Stashed changes
+
             }
         });
 
