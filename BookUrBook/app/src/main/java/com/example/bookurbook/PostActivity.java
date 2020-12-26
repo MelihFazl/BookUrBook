@@ -64,6 +64,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
     private ImageButton homeButton;
     private ImageView postPic;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         //method code
@@ -114,9 +115,9 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         }
 
 
-        //if (post.getReportNum() >= 10) {
-        //  badRepAlert();
-        //}
+        if (currentUser.getReportNum() >= 10) {
+          badRepAlert();
+        }
 
 
         /**
@@ -260,26 +261,14 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for (DocumentSnapshot doc : task.getResult()) {
                     String reportedUserID = doc.getId();
-                    int currentReportCount = doc.getLong("reports").intValue() + 1;
+                    List<String> reporters = (List<String>) doc.get("reporters");
+                    if(!reporters.contains(currentUser.getUsername()))
+                    {
+                        reporters.add(currentUser.getUsername());
+                    }
                     HashMap<String, Object> newData = new HashMap<>();
-                    newData.put("reports", currentReportCount);
-                    db.collection("users").document(reportedUserID).set(newData, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            int postReportCount = post.getReportNum();
-                            postReportCount = postReportCount + 1;
-                            post.setReportNum(postReportCount);
-                            HashMap<String, Object> postNewData = new HashMap<>();
-                            postNewData.put("reports", postReportCount);
-                            db.collection("posts").document(post.getId()).set(postNewData, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    System.out.println("Success");
-
-                                }
-                            });
-                        }
-                    });
+                    newData.put("reporters", reporters);
+                    db.collection("users").document(reportedUserID).set(newData, SetOptions.merge());
                 }
 
             }

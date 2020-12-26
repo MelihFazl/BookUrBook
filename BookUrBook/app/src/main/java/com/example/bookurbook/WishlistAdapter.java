@@ -145,7 +145,3 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
         return posts.size();
     }
 }
-
-
-
-

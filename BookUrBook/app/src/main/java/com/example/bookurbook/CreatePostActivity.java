@@ -201,7 +201,6 @@ public class CreatePostActivity extends AppCompatActivity {
                                     newData.put("username", post.getOwner().getUsername());
                                     newData.put("id", post.getId());
                                     newData.put("sold", false);
-                                    newData.put("reports", 0);
                                     db.collection("posts").document(post.getId()).set(newData).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {

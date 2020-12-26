@@ -50,7 +50,8 @@ public class MyChatsActivity extends AppCompatActivity {
     private MyChatsAdapter myChatsAdapter;
     private ArrayList<String> blockedUsernames;
     private Toolbar toolbar;
-    private SearchView searchView;                                      // new
+    private SearchView searchView;
+    private boolean repetitive;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +69,9 @@ public class MyChatsActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
         chatList = new ArrayList<Chat>();
+        searchMyChats(myChatsAdapter);
         buildRecyclerView();
-
-        searchMyChats(myChatsAdapter);                                                                  // new
+        repetitive = false;
 
         if(getIntent().getSerializableExtra("currentUser") instanceof Admin)
             currentUser = (Admin)getIntent().getSerializableExtra("currentUser");
@@ -113,21 +114,35 @@ public class MyChatsActivity extends AppCompatActivity {
                                         {
                                            if( !blockedUsernames.contains(document.getString("username")))
                                            {
-                                                Chat chat = new Chat(currentUser, new RegularUser(document.getString("username"),
-                                                        document.getString("email"), document.getString("avatar")), doc.getId());
-                                                chat.setLastMessageContentInDB(doc.getString("lastmessage"));
-                                                chat.setDate(doc.getDate("lastmessagedate"));
-                                                if ( doc.getId().indexOf(currentUser.getUsername()) == 0)
+                                                for ( int i = 0; i < chatList.size(); i++ )
                                                 {
-                                                    chat.setReadByUser1(doc.getBoolean("readbyuser1"));
-                                                    chat.setReadByUser2(doc.getBoolean("readbyuser2"));
+                                                    if( chatList.get(i).getUser2().getUsername().equals(document.getString("username")))
+                                                    {
+                                                        repetitive = true;
+                                                        break;
+                                                    }
+                                                    else
+                                                    {
+                                                        repetitive = false;
+                                                    }
                                                 }
-                                                else
+                                                if( !repetitive )
                                                 {
-                                                    chat.setReadByUser1(doc.getBoolean("readbyuser2"));
-                                                    chat.setReadByUser2(doc.getBoolean("readbyuser1"));
+                                                    Chat chat = new Chat(currentUser, new RegularUser(document.getString("username"),
+                                                            document.getString("email"), document.getString("avatar")), doc.getId());
+                                                    chat.setLastMessageContentInDB(doc.getString("lastmessage"));
+                                                    chat.setDate(doc.getDate("lastmessagedate"));
+                                                    if (doc.getId().indexOf(currentUser.getUsername()) == 0)
+                                                    {
+                                                        chat.setReadByUser1(doc.getBoolean("readbyuser1"));
+                                                        chat.setReadByUser2(doc.getBoolean("readbyuser2"));
+                                                    } else
+                                                    {
+                                                        chat.setReadByUser1(doc.getBoolean("readbyuser2"));
+                                                        chat.setReadByUser2(doc.getBoolean("readbyuser1"));
+                                                    }
+                                                    chatList.add(chat);
                                                 }
-                                                chatList.add(chat);
                                            }
                                         }
                                     }
