@@ -10,7 +10,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/reportList"
         android:layout_width="404dp"
-        android:layout_height="662dp"
+        android:layout_height="660dp"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="25dp"
         android:layout_marginRight="5dp"

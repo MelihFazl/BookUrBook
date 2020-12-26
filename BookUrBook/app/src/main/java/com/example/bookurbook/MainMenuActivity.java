@@ -58,6 +58,7 @@ public class MainMenuActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Main Menu");
         init();
+
         db = FirebaseFirestore.getInstance();//initin üstünde olabilir hatırlayamadım
         auth = FirebaseAuth.getInstance();//initin üstünde olabilir hatırlayamadım
         System.out.println("Main Menu Current User email:  " + currentUser.getEmail());
@@ -175,7 +176,7 @@ public class MainMenuActivity extends AppCompatActivity {
                                         }
                                         if (document.getString("username").equals(currentUser.getUsername())) {
                                             postList.addPost(new Post(document.getString("description"), document.getString("title"), document.getString("university")
-                                                    , document.getString("course"), document.getLong("price").intValue(), document.getString("picture"), currentPostOwner, (String) document.get("id")));
+                                                    , document.getString("course"), document.getLong("price").intValue(), document.getString("picture"), currentUser, (String) document.get("id")));
                                             postList.getPostArray().get(postList.getPostArray().size() - 1).setSold(document.getBoolean("sold"));
                                         }
                                         pass.putExtra("currentUser", currentUser);

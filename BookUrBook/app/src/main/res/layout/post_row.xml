@@ -15,14 +15,14 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginStart="21dp"
-        android:layout_marginLeft="21dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="5dp"
-        android:layout_marginEnd="21dp"
-        android:layout_marginRight="21dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
         android:layout_marginBottom="5dp"
         app:cardBackgroundColor="#EAE4C4"
-        app:cardCornerRadius="4dp"
+        app:cardCornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -64,7 +64,7 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/postText"
                 app:layout_constraintTop_toBottomOf="@+id/postText"
-                app:layout_constraintVertical_bias="0.833" />
+                app:layout_constraintVertical_bias="1.0" />
 
             <TextView
                 android:id="@+id/priceText"
