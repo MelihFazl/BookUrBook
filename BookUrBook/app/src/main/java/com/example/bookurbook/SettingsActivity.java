@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.bookurbook.SendNotificationPack.Token;
 import com.example.bookurbook.models.Admin;
 import com.example.bookurbook.models.RegularUser;
 import com.example.bookurbook.models.User;
@@ -31,6 +32,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -101,6 +103,7 @@ public class SettingsActivity extends AppCompatActivity implements FeedbackDialo
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                db.collection("tokens").document(auth.getUid()).set(new Token(""));
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent (SettingsActivity.this, LoginActivity.class));
                 finish();
