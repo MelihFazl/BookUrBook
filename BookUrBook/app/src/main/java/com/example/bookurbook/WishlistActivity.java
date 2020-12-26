@@ -44,13 +44,8 @@ public class WishlistActivity extends AppCompatActivity {
             currentUser = (RegularUser)getIntent().getSerializableExtra("currentUser");
 
 
-
         recyclerView = findViewById(R.id.wishList);
         adapter = new WishlistAdapter(WishlistActivity.this, currentUser.getWishList(), currentUser);
-
-        //wishlist = (PostList) getIntent().getSerializableExtra("postlist");
-        //recyclerView = findViewById(R.id.wishList);
-        //adapter = new WishlistAdapter(WishlistActivity.this, wishlist.getPostArray(), currentUser);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

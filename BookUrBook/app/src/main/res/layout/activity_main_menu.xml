@@ -225,11 +225,12 @@
         android:id="@+id/adminPanelButton"
         android:layout_width="276dp"
         android:layout_height="61dp"
+        android:layout_marginBottom="68dp"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/guidelineBottom"
         app:layout_constraintEnd_toEndOf="@id/guidelineRight"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="@id/guidelineLeft"
-        android:layout_marginBottom="30dp"
         app:srcCompat="@drawable/fui_idp_button_background_twitter" />
 
     <TextView

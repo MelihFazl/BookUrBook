@@ -17,8 +17,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookurbook.R;
+import com.example.bookurbook.models.Admin;
 import com.example.bookurbook.models.Post;
 import com.example.bookurbook.models.PostList;
+import com.example.bookurbook.models.RegularUser;
+import com.example.bookurbook.models.User;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -85,9 +88,6 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.ViewHold
             holder.tickSold.setImageResource(R.drawable.unmark);
         }
 
-
-
-
         holder.title.setText(myPosts.get(position).getTitle());
         holder.seller.setText(myPosts.get(position).getOwner().getUsername());
         Picasso.get().load(myPosts.get(position).getPicture()).into(holder.photo);
@@ -95,9 +95,18 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.ViewHold
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                User currentUser;
                 Intent intent = new Intent(context, PostActivity.class);
                 intent.putExtra("post", myPosts.get(position));
-                intent.putExtra("currentUser", myPosts.get(position).getOwner());
+                if(myPosts.get(position).getOwner() instanceof Admin) {
+                    currentUser = (Admin) myPosts.get(position).getOwner();
+                    System.out.println("asagashsdhfdsssssssssss");
+                }
+                else {
+                    currentUser  = (RegularUser) myPosts.get(position).getOwner();
+                    System.out.println("asagashsdhfdsssssssssasgadhweqrqqqqqss");
+                }
+                intent.putExtra("currentUser", currentUser);
                 intent.putExtra("previousActivity",2);
                 PostList postlist = new PostList();
                 for(int i = 0; i < myPosts.size(); i++)
@@ -114,9 +123,20 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.ViewHold
             @Override
             public void onClick(View view)
             {
+                User currentUser;
                 Intent intent2 = new Intent(context, EditPostActivity.class);
                 intent2.putExtra("post", myPosts.get(position));
-                intent2.putExtra("currentUser", myPosts.get(position).getOwner());
+                //ekleme
+                if(myPosts.get(position).getOwner() instanceof Admin) {
+                    currentUser = (Admin) myPosts.get(position).getOwner();
+                    System.out.println("asagashsdhfdsssssssssss");
+                }
+                else {
+                    currentUser  = (RegularUser) myPosts.get(position).getOwner();
+                    System.out.println("asagashsdhfdsssssssssasgadhweqrqqqqqss");
+                }
+                intent2.putExtra("currentUser", currentUser);
+                //ekleme
                 PostList pass = new PostList();
                 for(int i = 0; myPosts.size() > i; i++)
                 {
