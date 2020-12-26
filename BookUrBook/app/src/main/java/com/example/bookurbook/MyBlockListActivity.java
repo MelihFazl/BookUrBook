@@ -22,6 +22,8 @@ import com.example.bookurbook.models.User;
 import java.util.ArrayList;
 
 public class MyBlockListActivity extends AppCompatActivity {
+
+    //properties
     private User currentUser;
     private RecyclerView blockList;
     private ImageButton homeButton;
@@ -53,21 +55,15 @@ public class MyBlockListActivity extends AppCompatActivity {
         });
         setProperties();
     }
-
+    /**
+     * This method will construct the variables of the class
+     */
     public void setProperties()
     {
         this.blockList = findViewById(R.id.blockList);
         adapter = new BlockedUsersAdapter(MyBlockListActivity.this, currentUser.getBlockedUsers(), currentUser);
         blockList.setAdapter(adapter);
         blockList.setLayoutManager(new LinearLayoutManager(this));
-    }
-    public void add() //silinecek
-    {
-
-        //blockedUsers =  currentUser.getBlockedUsers().getUserArray(); //userliste eklendi silincek
-       // blockedUsers =  currentUser.getBlockedUsers().getUserArray(); //userliste eklendi silincek
-
-
     }
 
     @Override
