@@ -36,7 +36,7 @@ public class BlockedUsersAdapter extends RecyclerView.Adapter<BlockedUsersAdapte
     private FirebaseFirestore db;
     private FirebaseAuth auth;
 
-
+    //constructor
     public BlockedUsersAdapter(Context context, ArrayList<User> users, User currentUser) {
         this.blockedUsers = users;
         this.context = context;
