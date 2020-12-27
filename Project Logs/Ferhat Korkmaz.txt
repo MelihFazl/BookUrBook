@@ -43,7 +43,7 @@ This week, I started to learning Firebase Firestore database. I was kind of in a
 became ready to implement our project. After learning it, We started our GitHub repository and working on the actual project. Using GitHub was kind of confusing for me, yet
 I got over it eventually.
 
-# 14 December - 20 December # //THIS WEEK
+# 14 December - 20 December # 
 This week was the most intense week in terms of the CS102 project for me. I generally worked with Melih. We have dealt with a plethora of database issues!
 What have I done this week:
 - Implementing the JavaMailAPI into the project in order to send a mail that contains the verification code (I have used my draft in order to accomplish it easily.)
@@ -55,4 +55,14 @@ with Melih.
 
 
 # 21 December - 27 December # //FINAL WEEK!
-//PLACE HOLDER
+This week was also one of the most intense week for me. I worked on several activities.
+- Making wishlist connected with the database and setting the necessary intents.
+- Database connection of the admin panel.
+- Enhanced report system by using JavaMailAPI and Firebase.
+- Block system.
+- Eliminating banned and blocked users posts from the postlist and wishlist panels.
+- More validation checks for the register activity. (Alphanumerical Email, username, and password)
+- Sending feedback through the settings screen.
+- Resetting password for the users.
+- Setting new users' and posts' properties in light of these changes.
+- A plethora of bug fixes :( .

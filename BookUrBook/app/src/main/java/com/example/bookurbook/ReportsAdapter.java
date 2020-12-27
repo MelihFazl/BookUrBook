@@ -64,6 +64,7 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.ViewHold
         holder.username.setText(reportedUsers.get(position).getUsername());
         db = FirebaseFirestore.getInstance();
         Picasso.get().load(reportedUsers.get(position).getAvatar()).into(holder.photo);
+        holder.bannedView.setImageResource(R.drawable.banned);
 
         holder.reportNumber.setText((reportedUsers.get(position).getReportNum() + ""));
         if(reportedUsers.get(position).isBanned())
@@ -77,6 +78,7 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.ViewHold
             public void onClick(View view) {
                 if(reportedUsers.get(position).isBanned()) {
                     reportedUsers.get(position).setBanned(false);
+                    holder.bannedView.setImageResource(R.drawable.banned);
                     holder.bannedView.setVisibility(View.INVISIBLE);
                     Toast.makeText(context, reportedUsers.get(position).getUsername() + "'s ban has been removed", Toast.LENGTH_SHORT).show();
                     db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -98,6 +100,7 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.ViewHold
                 }
                 else {
                     reportedUsers.get(position).setBanned(true);
+                    holder.bannedView.setImageResource(R.drawable.banned);
                     holder.bannedView.setVisibility(View.VISIBLE);
                     Toast.makeText(context, reportedUsers.get(position).getUsername() + " has been banned", Toast.LENGTH_SHORT).show();
                     db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -119,7 +122,6 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.ViewHold
                 }
                     }
                 });
-
             }
 
     @Override
