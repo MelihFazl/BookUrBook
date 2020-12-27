@@ -18,10 +18,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+/**
+ * this class represents the pop-up window which is
+ * displyaed when the user wants to filter the post list
+ */
 public class FilterScreenView extends AppCompatDialogFragment implements AdapterView.OnItemSelectedListener {
 
     // properties
-    PostListAdapter postListAdapter;
     String filteredUni = "";
     String filteredCourse = "";
     private FilterScreenListener filterScreenListener;
@@ -32,22 +35,16 @@ public class FilterScreenView extends AppCompatDialogFragment implements Adapter
     EditText lowPrice;
     EditText highPrice;
 
-    // constructor
-    /*public FilterScreenView(PostListAdapter adapter)
-    {
-        this.postListAdapter = adapter;
-    }*/
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        // this variable is for testing
-
-
+        // this is the pop-up window that will open
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.layout_filter, null);
 
+        // a spinner with several university options in it where the user can choose one
         filterByUni = view.findViewById(R.id.uni_filter);
         uniSpinner = view.findViewById(R.id.univeristy_spinner);
         ArrayAdapter<CharSequence> uniAdapter = ArrayAdapter.createFromResource(builder.getContext(), R.array.Universities, android.R.layout.simple_spinner_item);
@@ -55,6 +52,7 @@ public class FilterScreenView extends AppCompatDialogFragment implements Adapter
         uniSpinner.setAdapter(uniAdapter);
         uniSpinner.setOnItemSelectedListener(this);
 
+        // a spinner with several course options in it where the user can choose one
         filterByCourse = view.findViewById(R.id.course_filter);
         courseSpinner = view.findViewById(R.id.course_spinner);
         ArrayAdapter<CharSequence> courseAdapter = ArrayAdapter.createFromResource(builder.getContext(), R.array.Courses, android.R.layout.simple_spinner_item);
@@ -62,21 +60,22 @@ public class FilterScreenView extends AppCompatDialogFragment implements Adapter
         courseSpinner.setAdapter(courseAdapter);
         courseSpinner.setOnItemSelectedListener(this);
 
+        // edit text fields for user to set a price range
         lowPrice = view.findViewById(R.id.low_price);
         highPrice = view.findViewById(R.id.high_price);
 
+        // for applying the filter options
         builder.setView(view)
                 .setTitle("Filter")
+
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                    }
+                    public void onClick(DialogInterface dialogInterface, int i) {}
                 })
+
                 .setPositiveButton("Apply", new DialogInterface.OnClickListener() {
                     int low;
                     int high;
-
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (lowPrice.getText().toString().equals(""))
@@ -91,11 +90,16 @@ public class FilterScreenView extends AppCompatDialogFragment implements Adapter
                         filterScreenListener.filterThePosts(filteredUni, filteredCourse, low , high);
                     }
                 });
-
         return builder.create();
-
     }
 
+    /**
+     * method for getting the user preference from the spinners
+     * @param adapterView which displays options in spinner
+     * @param view
+     * @param i
+     * @param l
+     */
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
@@ -108,15 +112,16 @@ public class FilterScreenView extends AppCompatDialogFragment implements Adapter
         }
     }
 
+    /**
+     * nothing will happen if no option is selected
+     * @param adapterView which displays options in spinner
+     */
     @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
+    public void onNothingSelected(AdapterView<?> adapterView) {}
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-
         try {
             filterScreenListener = (FilterScreenListener) context;
         } catch (ClassCastException e) {
@@ -124,6 +129,9 @@ public class FilterScreenView extends AppCompatDialogFragment implements Adapter
         }
     }
 
+    /**
+     * an interface which is to be implemented by Post List Activity
+     */
     public interface FilterScreenListener
     {
         void filterThePosts(String uni, String course, int lowPrice, int highPrice);

@@ -38,25 +38,28 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
 
-// class for the Post List activity
+/**
+ * a class to display the Post List screen, which inludes
+ * all the posts in the database and some buttons for further operations
+ */
 public class PostListActivity extends AppCompatActivity implements FilterScreenView.FilterScreenListener {
 
-    // variables
-    Toolbar toolbar;
-    RecyclerView recyclerView;
-    SearchView searchView;
-    Button LtoHpriceButton;
-    Button HtoLpriceButton;
-    Button AtoZbutton;
-    Button ZtoAbutton;
-    Button resetButton;
-    ImageButton filterButton;
-    ImageButton createPostButton;
-    PostListAdapter postListAdapter;
-    PostList postList;
+    // properties
+    private Toolbar toolbar;
+    private RecyclerView recyclerView;
+    private SearchView searchView;
+    private Button LtoHpriceButton;
+    private Button HtoLpriceButton;
+    private Button AtoZbutton;
+    private Button ZtoAbutton;
+    private Button resetButton;
+    private ImageButton filterButton;
+    private ImageButton createPostButton;
+    private PostListAdapter postListAdapter;
+    private PostList postList;
     private FirebaseFirestore db;
     private User currentUser;
-    private User currentPostOwner;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +73,7 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
         getSupportActionBar().setTitle("Post List");
 
 
-        // for database purposes
+        // connection to database
         db = FirebaseFirestore.getInstance();
         if(getIntent().getSerializableExtra("currentUser") instanceof Admin)
             currentUser = (Admin)getIntent().getSerializableExtra("currentUser");
@@ -84,7 +87,7 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
         System.out.println("CURRENT USER: " + currentUser.getUsername());
 
 
-
+        // initializing the variables
         createPostButton = findViewById(R.id.createPostButton);
         searchView = findViewById(R.id.search_id);
         recyclerView = findViewById(R.id.recycler_id);
@@ -96,13 +99,17 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
         resetButton = findViewById(R.id.reset_button);
         filterButton = findViewById(R.id.filterButton);
 
-        postListAdapter = new PostListAdapter(this, postList, currentUser);   // had to make it final, maybe change it later?
+        // an adapter for recycler view
+        postListAdapter = new PostListAdapter(this, postList, currentUser);
         recyclerView.setAdapter(postListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // method for searching through the posts
+        search(postListAdapter);
 
-        search(postListAdapter); // method for searching
-
+        /**
+         * method for opening the Create Post screen upon tapping the button
+         */
         createPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,6 +121,9 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
             }
         });
 
+        /**
+         * clicking this button will sort the posts in the order of lower price to higher price
+         */
         LtoHpriceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -121,6 +131,9 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
             }
         });
 
+        /**
+         * clicking this button will sort the posts in the order of higher price to lower price
+         */
         HtoLpriceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -128,6 +141,9 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
             }
         });
 
+        /**
+         * clicking this button will sort the posts in the alphabetical order
+         */
         AtoZbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -135,6 +151,9 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
             }
         });
 
+        /**
+         * clicking this button will sort the posts in the reverse alphabetical order
+         */
         ZtoAbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -142,6 +161,9 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
             }
         });
 
+        /**
+         * clicking this button will set the order to default version
+         */
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
@@ -150,6 +172,10 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
             }
         });
 
+        /**
+         * clicking this button will open a pop-up window where the user
+         * can filter the posts according to their preferences
+         */
         filterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -161,13 +187,20 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
     }
 
 
+    /**
+     * method for opening the Filter Screen pop-up window
+     */
     public void openFilterWindow() {
         FilterScreenView filterScreen = new FilterScreenView();
         filterScreen.show(getSupportFragmentManager(), "example filter");
     }
 
 
-    // method for searching by a keyword from the list
+    /**
+     * method for filtering the post list according to the keywords
+     * entered by the user to the search bar
+     * @param adp : the adapter which is used to display the post list
+     */
     public void search(PostListAdapter adp)
     {
         final PostListAdapter adapter = adp;
@@ -185,7 +218,10 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
         });
     }
 
-    // this does not work ????
+    /**
+     * method for going back to previous screen upon
+     * clicking the arrow icon on top left of the screen
+     */
     @Override
     public void onBackPressed() {
         Intent pass = new Intent(PostListActivity.this, MainMenuActivity.class);
@@ -201,6 +237,13 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * this method will filter the post list according to user preferencess
+     * @param uni : the university user chose
+     * @param course : the course user chose
+     * @param lowPrice : the lower bound of the price range user chose
+     * @param highPrice : the upper bound of the price range user chose
+     */
     @Override
     public void filterThePosts(String uni, String course, int lowPrice, int highPrice) {
         postListAdapter.filterResults(uni, course, lowPrice, highPrice);
