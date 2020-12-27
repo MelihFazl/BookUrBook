@@ -36,6 +36,10 @@ import com.squareup.picasso.Picasso;
 import java.util.HashMap;
 import java.util.Random;
 
+/**
+ * This class is created in order to manage the linkage between the model classes and the create post
+ * layout.
+ */
 public class CreatePostActivity extends AppCompatActivity {
     //instance variables
     private Post post;
@@ -58,9 +62,11 @@ public class CreatePostActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //variables
-
         //method code
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_create_post);
+
+        //type casting in order to prevent issues related to only-admin features.
         if (getIntent().getSerializableExtra("currentUser") instanceof Admin)
             currentUser = (Admin) getIntent().getSerializableExtra("currentUser");
         else
@@ -72,10 +78,9 @@ public class CreatePostActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_post);
 
         toolbar = findViewById(R.id.toolbar_without_report);
+        //sets the toolbar as the action bar
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -85,12 +90,14 @@ public class CreatePostActivity extends AppCompatActivity {
         spinner = findViewById(R.id.createPostSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(CreatePostActivity.this, R.array.Universities, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        spinner.setAdapter(adapter);//creates the drawbar for the courses in choosing a course
         spinner2 = findViewById(R.id.createPostSpinner2);
         ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(CreatePostActivity.this, R.array.Courses, android.R.layout.simple_spinner_item);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner2.setAdapter(adapter2);
         photoUpload = findViewById(R.id.photoUpload);
+        postPrice = findViewById(R.id.postPriceCreatePost);
+        postDescriptionCreatePost = findViewById(R.id.postDescriptionCreatePost);
 
         photoUpload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,11 +106,12 @@ public class CreatePostActivity extends AppCompatActivity {
             }
         });
 
-        postPrice = findViewById(R.id.postPriceCreatePost);
-        postDescriptionCreatePost = findViewById(R.id.postDescriptionCreatePost);
-
         homeButton = findViewById(R.id.homeButtonCreatePost);
         homeButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Goes to the home screen and sends the necessary information as intents for the database
+             * to work correctly
+             */
             @Override
             public void onClick(View v) {
                 Intent startIntent = new Intent(CreatePostActivity.this, MainMenuActivity.class);
@@ -114,6 +122,10 @@ public class CreatePostActivity extends AppCompatActivity {
 
         applyButton = findViewById(R.id.applyButtonCreatePost);
         applyButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * When applied, sends the necessary info to the database
+             * @param v view of the current screen
+             */
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(CreatePostActivity.this);
@@ -140,7 +152,6 @@ public class CreatePostActivity extends AppCompatActivity {
                 });
 
                 builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -154,6 +165,9 @@ public class CreatePostActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Opens the gallery of the used phone and then the user will select the image from there
+     */
     private void choosePicture() {
         Intent galleryOpen = new Intent();
         galleryOpen.setType("image/*");
@@ -171,7 +185,10 @@ public class CreatePostActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * Sets the necessary updates for the database such as creation of the post, addition of this
+     * post to the postlist and the storage of these datas.
+     */
     private void updateDatabase() {
 
         String randomKey = randomKeyGenerator();
@@ -256,6 +273,10 @@ public class CreatePostActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Is created in order to generate a new name for document in database
+     * @return a randomly generated string
+     */
     protected String randomKeyGenerator() {
         String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
         StringBuilder salt = new StringBuilder();
@@ -268,6 +289,9 @@ public class CreatePostActivity extends AppCompatActivity {
         return saltStr;
     }
 
+    /**
+     * Sends the necessary intents according to the needs of the previous screen.
+     */
     @Override
     public void onBackPressed() {
         Intent pass;
@@ -281,6 +305,9 @@ public class CreatePostActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * Is created in order to make the back arrow in toolbar use the code of the onBackPressed method.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         onBackPressed();

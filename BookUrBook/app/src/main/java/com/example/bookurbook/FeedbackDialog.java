@@ -14,11 +14,17 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+/**
+ * This class is created in order to create a feedback dialog in the desired screen.
+ */
 public class FeedbackDialog extends AppCompatDialogFragment {
     //instance variables
     private EditText descriptionEditText;
-    private FeedbackDialogListener listener;
+    private FeedbackDialogListener listener;//listener is created in order to send the data acquired in the dialog to the current activity (e.g. Settings)
 
+    /**
+     * This method creates the dialog and does takes certain actions according to which button is pressed
+     */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -36,7 +42,11 @@ public class FeedbackDialog extends AppCompatDialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String description = descriptionEditText.getText().toString();
-                listener.applyTexts(description);
+                listener.applyTexts(description);//applyTexts method is overrided in the settings activity and when the
+                                                 //dialog gets created in the settings activity, the activity is then able
+                                                 //to acquire the data that is entered in the dialog.
+
+
                 Toast.makeText(builder.getContext(), "Feedback is sent!", Toast.LENGTH_LONG).show();
             }
         });

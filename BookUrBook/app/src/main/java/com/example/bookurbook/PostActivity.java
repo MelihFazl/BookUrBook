@@ -42,6 +42,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class manages the controls of the post activity and does necessary changes in order to update
+ * the database, view and model class datas.
+ */
 public class PostActivity extends AppCompatActivity implements ReportPostDialogListener {
 
     //instance variables
@@ -63,15 +67,16 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
     private ImageButton chatButton;
     private ImageButton homeButton;
     private ImageView postPic;
-
+    private ImageView adminDeleteButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         //method code
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
+
         toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);//sets the toolbar as the action bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Post");
@@ -88,7 +93,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         postList = (PostList) getIntent().getSerializableExtra("postlist");
 
 
-        previousActivity = (Integer) getIntent().getExtras().get("previousActivity"); //does not get fromPostList intent? //Wishlist is also a case for us now.
+        previousActivity = (Integer) getIntent().getExtras().get("previousActivity");
 
         postPic = findViewById(R.id.postImageView);
         postTitleTextView = findViewById(R.id.postTitleTextView);
@@ -98,6 +103,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         postCourseTextView = findViewById(R.id.postCourseTextView);
         postPriceTextView = findViewById(R.id.postPriceTextView);
         postDescriptionTextView = findViewById(R.id.postDescriptionTextView);
+        adminDeleteButton = findViewById(R.id.adminDeleteButton);
         reportButton = findViewById(R.id.reportButton);
         wishlistButton = findViewById(R.id.wishlistButton);
         postTitleTextView.setText(post.getTitle());
@@ -113,10 +119,11 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
             wishlistButton.setVisibility(View.GONE);
             reportButton.setVisibility(View.GONE);
         }
-
+        if(currentUser instanceof Admin && !post.getOwner().getUsername().equals(currentUser.getUsername()))
+            adminDeleteButton.setVisibility(View.VISIBLE);
 
         if (currentUser.getReportNum() >= 10) {
-          badRepAlert();
+            badRepAlert();
         }
 
 
@@ -159,6 +166,9 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
             }
         });
 
+        /**
+         * Sends the necessary intents in order to go back to the main screen.
+         */
         homeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,7 +176,6 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
                 startIntent.putExtra("currentUser", currentUser);
                 startActivity(startIntent);
             }
-
         });
 
         /**
@@ -237,6 +246,67 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
             }
 
         });
+
+
+        adminDeleteButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Admin delete button is created so that admins can delete any post if they see it as problematic.
+             * If the post gets deleted, this method takes necessary actions in order to update the database.
+             * @param v view of the current screen
+             */
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(PostActivity.this);
+
+                builder.setTitle("Admin Delete Panel");
+                builder.setMessage("Are you sure that you want to delete the Post of this user?");
+
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+                        db.collection("posts").whereEqualTo("id", post.getId()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                                (task.getResult().getDocuments().get(0).getReference()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+
+                                        Intent pass = new Intent(PostActivity.this, PostListActivity.class);
+                                        for (int i = 0; postList.getPostArray().size() > i; i++) {
+                                            if (postList.getPostArray().get(i).getId().equals(post.getId()))
+                                                postList.getPostArray().remove(i);
+                                        }
+                                        pass.putExtra("currentUser", currentUser);
+                                        pass.putExtra("postlist", postList);
+                                        Toast.makeText(PostActivity.this, "You have successfully deleted the post of this user!", Toast.LENGTH_LONG).show();
+                                        dialog.dismiss();
+                                        startActivity(pass);
+                                        finish();
+                                    }
+                                });
+
+                            }
+                        });
+                        //Then it will close the screen automatically!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    }
+                });
+
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
     }
 
 
@@ -248,6 +318,14 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         dialog.show(getSupportFragmentManager(), "");
     }
 
+    /**
+     * When the report dialog is created, the listener inside the ReportDialog class will call this method and therefore
+     * we will be able to access the description and the category from the post activity that was provided in the dialog
+     * This method gets the necessary info and sends the report mail to our (Veni Vidi Code) mail.
+     * @param description the description provided by the user
+     * @param category category of the report (Abusive,Scam...)
+     *
+     */
     @Override
     public void applyTexts(String description, String category) {
         post.report(description, category);
@@ -262,8 +340,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
                 for (DocumentSnapshot doc : task.getResult()) {
                     String reportedUserID = doc.getId();
                     List<String> reporters = (List<String>) doc.get("reporters");
-                    if(!reporters.contains(currentUser.getUsername()))
-                    {
+                    if (!reporters.contains(currentUser.getUsername())) {
                         reporters.add(currentUser.getUsername());
                     }
                     HashMap<String, Object> newData = new HashMap<>();
@@ -296,6 +373,9 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         alert.show();
     }
 
+    /**
+     * Sends the necessary intents according to the needs of the previous screen.
+     */
     public void onBackPressed() {
         Intent pass;
         if (previousActivity == 1)
@@ -312,6 +392,9 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
 
     }
 
+    /**
+     * Is created in order to make the back arrow in toolbar use the code of the onBackPressed method.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         onBackPressed();

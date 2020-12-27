@@ -1,12 +1,15 @@
 package com.example.bookurbook.models;
+
 import android.net.Uri;
 import android.widget.ImageView;
 
 import java.io.Serializable;
 import java.util.*;
 
-public abstract class User implements Reportable, Serializable
-{
+/**
+ * This class is an abstract class that contains the properties that every user(RegularUser,Admin) has.
+ */
+public abstract class User implements Reportable, Serializable {
     //instance variables
     private String username;
     private String email;
@@ -14,22 +17,20 @@ public abstract class User implements Reportable, Serializable
     private ArrayList<Report> reports;
     private int reportNum;
     private String avatar;
-    private UserSpecPostList userPostList;
     private ArrayList<User> blockedUsers;
     private ArrayList<Post> wishList;
 
     //constructor
-    public User(String username, String email, String avatar)
-    {
+    public User(String username, String email, String avatar) {
         this.username = username;
         this.email = email;
         this.avatar = avatar;
         reports = new ArrayList<Report>();
         wishList = new ArrayList<Post>();
-        userPostList = new UserSpecPostList(this);
         blockedUsers = new ArrayList<User>();
         reportNum = 0;
     }
+
     public String getUsername() {
         return username;
     }
@@ -51,43 +52,35 @@ public abstract class User implements Reportable, Serializable
         this.reportNum = reportNum;
     }
 
-    public String getEmail()
-    {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email)
-    {
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    public boolean isBanned()
-    {
+    public boolean isBanned() {
         return banned;
     }
 
-    public void setBanned(boolean banned)
-    {
+    public void setBanned(boolean banned) {
         this.banned = banned;
     }
 
-    public ArrayList<Report> getReports()
-    {
+    public ArrayList<Report> getReports() {
         return reports;
     }
 
-    public void setReports(ArrayList<Report> reports)
-    {
+    public void setReports(ArrayList<Report> reports) {
         this.reports = reports;
     }
 
-    public String getAvatar()
-    {
+    public String getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(String avatar)
-    {
+    public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
 
@@ -95,51 +88,32 @@ public abstract class User implements Reportable, Serializable
         this.wishList = wishList;
     }
 
-    public UserSpecPostList getUserPostList()
-    {
-        return userPostList;
-    }
-
-    public void setUserPostList(UserSpecPostList userPostList)
-    {
-        this.userPostList = userPostList;
-    }
-
-    public ArrayList<User> getBlockedUsers()
-    {
+    public ArrayList<User> getBlockedUsers() {
         return blockedUsers;
     }
 
-    public void setBlockedUsers(ArrayList<User> blockedUsers)
-    {
+    public void setBlockedUsers(ArrayList<User> blockedUsers) {
         this.blockedUsers = blockedUsers;
     }
 
-    public void blockUser(User user)
-    {
-            blockedUsers.add(user);
-    }
-
-    @Override
-    public void report(String description, String category)
-    {
-        Report report = new Report(description, category, this);
-        reports.add(report);
+    /**
+     * This method adds the wanted user to the blocklist
+     * @param user
+     */
+    public void blockUser(User user) {
+        blockedUsers.add(user);
     }
 
     /**
-     * This method will get called whenever an Admin bans a user. The method will set take the necessary
-     * actions such as deleting posts from PostList... in order to prevent the banned user from accessing the app.
+     * This method creates a report and adds this report to the user
+     * @param description the description provided by the user
+     * @param category the category chosen by the user
      */
-    public void updateBannedUser()
-    {
+    @Override
+    public void report(String description, String category) {
+        Report report = new Report(description, category, this);
+        reports.add(report);
     }
-
-
-
-
-
-
 
 }
 
