@@ -215,6 +215,18 @@ public class ChatActivity extends AppCompatActivity implements ReportPostDialogL
         });
 
         /**
+         * To scroll down all messages to last message
+         */
+        messageBox.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                recyclerView.scrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
+            }
+        });
+
+        /**
          * To go back to main menu
          */
         homeButton.setOnClickListener(new View.OnClickListener()

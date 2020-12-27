@@ -65,11 +65,12 @@ public class MyChatsActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
         //Initializing other variables
-        searchMyChats(myChatsAdapter);
-        buildRecyclerView();
-        repetitive = false;
         searchView = findViewById(R.id.search_id_for_my_chats);
         chatList = new ArrayList<Chat>();
+        buildRecyclerView();
+        searchMyChats(myChatsAdapter);
+        repetitive = false;
+        searchView = findViewById(R.id.search_id_for_my_chats);
 
         //Receiving current user and blocked usernames of this user from previous activity
         if(getIntent().getSerializableExtra("currentUser") instanceof Admin)
