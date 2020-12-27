@@ -1,4 +1,4 @@
-package com.example.bookurbook;
+package com.example.bookurbook.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -10,16 +10,12 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
 
+import com.example.bookurbook.adapters.BlockedUsersAdapter;
 import com.example.bookurbook.R;
 import com.example.bookurbook.models.Admin;
-import com.example.bookurbook.models.PostList;
 import com.example.bookurbook.models.RegularUser;
 import com.example.bookurbook.models.User;
-
-import java.util.ArrayList;
 
 /**
  * This class connects between MyBlocklist view, its adapter class and model classes, accessing and using data from database also updating them according to actions

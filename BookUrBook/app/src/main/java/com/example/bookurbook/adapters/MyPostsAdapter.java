@@ -1,4 +1,4 @@
-package com.example.bookurbook;
+package com.example.bookurbook.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,6 +13,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.bookurbook.R;
+import com.example.bookurbook.activities.EditPostActivity;
+import com.example.bookurbook.activities.PostActivity;
 import com.example.bookurbook.models.Admin;
 import com.example.bookurbook.models.Post;
 import com.example.bookurbook.models.PostList;
