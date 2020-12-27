@@ -72,18 +72,18 @@ and updating whenever a change occurs in database.
 -> Designed Filter screen so that the user can filter de Post List results.
 -> Designing My Chats screen in Android Studio and building an adapter for the recycler view.
 -> Designing Chat screen in Android Studio and building an adapter for the recycler view.
--> Making the connection between the database and the user interface of some classes.
--> Creating dialog pop up for user interraction.
+-> Creating pop up screen for filtering the post list.
+-> Worked on notification with Melih and Kerem.
+-> Fixed bugs with recycler view so that the view do not get pushed up when opening the keyboard
+-> GUI changes with post list for a better user experience
+-> Addition of crown icon for free posts and changing the visibility when the price is changed.
+-> Bug fixing with friends.
 
 
 ---Kerem Şahin---
-->Creation of Model Classes and implementation of their methods.
-->Post Details Screen layout in Android Studio using xml, design and the creation of activi-ty classes.
-->Create Post Screen layout in Android Studio using xml, design and the creation of activity class.
-->Edit Post layout in Android Studio using xml, design and the creation of activity classes.
-->Creation of the report post pop up.
-->Additions that provide the user-interface interactions (as pop up screens) for the previously mentioned screens. 
-->Creation of the notification system when there is change on the wishlist and when there is a message with Melih and Kaan.
-->Creation of the send feedback dialog.
-->Revisions on the report system with Ferhat.
-->Creation of different toolbars for different screens and the connection of the toolbar buttons with the activity classes.
+>>Creation of Model Classes and implementation of their methods.
+>>Post Details Screen layout in Android Studio using xml, design and the creation of activi-ty classes.
+>>Create Post Screen layout in Android Studio using xml, design and the creation of activity class.
+>>Edit Post layout in Android Studio using xml, design and the creation of activity classes.
+>>Creation of the report post pop up.
+>>Additions that provide the user-interface interactions (as pop up screens) for the previously mentioned screens.
