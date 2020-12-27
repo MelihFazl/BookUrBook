@@ -50,13 +50,6 @@ public class VerificationActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verification);
-<<<<<<< Updated upstream
-=======
-        init();
-    }
-
-    public void init() {
->>>>>>> Stashed changes
         resendable = false;
         verification = findViewById(R.id.editverification);
         verify = findViewById(R.id.verifybutton);
@@ -64,7 +57,6 @@ public class VerificationActivity extends AppCompatActivity
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         Bundle bundle = getIntent().getExtras();
-<<<<<<< Updated upstream
 
         //wait 60 seconds in order for the verification code to be resendable.
         new CountDownTimer(60000, 1000)
@@ -81,23 +73,12 @@ public class VerificationActivity extends AppCompatActivity
         }.start();
 
         //Getting data from the Register activity
-=======
-        new CountDownTimer(60000, 1000) {
-            public void onTick(long millisUntilFinished) {
-            }
-
-            public void onFinish() {
-                resendable = true;
-            }
-        }.start();
->>>>>>> Stashed changes
         String username = bundle.getString("username");
         String email = bundle.getString("email");
         String password = bundle.getString("password");
         String code = bundle.getString("code");
         final String VERIFICATION_SUBJECT = " Your BookUrBook verification code";
         final String VERIFICATION_MAIL = "Your BookUrBook verification code is " + code + ".";
-<<<<<<< Updated upstream
 
         verify.setOnClickListener(new View.OnClickListener() //what happens when they submit the code
         {
@@ -115,19 +96,6 @@ public class VerificationActivity extends AppCompatActivity
                             {
                                 List<String> empty = Collections.emptyList();
                                 HashMap<String, Object> newUserData = new HashMap<>();
-=======
-        verify.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (verification.getText().toString().equals(code)) {
-                    auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                List<String> empty = Collections.emptyList();
-                                HashMap<String, Object> newUserData = new HashMap<>();
-                                HashMap<String, Object> topUserInfo = new HashMap<>();
->>>>>>> Stashed changes
                                 newUserData.put("username", username);
                                 newUserData.put("email", email);
                                 newUserData.put("banned", false);
@@ -140,7 +108,6 @@ public class VerificationActivity extends AppCompatActivity
                                 db.collection("tokens").document(auth.getUid()).set(new Token(FirebaseInstanceId.getInstance().getToken()));
                                 Toast.makeText(VerificationActivity.this, "Your account has been created. You are being to login menu in 2 seconds.", Toast.LENGTH_LONG).show();
 
-<<<<<<< Updated upstream
                                 //after setting everything successfully, wait 2 seconds and transfer them to the login activity.
                                 new CountDownTimer(2000, 1000)
                                 {
@@ -151,33 +118,17 @@ public class VerificationActivity extends AppCompatActivity
 
                                     public void onFinish()
                                     {
-=======
-
-                                new CountDownTimer(2000, 1000) {
-                                    public void onTick(long millisUntilFinished) {
-                                    }
-
-                                    public void onFinish() {
->>>>>>> Stashed changes
                                         auth.signOut();
                                         startActivity(new Intent(VerificationActivity.this, LoginActivity.class));
                                     }
                                 }.start();
                             } else
-<<<<<<< Updated upstream
                                 Toast.makeText(getApplicationContext(), "Error occurred.", Toast.LENGTH_LONG).show(); //if firebase runs into an error, shows an error message. (Probably because of the internet connection)
 
                         }
                     });
                 } else //if the verification code mismatchs, show an error and clear the field.
                 {
-=======
-                                Toast.makeText(getApplicationContext(), "Error occurred.", Toast.LENGTH_LONG).show();
-
-                        }
-                    });
-                } else {
->>>>>>> Stashed changes
                     Toast unsuccessful = Toast.makeText(VerificationActivity.this, "Verification code is not correct.", Toast.LENGTH_LONG);
                     unsuccessful.show();
                     verification.setText("");
@@ -188,15 +139,10 @@ public class VerificationActivity extends AppCompatActivity
         resend.setOnClickListener(new View.OnClickListener()
         {
             @Override
-<<<<<<< Updated upstream
             public void onClick(View v)
             {
                 if (resendable == true) //if 60 seconds has passed, transfer the user current screen again so that they will get the code again and they will have to wait for 60 secs again!
                 {
-=======
-            public void onClick(View v) {
-                if (resendable == true) {
->>>>>>> Stashed changes
                     JavaMailAPI javaMailAPI = new JavaMailAPI(VerificationActivity.this, email, VERIFICATION_SUBJECT, VERIFICATION_MAIL);
                     javaMailAPI.execute();
                     Toast code = Toast.makeText(VerificationActivity.this, "The code has been re-sent to your email.", Toast.LENGTH_LONG);
@@ -207,12 +153,8 @@ public class VerificationActivity extends AppCompatActivity
                     pass.putExtra("password", password);
                     pass.putExtra("code", bundle.getString("code"));
                     startActivity(pass);
-<<<<<<< Updated upstream
                 } else
                 {
-=======
-                } else {
->>>>>>> Stashed changes
                     Toast wait = Toast.makeText(VerificationActivity.this, "Please wait 60 seconds to resend.", Toast.LENGTH_LONG);
                     wait.show();
                 }
