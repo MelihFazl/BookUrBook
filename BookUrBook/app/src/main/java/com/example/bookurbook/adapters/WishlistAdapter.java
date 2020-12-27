@@ -1,4 +1,4 @@
-package com.example.bookurbook;
+package com.example.bookurbook.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,6 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.bookurbook.R;
+import com.example.bookurbook.activities.PostActivity;
+import com.example.bookurbook.activities.WishlistActivity;
 import com.example.bookurbook.models.Post;
 import com.example.bookurbook.models.PostList;
 import com.example.bookurbook.models.User;

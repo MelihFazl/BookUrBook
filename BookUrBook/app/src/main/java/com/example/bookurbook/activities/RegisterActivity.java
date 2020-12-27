@@ -1,4 +1,4 @@
-package com.example.bookurbook;
+package com.example.bookurbook.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.bookurbook.MailAPISource.JavaMailAPI;
+import com.example.bookurbook.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -133,17 +134,6 @@ public class RegisterActivity extends AppCompatActivity
                         Toast usernameNonAlpha = Toast.makeText(RegisterActivity.this, "The username " + username + " contains non-AlphaNumerical chars! (Only Aa-zZ 0-9)", Toast.LENGTH_LONG);
                         usernameNonAlpha.show();
                         txtUsername.setText("");
-                    } else if(!email.substring(0, email.indexOf("@")).matches("[a-zA-Z0-9]+")) //checks the email is alpha numerical or not
-                    {
-                        Toast emailNonAlpha = Toast.makeText(RegisterActivity.this, "The email " + email + " contains non-AlphaNumerical chars! (Only Aa-zZ 0-9)", Toast.LENGTH_LONG);
-                        emailNonAlpha.show();
-                        txtEmail.setText("");
-                    } else if(!password.matches("[a-zA-Z0-9]+")) //checks the password is alpha numerical or not
-                    {
-                        Toast passwordNonAlpha = Toast.makeText(RegisterActivity.this, "The password contains non-AlphaNumerical chars! (Only Aa-zZ 0-9)", Toast.LENGTH_LONG);
-                        passwordNonAlpha.show();
-                        txtPassword.setText("");
-                        txtRePassword.setText("");
                     } else if (usernames.contains(username)) //if the username exists, show an error and clear the field.
                     {
                         Toast userNameExist = Toast.makeText(RegisterActivity.this, "The username " + username + " already exists!", Toast.LENGTH_LONG);

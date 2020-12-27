@@ -1,10 +1,9 @@
-package com.example.bookurbook;
+package com.example.bookurbook.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import androidx.appcompat.widget.Toolbar;
@@ -12,37 +11,30 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 
-import android.os.CountDownTimer;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.example.bookurbook.fragments.FilterScreenView;
+import com.example.bookurbook.adapters.PostListAdapter;
+import com.example.bookurbook.R;
 import com.example.bookurbook.models.Admin;
-import com.example.bookurbook.models.Post;
 import com.example.bookurbook.models.PostList;
 import com.example.bookurbook.models.RegularUser;
 import com.example.bookurbook.models.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.ArrayList;
 
 
 /**
  * a class to display the Post List screen, which inludes
  * all the posts in the database and some buttons for further operations
  */
-public class PostListActivity extends AppCompatActivity implements FilterScreenView.FilterScreenListener {
+public class PostListActivity extends AppCompatActivity implements FilterScreenView.FilterScreenListener
+{
 
     // properties
     private Toolbar toolbar;
@@ -62,7 +54,8 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_list);
 
@@ -75,12 +68,12 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
 
         // connection to database
         db = FirebaseFirestore.getInstance();
-        if(getIntent().getSerializableExtra("currentUser") instanceof Admin)
-            currentUser = (Admin)getIntent().getSerializableExtra("currentUser");
+        if (getIntent().getSerializableExtra("currentUser") instanceof Admin)
+            currentUser = (Admin) getIntent().getSerializableExtra("currentUser");
         else
-            currentUser = (RegularUser)getIntent().getSerializableExtra("currentUser");
+            currentUser = (RegularUser) getIntent().getSerializableExtra("currentUser");
         postList = (PostList) getIntent().getSerializableExtra("postlist");
-        for(int i = 0; postList.getPostArray().size() > i; i++)
+        for (int i = 0; postList.getPostArray().size() > i; i++)
         {
             System.out.println(postList.getPostArray().get(i).getOwner().getEmail());
         }
@@ -110,9 +103,11 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
         /**
          * method for opening the Create Post screen upon tapping the button
          */
-        createPostButton.setOnClickListener(new View.OnClickListener() {
+        createPostButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 Intent intent = new Intent(PostListActivity.this, CreatePostActivity.class);
                 intent.putExtra("currentUser", currentUser);
                 intent.putExtra("postlist", postList);
@@ -124,9 +119,11 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
         /**
          * clicking this button will sort the posts in the order of lower price to higher price
          */
-        LtoHpriceButton.setOnClickListener(new View.OnClickListener() {
+        LtoHpriceButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 postListAdapter.sort(view);
             }
         });
@@ -134,9 +131,11 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
         /**
          * clicking this button will sort the posts in the order of higher price to lower price
          */
-        HtoLpriceButton.setOnClickListener(new View.OnClickListener() {
+        HtoLpriceButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 postListAdapter.sort(view);
             }
         });
@@ -144,9 +143,11 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
         /**
          * clicking this button will sort the posts in the alphabetical order
          */
-        AtoZbutton.setOnClickListener(new View.OnClickListener() {
+        AtoZbutton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 postListAdapter.sort(view);
             }
         });
@@ -154,9 +155,11 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
         /**
          * clicking this button will sort the posts in the reverse alphabetical order
          */
-        ZtoAbutton.setOnClickListener(new View.OnClickListener() {
+        ZtoAbutton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 postListAdapter.sort(view);
             }
         });
@@ -164,7 +167,8 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
         /**
          * clicking this button will set the order to default version
          */
-        resetButton.setOnClickListener(new View.OnClickListener() {
+        resetButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View view)
             {
@@ -176,9 +180,11 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
          * clicking this button will open a pop-up window where the user
          * can filter the posts according to their preferences
          */
-        filterButton.setOnClickListener(new View.OnClickListener() {
+        filterButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 openFilterWindow();
             }
         });
@@ -190,7 +196,8 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
     /**
      * method for opening the Filter Screen pop-up window
      */
-    public void openFilterWindow() {
+    public void openFilterWindow()
+    {
         FilterScreenView filterScreen = new FilterScreenView();
         filterScreen.show(getSupportFragmentManager(), "example filter");
     }
@@ -199,19 +206,24 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
     /**
      * method for filtering the post list according to the keywords
      * entered by the user to the search bar
+     *
      * @param adp : the adapter which is used to display the post list
      */
     public void search(PostListAdapter adp)
     {
         final PostListAdapter adapter = adp;
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
+        {
             @Override
-            public boolean onQueryTextSubmit(String s) {
+            public boolean onQueryTextSubmit(String s)
+            {
                 return false;
             }
+
             @Override
-            public boolean onQueryTextChange(String s) {
+            public boolean onQueryTextChange(String s)
+            {
                 adapter.getFilter().filter(s);
                 return false;
             }
@@ -223,7 +235,8 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
      * clicking the arrow icon on top left of the screen
      */
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
         Intent pass = new Intent(PostListActivity.this, MainMenuActivity.class);
         pass.putExtra("currentUser", currentUser);
         pass.putExtra("postlist", postList);
@@ -232,20 +245,23 @@ public class PostListActivity extends AppCompatActivity implements FilterScreenV
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         onBackPressed();
         return super.onOptionsItemSelected(item);
     }
 
     /**
      * this method will filter the post list according to user preferencess
-     * @param uni : the university user chose
-     * @param course : the course user chose
-     * @param lowPrice : the lower bound of the price range user chose
+     *
+     * @param uni       : the university user chose
+     * @param course    : the course user chose
+     * @param lowPrice  : the lower bound of the price range user chose
      * @param highPrice : the upper bound of the price range user chose
      */
     @Override
-    public void filterThePosts(String uni, String course, int lowPrice, int highPrice) {
+    public void filterThePosts(String uni, String course, int lowPrice, int highPrice)
+    {
         postListAdapter.filterResults(uni, course, lowPrice, highPrice);
     }
 
