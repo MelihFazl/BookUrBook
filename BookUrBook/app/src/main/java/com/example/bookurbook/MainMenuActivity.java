@@ -170,7 +170,7 @@ public class MainMenuActivity extends AppCompatActivity
             }
         });
 
-        //what happens on the mychats button
+        //what happens on the myposts button
         botleft.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -261,6 +261,8 @@ public class MainMenuActivity extends AppCompatActivity
                                             public void onComplete(@NonNull Task<QuerySnapshot> task)
                                             {
                                                 List<String> wished = (List<String>) documentSnapshot.get("wishlist");
+                                                List<String> blocklist = (List<String>) documentSnapshot.get("blockedusers");
+
                                                 for (DocumentSnapshot doc : task.getResult())
                                                 {
                                                     currentPostOwner = new RegularUser(doc.getString("username"), doc.getString("email"), doc.getString("avatar"));
@@ -269,7 +271,7 @@ public class MainMenuActivity extends AppCompatActivity
                                                 }
                                                 if (!document.getBoolean("sold"))
                                                 {
-                                                    if (wished.contains(document.getString("id")) && !currentPostOwner.isBanned()) //if the wishlist contains the current post, it will be added to the PostList object
+                                                    if (wished.contains(document.getString("id")) && !currentPostOwner.isBanned() && !blocklist.contains(currentPostOwner.getUsername())) //if the wishlist contains the current post and the user is not blocked the current post owner, it will be added to the PostList object
                                                     {
                                                         postList.addPost(new Post(document.getString("description"), document.getString("title"), document.getString("university")
                                                                 , document.getString("course"), document.getLong("price").intValue(), document.getString("picture"), currentPostOwner, (String) document.get("id")));
@@ -319,6 +321,8 @@ public class MainMenuActivity extends AppCompatActivity
                                     reportedUsers.add(new RegularUser(doc.getString("username"), doc.getString("email"), doc.getString("avatar")));
                                 reportedUsers.get(reportedUsers.size() - 1).setReportNum(((List<String>) doc.get("reporters")).size());
                                 reportedUsers.get(reportedUsers.size() - 1).setBanned(doc.getBoolean("banned")); //sets their report and banned situation
+                                if(reportedUsers.get(reportedUsers.size() - 1).getUsername().equals(currentUser.getUsername())) //We dont wanna ban ourselves lol.
+                                    reportedUsers.remove(reportedUsers.size() - 1);
                             }
                         }
                         adminPanel.putExtra("userlist", reportedUsers);
