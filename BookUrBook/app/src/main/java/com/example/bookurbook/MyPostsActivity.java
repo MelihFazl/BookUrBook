@@ -47,8 +47,8 @@ public class MyPostsActivity extends AppCompatActivity {
     /**
      * set the properties from the view
      */
-    public void setProperties(){
-        if(getIntent().getSerializableExtra("currentUser") instanceof Admin)
+    public void setProperties() {
+        if (getIntent().getSerializableExtra("currentUser") instanceof Admin)
             currentUser = (Admin) getIntent().getSerializableExtra("currentUser");
         else
             currentUser = (RegularUser) getIntent().getSerializableExtra("currentUser");
@@ -79,10 +79,9 @@ public class MyPostsActivity extends AppCompatActivity {
     /**
      * set the properties according to the currentUser
      */
-    public void setElements()
-    {
+    public void setElements() {
         username.setText(currentUser.getUsername());
-        if(currentUser instanceof RegularUser)
+        if (currentUser instanceof RegularUser)
             userType.setText("Regular User");
         else
             userType.setText("Admin User");
@@ -90,8 +89,7 @@ public class MyPostsActivity extends AppCompatActivity {
     //for now
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         Intent pass = new Intent(MyPostsActivity.this, MainMenuActivity.class);
         pass.putExtra("currentUser", currentUser);
         startActivity(pass);
@@ -101,15 +99,14 @@ public class MyPostsActivity extends AppCompatActivity {
     /**
      * This method will be called when ad button is clicked
      */
-    public void addPost()
-    {
+    public void addPost() {
         Intent intent = new Intent(getBaseContext(), CreatePostActivity.class);
         intent.putExtra("currentUser", currentUser);
         intent.putExtra("postlist", postList);
         intent.putExtra("fromPostList", false);
         startActivity(intent);
         finish();
-     }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

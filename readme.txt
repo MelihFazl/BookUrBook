@@ -77,9 +77,13 @@ and updating whenever a change occurs in database.
 
 
 ---Kerem Şahin---
->>Creation of Model Classes and implementation of their methods.
->>Post Details Screen layout in Android Studio using xml, design and the creation of activi-ty classes.
->>Create Post Screen layout in Android Studio using xml, design and the creation of activity class.
->>Edit Post layout in Android Studio using xml, design and the creation of activity classes.
->>Creation of the report post pop up.
->>Additions that provide the user-interface interactions (as pop up screens) for the previously mentioned screens.
+->Creation of Model Classes and implementation of their methods.
+->Post Details Screen layout in Android Studio using xml, design and the creation of activi-ty classes.
+->Create Post Screen layout in Android Studio using xml, design and the creation of activity class.
+->Edit Post layout in Android Studio using xml, design and the creation of activity classes.
+->Creation of the report post pop up.
+->Additions that provide the user-interface interactions (as pop up screens) for the previously mentioned screens. 
+->Creation of the notification system when there is change on the wishlist and when there is a message with Melih and Kaan.
+->Creation of the send feedback dialog.
+->Revisions on the report system with Ferhat.
+->Creation of different toolbars for different screens and the connection of the toolbar buttons with the activity classes.

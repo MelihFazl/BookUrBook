@@ -5,6 +5,9 @@ import android.widget.ImageView;
 
 import java.io.Serializable;
 
+/**
+ * A model admin class that has certain features in order to keep order in app
+ */
 public class Admin extends User implements Serializable {
     //instance variables
     public Admin(String username, String email, String avatar) {

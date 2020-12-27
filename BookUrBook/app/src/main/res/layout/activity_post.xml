@@ -205,4 +205,19 @@
         app:layout_constraintVertical_bias="0.252"
         tools:srcCompat="@tools:sample/avatars" />
 
+    <ImageView
+        android:id="@+id/adminDeleteButton"
+        android:layout_width="47dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="21dp"
+        android:visibility="gone"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.076"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/postDescriptionTextView"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/baseline_delete_black_18dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

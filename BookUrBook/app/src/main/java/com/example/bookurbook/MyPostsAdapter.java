@@ -39,7 +39,6 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.ViewHold
     private FirebaseFirestore db;
 
 
-
     public MyPostsAdapter(Context context, ArrayList<Post> posts) {
         myPosts = posts;
         this.context = context;
@@ -82,8 +81,7 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.ViewHold
     public void onBindViewHolder(@NonNull MyPostsAdapter.ViewHolder holder, int position) {
         db = FirebaseFirestore.getInstance();
         System.out.println(myPosts.get(position).isSold() + "MMMHH");
-        if(myPosts.get(position).isSold())
-        {
+        if (myPosts.get(position).isSold()) {
             holder.soldPhoto.setImageResource(R.drawable.sold);
             holder.tickSold.setImageResource(R.drawable.unmark);
         }
@@ -98,19 +96,17 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.ViewHold
                 User currentUser;
                 Intent intent = new Intent(context, PostActivity.class);
                 intent.putExtra("post", myPosts.get(position));
-                if(myPosts.get(position).getOwner() instanceof Admin) {
+                if (myPosts.get(position).getOwner() instanceof Admin) {
                     currentUser = (Admin) myPosts.get(position).getOwner();
                     System.out.println("asagashsdhfdsssssssssss");
-                }
-                else {
-                    currentUser  = (RegularUser) myPosts.get(position).getOwner();
+                } else {
+                    currentUser = (RegularUser) myPosts.get(position).getOwner();
                     System.out.println("asagashsdhfdsssssssssasgadhweqrqqqqqss");
                 }
                 intent.putExtra("currentUser", currentUser);
-                intent.putExtra("previousActivity",2);
+                intent.putExtra("previousActivity", 2);
                 PostList postlist = new PostList();
-                for(int i = 0; i < myPosts.size(); i++)
-                {
+                for (int i = 0; i < myPosts.size(); i++) {
                     postlist.addPost(myPosts.get(i));
                 }
                 intent.putExtra("postlist", postlist);
@@ -121,25 +117,22 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.ViewHold
 
         holder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 User currentUser;
                 Intent intent2 = new Intent(context, EditPostActivity.class);
                 intent2.putExtra("post", myPosts.get(position));
                 //ekleme
-                if(myPosts.get(position).getOwner() instanceof Admin) {
+                if (myPosts.get(position).getOwner() instanceof Admin) {
                     currentUser = (Admin) myPosts.get(position).getOwner();
                     System.out.println("asagashsdhfdsssssssssss");
-                }
-                else {
-                    currentUser  = (RegularUser) myPosts.get(position).getOwner();
+                } else {
+                    currentUser = (RegularUser) myPosts.get(position).getOwner();
                     System.out.println("asagashsdhfdsssssssssasgadhweqrqqqqqss");
                 }
                 intent2.putExtra("currentUser", currentUser);
                 //ekleme
                 PostList pass = new PostList();
-                for(int i = 0; myPosts.size() > i; i++)
-                {
+                for (int i = 0; myPosts.size() > i; i++) {
                     pass.addPost(myPosts.get(i));
                 }
                 intent2.putExtra("postlist", pass);
@@ -155,8 +148,7 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.ViewHold
                 if (!myPosts.get(position).isSold()) {
                     builder.setMessage("Are you sure that you want to mark the Post as sold?");
                     builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which)
-                        {
+                        public void onClick(DialogInterface dialog, int which) {
 
                             HashMap<String, Object> newData = new HashMap<>();
                             newData.put("sold", true);
@@ -185,9 +177,7 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.ViewHold
                     });
                     AlertDialog alert = builder.create();
                     alert.show();
-                }
-                else
-                {
+                } else {
                     builder.setMessage("Are you sure that you want to mark the Post as unsold?");
                     builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
@@ -225,7 +215,6 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.ViewHold
 
 
     }
-
 
 
     @Override
