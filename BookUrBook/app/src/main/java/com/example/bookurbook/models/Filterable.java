@@ -3,7 +3,8 @@ package com.example.bookurbook.models;
 /**
  * This interface is created in order to create a filterable model class
  */
-public interface Filterable {
+public interface Filterable
+{
     /**
      * Filtered according to the given university
      *

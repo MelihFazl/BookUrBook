@@ -1,4 +1,4 @@
-package com.example.bookurbook;
+package com.example.bookurbook.fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDialogFragment;
+
+import com.example.bookurbook.R;
 
 /**
  * this class represents the pop-up window which is

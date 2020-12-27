@@ -1,4 +1,4 @@
-package com.example.bookurbook;
+package com.example.bookurbook.adapters;
 import android.content.Context;
 
 import android.content.Intent;
@@ -14,6 +14,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.bookurbook.R;
+import com.example.bookurbook.activities.PostActivity;
 import com.example.bookurbook.models.Post;
 
 import com.example.bookurbook.models.PostList;

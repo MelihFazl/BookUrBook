@@ -1,14 +1,17 @@
-package com.example.bookurbook;
+package com.example.bookurbook.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.bookurbook.R;
 import com.example.bookurbook.models.Admin;
 import com.example.bookurbook.models.Post;
 import com.example.bookurbook.models.PostList;
@@ -321,7 +324,7 @@ public class MainMenuActivity extends AppCompatActivity
                                     reportedUsers.add(new RegularUser(doc.getString("username"), doc.getString("email"), doc.getString("avatar")));
                                 reportedUsers.get(reportedUsers.size() - 1).setReportNum(((List<String>) doc.get("reporters")).size());
                                 reportedUsers.get(reportedUsers.size() - 1).setBanned(doc.getBoolean("banned")); //sets their report and banned situation
-                                if(reportedUsers.get(reportedUsers.size() - 1).getUsername().equals(currentUser.getUsername())) //We dont wanna ban ourselves lol.
+                                if (reportedUsers.get(reportedUsers.size() - 1).getUsername().equals(currentUser.getUsername())) //We dont wanna ban ourselves lol.
                                     reportedUsers.remove(reportedUsers.size() - 1);
                             }
                         }

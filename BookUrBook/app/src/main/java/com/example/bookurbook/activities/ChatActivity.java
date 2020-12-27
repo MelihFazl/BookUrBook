@@ -1,4 +1,4 @@
-package com.example.bookurbook;
+package com.example.bookurbook.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +17,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.bookurbook.MailAPISource.JavaMailAPI;
+import com.example.bookurbook.adapters.MessageAdapter;
+import com.example.bookurbook.R;
+import com.example.bookurbook.fragments.ReportDialog;
+import com.example.bookurbook.fragments.ReportPostDialogListener;
 import com.example.bookurbook.SendNotificationPack.APIService;
 import com.example.bookurbook.SendNotificationPack.Client;
 import com.example.bookurbook.SendNotificationPack.Data;

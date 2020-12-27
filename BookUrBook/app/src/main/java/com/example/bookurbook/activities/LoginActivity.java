@@ -1,4 +1,4 @@
-package com.example.bookurbook;
+package com.example.bookurbook.activities;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.bookurbook.R;
 import com.example.bookurbook.SendNotificationPack.Token;
 import com.example.bookurbook.models.Admin;
 import com.example.bookurbook.models.RegularUser;
