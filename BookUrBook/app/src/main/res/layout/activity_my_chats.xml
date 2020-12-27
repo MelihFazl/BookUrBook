@@ -6,7 +6,7 @@
     android:background="#e3c6bf"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyChatsActivity">
+    tools:context=".activities.MyChatsActivity">
 
     <include
         android:id="@+id/toolbar_my_chats"

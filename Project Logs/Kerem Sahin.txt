@@ -44,4 +44,12 @@ Since we have 2 weeks left, I have shown most progression in this week. I have d
 
 
 # 21 December - 27 December # //FINAL WEEK!
+This was again a rough week. After finishing my previously mentioned tasks, I have started to look at other several things
 
+>>Worked on the notification system that works when there is a message or when there is an item in the wishlist which has gotten edited
+>>Added a new feedback dialog that gets created in the settings screen.
+>>Added the delete icon and  its mechanism on postactivity for admins which enables admins to delete other posts.
+>>Worked on the report system.
+>>Linkage of screens.
+>>A lot of bug fixes regarding previously mentioned screens and mechanisms, algorithms.
+>>Changed the post activity design in order to create a better visual.

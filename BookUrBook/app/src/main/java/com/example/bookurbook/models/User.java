@@ -1,10 +1,14 @@
 package com.example.bookurbook.models;
+
 import android.net.Uri;
 import android.widget.ImageView;
 
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ * This class is an abstract class that contains the properties that every user(RegularUser,Admin) has.
+ */
 public abstract class User implements Reportable, Serializable
 {
     //instance variables
@@ -14,7 +18,6 @@ public abstract class User implements Reportable, Serializable
     private ArrayList<Report> reports;
     private int reportNum;
     private String avatar;
-    private UserSpecPostList userPostList;
     private ArrayList<User> blockedUsers;
     private ArrayList<Post> wishList;
 
@@ -26,28 +29,33 @@ public abstract class User implements Reportable, Serializable
         this.avatar = avatar;
         reports = new ArrayList<Report>();
         wishList = new ArrayList<Post>();
-        userPostList = new UserSpecPostList(this);
         blockedUsers = new ArrayList<User>();
         reportNum = 0;
     }
-    public String getUsername() {
+
+    public String getUsername()
+    {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(String username)
+    {
         this.username = username;
 
     }
 
-    public ArrayList<Post> getWishList() {
+    public ArrayList<Post> getWishList()
+    {
         return wishList;
     }
 
-    public int getReportNum() {
+    public int getReportNum()
+    {
         return reportNum;
     }
 
-    public void setReportNum(int reportNum) {
+    public void setReportNum(int reportNum)
+    {
         this.reportNum = reportNum;
     }
 
@@ -91,18 +99,9 @@ public abstract class User implements Reportable, Serializable
         this.avatar = avatar;
     }
 
-    public void setWishList(ArrayList<Post> wishList) {
+    public void setWishList(ArrayList<Post> wishList)
+    {
         this.wishList = wishList;
-    }
-
-    public UserSpecPostList getUserPostList()
-    {
-        return userPostList;
-    }
-
-    public void setUserPostList(UserSpecPostList userPostList)
-    {
-        this.userPostList = userPostList;
     }
 
     public ArrayList<User> getBlockedUsers()
@@ -115,31 +114,28 @@ public abstract class User implements Reportable, Serializable
         this.blockedUsers = blockedUsers;
     }
 
+    /**
+     * This method adds the wanted user to the blocklist
+     *
+     * @param user
+     */
     public void blockUser(User user)
     {
-            blockedUsers.add(user);
+        blockedUsers.add(user);
     }
 
+    /**
+     * This method creates a report and adds this report to the user
+     *
+     * @param description the description provided by the user
+     * @param category    the category chosen by the user
+     */
     @Override
     public void report(String description, String category)
     {
         Report report = new Report(description, category, this);
         reports.add(report);
     }
-
-    /**
-     * This method will get called whenever an Admin bans a user. The method will set take the necessary
-     * actions such as deleting posts from PostList... in order to prevent the banned user from accessing the app.
-     */
-    public void updateBannedUser()
-    {
-    }
-
-
-
-
-
-
 
 }
 

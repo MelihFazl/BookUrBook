@@ -1,7 +1,11 @@
 package com.example.bookurbook.models;
+
 import java.io.*;
 import java.util.*;
 
+/**
+ * This class is used in order to store the information of reports
+ */
 public class Report implements Serializable
 {
     //instance variables

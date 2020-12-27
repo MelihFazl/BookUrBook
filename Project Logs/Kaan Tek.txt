@@ -27,11 +27,15 @@ I added a Recycler View for our PostListActivity and made the connection between
 I added the searching feature to the PostList activity where the user can search through the posts. I also added the sorting feature to those posts by using the methods implemented by my friends.
 I made the connection with the model class my friends wrote earlier and the view I worked on.
 
-# 14 December - 20 December # //THIS WEEK
+# 14 December - 20 December #
 I added a pop up screen to PostListActivity where the user can filter the post options. I added the necessary ui components and used the algorithms my friends wrote earlier.
 We made the connection between this class and the database with my friends.
 I started designing the MyChatsActivty which is the view for all of the chats of the user.
 I started designing the Chat which is the view for the chat between the current user and the other user.
 
-# 21 December - 27 December # //FINAL WEEK!
-//PLACE HOLDER
+# 21 December - 27 December #
+Completion of My Chats screen and the necessary recycler view for the displayment of the chats.
+Worked on notification system with friends.
+Improvement of My Chats and Post List views for a better user experience.
+Some bugs regarding the search algorithm have been fixed
+Bug fixes for a better user experience with friends.

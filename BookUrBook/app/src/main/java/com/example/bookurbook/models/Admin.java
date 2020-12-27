@@ -5,9 +5,14 @@ import android.widget.ImageView;
 
 import java.io.Serializable;
 
-public class Admin extends User implements Serializable {
+/**
+ * A model admin class that has certain features in order to keep order in app
+ */
+public class Admin extends User implements Serializable
+{
     //instance variables
-    public Admin(String username, String email, String avatar) {
+    public Admin(String username, String email, String avatar)
+    {
         super(username, email, avatar);
     }
 
@@ -16,7 +21,8 @@ public class Admin extends User implements Serializable {
      *
      * @param other
      */
-    public void ban(User other) {
+    public void ban(User other)
+    {
         other.setBanned(true);
     }
 
@@ -26,7 +32,8 @@ public class Admin extends User implements Serializable {
      * @param post     item
      * @param usedList postList that the item is going to be removed
      */
-    public void deletePost(Post post, PostList usedList) {
+    public void deletePost(Post post, PostList usedList)
+    {
         usedList.deletePost(post);
     }
 

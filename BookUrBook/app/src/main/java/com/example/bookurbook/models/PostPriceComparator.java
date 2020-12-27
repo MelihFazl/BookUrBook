@@ -2,8 +2,11 @@ package com.example.bookurbook.models;
 
 import java.util.Comparator;
 
+/**
+ * This comparator is created in order to compare the price of the post
+ */
 public class PostPriceComparator implements Comparator<Post>
-{ //1DK BKLE
+{
     @Override
     public int compare(Post o1, Post o2)
     {
