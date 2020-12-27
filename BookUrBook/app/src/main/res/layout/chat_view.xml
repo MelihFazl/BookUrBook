@@ -65,6 +65,8 @@
                     android:layout_marginLeft="16dp"
                     android:text="this is the latest message falan filan inter"
                     android:textSize="20dp"
+                    android:singleLine="true"
+                    android:ellipsize="end"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.058"

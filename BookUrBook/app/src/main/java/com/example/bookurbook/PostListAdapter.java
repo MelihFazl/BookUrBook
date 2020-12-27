@@ -1,6 +1,4 @@
 package com.example.bookurbook;
-
-
 import android.content.Context;
 
 import android.content.Intent;
@@ -26,16 +24,16 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import java.util.List;
-;
 
+/**
+ * a class for building a recycler view for Post List screen
+ */
 public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostListViewHolder> implements Filterable {
 
     // variables
     private ArrayList<Post> postListHolder;
     private ArrayList<Post> postListHolderFull;
-    private User postOwner;
     private User currentUser;
-    private PostList postList;
     PostList list;
     Context context;
 
@@ -44,12 +42,12 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
     {
         currentUser = user;
         this.list = list;
-        postListHolder = list.getPostArray(); // buraya bak
+        postListHolder = list.getPostArray();
         postListHolderFull = new ArrayList<>(list.getPostArray());
         context = c;
     }
-
-
+    
+    // used to represent a single item
     @NonNull
     @Override
     public PostListViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -58,13 +56,18 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
         return new PostListViewHolder(view);
     }
 
+    // to display the data at the specified position
     @Override
     public void onBindViewHolder(@NonNull PostListViewHolder postListViewHolder, int i)
     {
+        postListViewHolder.crown.setImageResource(R.drawable.crown_new);
+        postListViewHolder.crown.setVisibility(View.VISIBLE);
         Post examplePost = postListHolder.get(i);
         postListViewHolder.title.setText(examplePost.getTitle());
-        postListViewHolder.seller.setText(examplePost.getOwner().getUsername());      // whcih method did Kerem use for post, is this correct?
+        postListViewHolder.seller.setText(examplePost.getOwner().getUsername());
         postListViewHolder.price.setText(Integer.toString((int) examplePost.getPrice()) + "₺");
+        if (examplePost.getPrice() != 0)
+            postListViewHolder.crown.setVisibility(View.INVISIBLE);
         Picasso.get().load(examplePost.getPicture()).into(postListViewHolder.picture);
         postListViewHolder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,41 +82,57 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
         });
     }
 
+    /**
+     * method for determining the full size of the list
+     * @return the size of the post list araylist
+     */
     @Override
     public int getItemCount() {
         return postListHolder.size();
     }
 
-    // for searching
+    /**
+     * for filtering by search bar purposes
+     * @return
+     */
     @Override
     public Filter getFilter() {
         return exampleFilter;
     }
 
-    public void sort(View v)                                    // changed here, TEST this
+    /**
+     * method for sorting the post list according to user peferences
+     * @param v view parameter coming from the PostListActivity
+     */
+    public void sort(View v)
     {
-
         PostList filteredList = list;
 
         if (v.getId() != R.id.reset_button) {
 
+            // sort by letter A to Z
             if (v.getId() == R.id.AtoZ_button)
                 filteredList.sortByLetter(true);
 
+            // sort by letter Z to A
             else if (v.getId() == R.id.ZtoA_button)
                 filteredList.sortByLetter(false);
 
+            // sort by price low to high
             else if (v.getId() == R.id.LtoH_price_button)
                 filteredList.sortByPrice(true);
 
+            // sort by price high to low
             else if (v.getId() == R.id.HtoL_price_button)
                 filteredList.sortByPrice(false);
 
+            // update post list
             postListHolder = new ArrayList<>(filteredList.getPostArray());
             notifyDataSetChanged();
         }
         else
         {
+            // update post list by going back to default
             postListHolder = new ArrayList<>(postListHolderFull);
             notifyDataSetChanged();
         }
@@ -121,6 +140,11 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
     }
 
     private Filter exampleFilter = new Filter() {
+        /**
+         * for filtering the list according to user input to the search bar
+         * @param charSequence the string user enters to search bar
+         * @return the updated list
+         */
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
             List<Post> filteredList = new ArrayList<>();
@@ -147,6 +171,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
             return results;
         }
 
+        // update the list according to searching operations
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
             postListHolder.clear();
@@ -156,8 +181,9 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
     };
 
 
-
-    // inner class for a view holder
+    /**
+     * inner class to hold the properties as views
+     */
     public class PostListViewHolder extends RecyclerView.ViewHolder {
 
         // variables
@@ -165,6 +191,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
         TextView seller;
         TextView price;
         ImageView picture;
+        ImageView crown;
         LinearLayout layout;
 
         // constructor
@@ -175,9 +202,17 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
             seller = itemView.findViewById(R.id.postSeller);
             price = itemView.findViewById(R.id.priceText);
             layout = (LinearLayout)  itemView.findViewById(R.id.row_post);
+            crown = itemView.findViewById(R.id.sold_crown);
         }
     }
 
+    /**
+     * method for filtering the post list according to user preferences
+     * @param uni : the university user chose
+     * @param course : the course user chose
+     * @param lowPrice : the lower bound of the price range user chose
+     * @param highPrice : the upper bound of the price range user chose
+     */
     public void filterResults(String uni, String course, int lowPrice, int highPrice)
     {
         PostList filteredList = list;
@@ -187,13 +222,12 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
         }
         if (!course.equals("Other")) {
             filteredList = filteredList.filterByCourse(course);
-
         }
         if (lowPrice != -1 || highPrice != -1) {
             filteredList = filteredList.filterByPrice(lowPrice, highPrice);
-
         }
 
+        // update the list
         postListHolder = new ArrayList<>(filteredList.getPostArray());
         notifyDataSetChanged();
     }

@@ -63,6 +63,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
     private ImageButton chatButton;
     private ImageButton homeButton;
     private ImageView postPic;
+    private ImageView adminDeleteButton;
 
 
     @Override
@@ -98,6 +99,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         postCourseTextView = findViewById(R.id.postCourseTextView);
         postPriceTextView = findViewById(R.id.postPriceTextView);
         postDescriptionTextView = findViewById(R.id.postDescriptionTextView);
+        adminDeleteButton = findViewById(R.id.adminDeleteButton);
         reportButton = findViewById(R.id.reportButton);
         wishlistButton = findViewById(R.id.wishlistButton);
         postTitleTextView.setText(post.getTitle());
@@ -113,10 +115,11 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
             wishlistButton.setVisibility(View.GONE);
             reportButton.setVisibility(View.GONE);
         }
-
+        if(currentUser instanceof Admin && !post.getOwner().getUsername().equals(currentUser.getUsername()))
+            adminDeleteButton.setVisibility(View.VISIBLE);
 
         if (currentUser.getReportNum() >= 10) {
-          badRepAlert();
+            badRepAlert();
         }
 
 
@@ -166,7 +169,6 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
                 startIntent.putExtra("currentUser", currentUser);
                 startActivity(startIntent);
             }
-
         });
 
         /**
@@ -237,6 +239,61 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
             }
 
         });
+
+        adminDeleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(PostActivity.this);
+
+                builder.setTitle("Admin Delete Panel");
+                builder.setMessage("Are you sure that you want to delete the Post of this user?");
+
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+                        db.collection("posts").whereEqualTo("id", post.getId()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                                (task.getResult().getDocuments().get(0).getReference()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+
+                                        Intent pass = new Intent(PostActivity.this, PostListActivity.class);
+                                        for (int i = 0; postList.getPostArray().size() > i; i++) {
+                                            if (postList.getPostArray().get(i).getId().equals(post.getId()))
+                                                postList.getPostArray().remove(i);
+                                        }
+                                        pass.putExtra("currentUser", currentUser);
+                                        pass.putExtra("postlist", postList);
+                                        Toast.makeText(PostActivity.this, "You have successfully deleted the post of this user!", Toast.LENGTH_LONG).show();
+                                        dialog.dismiss();
+                                        startActivity(pass);
+                                        finish();
+                                    }
+                                });
+
+                            }
+                        });
+                        //Then it will close the screen automatically!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    }
+                });
+
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
     }
 
 
@@ -262,8 +319,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
                 for (DocumentSnapshot doc : task.getResult()) {
                     String reportedUserID = doc.getId();
                     List<String> reporters = (List<String>) doc.get("reporters");
-                    if(!reporters.contains(currentUser.getUsername()))
-                    {
+                    if (!reporters.contains(currentUser.getUsername())) {
                         reporters.add(currentUser.getUsername());
                     }
                     HashMap<String, Object> newData = new HashMap<>();

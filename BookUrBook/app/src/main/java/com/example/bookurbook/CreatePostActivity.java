@@ -36,6 +36,10 @@ import com.squareup.picasso.Picasso;
 import java.util.HashMap;
 import java.util.Random;
 
+/**
+ * This class is created in order to manage the linkage between the model classes and the create post
+ * views
+ */
 public class CreatePostActivity extends AppCompatActivity {
     //instance variables
     private Post post;
@@ -75,6 +79,7 @@ public class CreatePostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_post);
 
+        //sets the toolbar as the action bar
         toolbar = findViewById(R.id.toolbar_without_report);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -85,7 +90,7 @@ public class CreatePostActivity extends AppCompatActivity {
         spinner = findViewById(R.id.createPostSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(CreatePostActivity.this, R.array.Universities, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        spinner.setAdapter(adapter);//creates the drawbar for the courses in choosing a course
         spinner2 = findViewById(R.id.createPostSpinner2);
         ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(CreatePostActivity.this, R.array.Courses, android.R.layout.simple_spinner_item);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -103,7 +108,12 @@ public class CreatePostActivity extends AppCompatActivity {
         postDescriptionCreatePost = findViewById(R.id.postDescriptionCreatePost);
 
         homeButton = findViewById(R.id.homeButtonCreatePost);
+
         homeButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Goes to the home screen and sends the necessary information as intents for the database
+             * to work correctly
+             */
             @Override
             public void onClick(View v) {
                 Intent startIntent = new Intent(CreatePostActivity.this, MainMenuActivity.class);
@@ -114,6 +124,10 @@ public class CreatePostActivity extends AppCompatActivity {
 
         applyButton = findViewById(R.id.applyButtonCreatePost);
         applyButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * When applied, sends the necessary info to the database
+             * @param v view of the current screen
+             */
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(CreatePostActivity.this);
@@ -154,6 +168,9 @@ public class CreatePostActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Opens the gallery of the used phone and then the user will select the image from there
+     */
     private void choosePicture() {
         Intent galleryOpen = new Intent();
         galleryOpen.setType("image/*");
@@ -171,7 +188,9 @@ public class CreatePostActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * Sets the necessary updates for the database
+     */
     private void updateDatabase() {
 
         String randomKey = randomKeyGenerator();
@@ -268,6 +287,9 @@ public class CreatePostActivity extends AppCompatActivity {
         return saltStr;
     }
 
+    /**
+     * Sends the necessary intents to the previous screen.
+     */
     @Override
     public void onBackPressed() {
         Intent pass;

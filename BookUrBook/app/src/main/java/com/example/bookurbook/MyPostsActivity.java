@@ -24,7 +24,8 @@ import com.squareup.picasso.Picasso;
  * This class connects between My Posts view and its adapter class, accessing and using data from database also updating them according to actions
  */
 
-public class MyPostsActivity extends AppCompatActivity {
+public class MyPostsActivity extends AppCompatActivity
+{
 
     //variables
     private ImageButton add;
@@ -37,7 +38,8 @@ public class MyPostsActivity extends AppCompatActivity {
     private User currentUser;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_posts);
         init(); //calling method to initialize variables
@@ -81,7 +83,8 @@ public class MyPostsActivity extends AppCompatActivity {
         else
             userType.setText("Admin User");
 
-        add.setOnClickListener(new View.OnClickListener() {  //when add button is clicked
+        add.setOnClickListener(new View.OnClickListener()
+        {  //when add button is clicked
             @Override
             public void onClick(View v) {
                 addPost();
@@ -115,7 +118,8 @@ public class MyPostsActivity extends AppCompatActivity {
      }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         onBackPressed();
         return super.onOptionsItemSelected(item);
     }

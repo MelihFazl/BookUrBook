@@ -124,14 +124,4 @@ public class PostList implements Filterable, Sortable, Serializable {
         }
         return filtered;
     }
-
-    @Override
-    public PostList filterByOwner(User owner) {
-        PostList filtered = new PostList();
-        for (Post post : postArray) {
-            if (post.getOwner().getEmail().equals(owner.getEmail()))
-                filtered.addPost(post);
-        }
-        return filtered;
-    }
 }
