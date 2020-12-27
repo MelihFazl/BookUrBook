@@ -5,6 +5,9 @@ import java.util.*;
 
 import android.widget.ImageView;
 
+/**
+ * This class stores the necessary information about a post.
+ */
 public class Post implements Reportable, Serializable {
     //instance variables
     private String description;
