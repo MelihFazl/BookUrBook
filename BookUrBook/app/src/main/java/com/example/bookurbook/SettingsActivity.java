@@ -2,10 +2,10 @@ package com.example.bookurbook;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -18,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.bookurbook.MailAPISource.JavaMailAPI;
+import com.example.bookurbook.SendNotificationPack.Token;
 import com.example.bookurbook.models.Admin;
 import com.example.bookurbook.models.RegularUser;
 import com.example.bookurbook.models.User;
@@ -31,6 +33,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -48,6 +51,7 @@ public class SettingsActivity extends AppCompatActivity implements FeedbackDialo
     private Button logout;
     private Button select;
     private Button blocklist;
+    private Button resetPass;
     private TextView userDetails;
     private ImageView profilePic;
     private Uri imageUri;
@@ -71,6 +75,7 @@ public class SettingsActivity extends AppCompatActivity implements FeedbackDialo
         logout = findViewById(R.id.logout);
         select = findViewById(R.id.selectImage);
         blocklist = findViewById(R.id.blocked_users);
+        resetPass = findViewById(R.id.resetPassword);
         profilePic = findViewById(R.id.profilepic);
         userDetails = findViewById(R.id.userdetails);
         sendFeedback = findViewById(R.id.sendFeedback);
@@ -101,6 +106,7 @@ public class SettingsActivity extends AppCompatActivity implements FeedbackDialo
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                db.collection("tokens").document(auth.getUid()).set(new Token(""));
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent (SettingsActivity.this, LoginActivity.class));
                 finish();
@@ -153,6 +159,49 @@ public class SettingsActivity extends AppCompatActivity implements FeedbackDialo
                         }
                     }
                 });
+            }
+        });
+
+        resetPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(SettingsActivity.this);
+                builder.setTitle("Are you sure?");
+                builder.setMessage("If you click on YES, you will be logged out and a link will " +
+                        "be sent to your e-mail in order for you to reset your password.");
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                            auth.sendPasswordResetEmail(currentUser.getEmail()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful())
+                                        {
+                                            auth.signOut();
+                                            Toast.makeText(SettingsActivity.this,
+                                                    "Your link for resetting your password has been sent to "
+                                                            + currentUser.getEmail(), Toast.LENGTH_LONG).show();
+                                            Intent pass = new Intent(SettingsActivity.this, WelcomeActivity.class);
+                                            startActivity(pass);
+                                        }
+                                        else
+                                        {
+                                            Toast.makeText(SettingsActivity.this,
+                                                    "There has been an error! Check your internet connection."
+                                                            + currentUser.getEmail(), Toast.LENGTH_LONG).show();
+                                        }
+                                }
+                            });
+                    }
+                });
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
             }
         });
 
@@ -237,6 +286,9 @@ public class SettingsActivity extends AppCompatActivity implements FeedbackDialo
 
     @Override
     public void applyTexts(String description) {
-        //FERHAT BURAYA YAPCAN XD
+        JavaMailAPI mail = new JavaMailAPI(SettingsActivity.this
+                , "vvcbookurbook@gmail.com", currentUser.getUsername()
+                + "'s Feedback", description );
+        mail.execute();
     }
 }

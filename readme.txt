@@ -36,6 +36,15 @@ Remaining screens will be created.
 -> Setting and displaying the user avatar.
 -> Designing main menu, login , verification , register, and welcome screens (with Melih).
 -> Implementing the JavaMailAPI into the project in order to send a mail that contains the verification code.
+-> Making wishlist system in database and connecting it to the app properly.
+-> Connecting the admin panel with database.
+-> Developing a proper report system for the posts and chats (with Kerem)
+-> Block system (With Melih)
+-> Eliminating banned and blocked (by the current user) users' posts from the postlist and wishlist screens.
+-> While registering, it checks more. (Alphanumerical email, password, and username)
+-> Feedback system by using JavaMailAPI.
+-> Resetting password for the users.
+-> Fixing bugs with my group mates.
 
 ----Melih Fazıl Keskin----
 -> Planning of database structure design with Ferhat. We created our Database in Firebase.
@@ -78,4 +87,3 @@ and updating whenever a change occurs in database.
 ->Creation of the send feedback dialog.
 ->Revisions on the report system with Ferhat.
 ->Creation of different toolbars for different screens and the connection of the toolbar buttons with the activity classes.
-->

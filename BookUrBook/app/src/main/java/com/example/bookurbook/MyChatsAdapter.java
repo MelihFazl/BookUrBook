@@ -12,20 +12,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookurbook.models.Chat;
-import com.example.bookurbook.models.Post;
-import com.example.bookurbook.models.PostList;
 import com.example.bookurbook.models.User;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This is for the recycler view in MyChatsActivity
+ */
 public class MyChatsAdapter extends RecyclerView.Adapter<MyChatsAdapter.MyChatsViewHolder> implements Filterable {
 
     // variables
@@ -36,6 +35,7 @@ public class MyChatsAdapter extends RecyclerView.Adapter<MyChatsAdapter.MyChatsV
     private ArrayList<String> blockedUsernames;
     private FirebaseFirestore db;
 
+    //constructor
     public MyChatsAdapter(Context c, ArrayList<Chat> list,  User currentUser, ArrayList<String> blockedUsernames)
     {
         chatsList = list;
@@ -59,7 +59,7 @@ public class MyChatsAdapter extends RecyclerView.Adapter<MyChatsAdapter.MyChatsV
 
         Chat exampleChat = chatsList.get(position);
         holder.userName.setText(exampleChat.getUser2().getUsername());
-        holder.latestChat.setText(exampleChat.getLastMessageInFromDB());  // maybe this will be getLastMessageInFromDb ??
+        holder.latestChat.setText(exampleChat.getLastMessageInDB());
         Picasso.get().load(exampleChat.getUser2().getAvatar()).into(holder.userAvatar);
         if ( !exampleChat.isReadByUser1() )
         {

@@ -266,17 +266,25 @@ public class EditPostActivity extends AppCompatActivity {
 
     }
 
-    private void updateDatabase() {
-        boolean priceChanged = post.getPrice() != Integer.parseInt(postPrice.getText().toString());
-        if (priceChanged) {
-            db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+    private void updateDatabase()
+    {
+        boolean priceChanged = post.getPrice() != Integer.parseInt(postPrice.getText().toString()); //if price has changed
+        if (priceChanged)
+        {   //Send notification to users who added this post to their wishlists.
+            db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+            {
                 @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot doc : task.getResult()) {
+                public void onComplete(@NonNull Task<QuerySnapshot> task)
+                {
+                    if (task.isSuccessful())
+                    {
+                        for (QueryDocumentSnapshot doc : task.getResult()) //check all users
+                        {
                             List<String> list = (List<String>) doc.get("wishlist");
-                            if (list != null && list.contains(post.getId())) {
-                                db.collection("tokens").document(doc.getId()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            if (list != null && list.contains(post.getId())) //if the user added this post to his wishlist
+                            {
+                                db.collection("tokens").document(doc.getId()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>()
+                                { //get the device token of that user
                                     @Override
                                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                                         sendNotifications(documentSnapshot.get("token").toString(), "Price of a post in your wishlist has changed.", post.getTitle() + "'s price has changed.");
@@ -371,7 +379,15 @@ public class EditPostActivity extends AppCompatActivity {
         }
     }
 
-    public void sendNotifications(String usertoken, String title, String message) {
+
+    /**
+     * To send notification to other user by using database and SendNotificationPack
+     * @param usertoken device token of  other user
+     * @param title notification title
+     * @param message notification message
+     */
+    public void sendNotifications(String usertoken, String title, String message)
+    {
         Data data = new Data(title, message);
         NotificationSender sender = new NotificationSender(data, usertoken);
         apiService.sendNotifcation(sender).enqueue(new Callback<MyResponse>() {
