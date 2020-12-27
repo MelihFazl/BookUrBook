@@ -1,4 +1,4 @@
-package com.example.bookurbook;
+package com.example.bookurbook.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,13 +8,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.example.bookurbook.R;
+import com.example.bookurbook.adapters.WishlistAdapter;
 import com.example.bookurbook.models.Admin;
-import com.example.bookurbook.models.Post;
-import com.example.bookurbook.models.PostList;
 import com.example.bookurbook.models.RegularUser;
 import com.example.bookurbook.models.User;
-
-import java.util.ArrayList;
 
 /**
  * This class connects between Wishlist view and model classes, updating them according to actions

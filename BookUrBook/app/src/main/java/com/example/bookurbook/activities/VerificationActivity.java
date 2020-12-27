@@ -1,4 +1,4 @@
-package com.example.bookurbook;
+package com.example.bookurbook.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.bookurbook.MailAPISource.JavaMailAPI;
+import com.example.bookurbook.R;
 import com.example.bookurbook.SendNotificationPack.Token;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

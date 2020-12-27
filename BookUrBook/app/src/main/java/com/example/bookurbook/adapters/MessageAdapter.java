@@ -1,4 +1,4 @@
-package com.example.bookurbook;
+package com.example.bookurbook.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.bookurbook.R;
 import com.example.bookurbook.models.Chat;
 import com.example.bookurbook.models.Message;
 import com.squareup.picasso.Picasso;

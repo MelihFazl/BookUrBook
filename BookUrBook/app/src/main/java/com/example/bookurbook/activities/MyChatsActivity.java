@@ -1,4 +1,4 @@
-package com.example.bookurbook;
+package com.example.bookurbook.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.bookurbook.adapters.MyChatsAdapter;
+import com.example.bookurbook.R;
 import com.example.bookurbook.models.Admin;
 import com.example.bookurbook.models.Chat;
 import com.example.bookurbook.models.RegularUser;

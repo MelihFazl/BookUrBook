@@ -1,4 +1,4 @@
-package com.example.bookurbook;
+package com.example.bookurbook.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +19,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bookurbook.MailAPISource.JavaMailAPI;
+import com.example.bookurbook.R;
+import com.example.bookurbook.fragments.ReportDialog;
+import com.example.bookurbook.fragments.ReportPostDialogListener;
 import com.example.bookurbook.models.Admin;
 import com.example.bookurbook.models.Chat;
 import com.example.bookurbook.models.Post;
@@ -35,7 +38,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -46,7 +48,8 @@ import java.util.Map;
  * This class manages the controls of the post activity and does necessary changes in order to update
  * the database, view and model class datas.
  */
-public class PostActivity extends AppCompatActivity implements ReportPostDialogListener {
+public class PostActivity extends AppCompatActivity implements ReportPostDialogListener
+{
 
     //instance variables
     private Post post;
@@ -70,7 +73,8 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
     private ImageView adminDeleteButton;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         //method code
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
@@ -114,15 +118,17 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         postDescriptionTextView.setText(post.getDescription());
         Picasso.get().load(post.getPicture()).into(postPic);
 
-        if (post.getOwner().getUsername().equals(currentUser.getUsername())) {
+        if (post.getOwner().getUsername().equals(currentUser.getUsername()))
+        {
             chatButton.setVisibility(View.GONE);
             wishlistButton.setVisibility(View.GONE);
             reportButton.setVisibility(View.GONE);
         }
-        if(currentUser instanceof Admin && !post.getOwner().getUsername().equals(currentUser.getUsername()))
+        if (currentUser instanceof Admin && !post.getOwner().getUsername().equals(currentUser.getUsername()))
             adminDeleteButton.setVisibility(View.VISIBLE);
 
-        if (currentUser.getReportNum() >= 10) {
+        if (currentUser.getReportNum() >= 10)
+        {
             badRepAlert();
         }
 
@@ -131,22 +137,29 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
          * Will add the post to the wishlist if it is not included in the wishlist. If it is already
          * in the wishlist, it will remove it from the wishlist.
          */
-        wishlistButton.setOnClickListener(new View.OnClickListener() {
+        wishlistButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
-                db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            public void onClick(View v)
+            {
+                db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>()
+                {
                     @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    public void onSuccess(DocumentSnapshot documentSnapshot)
+                    {
                         List<String> wishlist = Collections.emptyList();
                         wishlist = (List<String>) documentSnapshot.get("wishlist");
-                        if (!wishlist.contains(post.getId())) {
+                        if (!wishlist.contains(post.getId()))
+                        {
                             wishlist.add(post.getId());
                         }
                         HashMap<String, Object> newData = new HashMap<>();
                         newData.put("wishlist", wishlist);
-                        db.collection("users").document(auth.getCurrentUser().getUid()).set(newData, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        db.collection("users").document(auth.getCurrentUser().getUid()).set(newData, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>()
+                        {
                             @Override
-                            public void onSuccess(Void aVoid) {
+                            public void onSuccess(Void aVoid)
+                            {
                                 Toast.makeText(PostActivity.this, post.getTitle() + " has been added your WishList", Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -159,9 +172,11 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         /**
          * This button will open the report dialog and the user will be able to write their reports.
          */
-        reportButton.setOnClickListener(new View.OnClickListener() {
+        reportButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 openPostReportDialog();
             }
         });
@@ -169,9 +184,11 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         /**
          * Sends the necessary intents in order to go back to the main screen.
          */
-        homeButton.setOnClickListener(new View.OnClickListener() {
+        homeButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Intent startIntent = new Intent(PostActivity.this, MainMenuActivity.class);
                 startIntent.putExtra("currentUser", currentUser);
                 startActivity(startIntent);
@@ -181,16 +198,22 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         /**
          * This button starts a chat with the post owner
          */
-        chatButton.setOnClickListener(new View.OnClickListener() {
+        chatButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 db.collection("chats").document(currentUser.getUsername() + ", " + post.getOwner().getUsername())
-                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>()
+                {
                     @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task)
+                    {
+                        if (task.isSuccessful())
+                        {
                             DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
+                            if (document.exists())
+                            {
                                 Intent pass = new Intent(PostActivity.this, ChatActivity.class);
                                 Chat chat = new Chat(currentUser, post.getOwner(), currentUser.getUsername() + ", " + post.getOwner().getUsername());
                                 pass.putExtra("currentUser", currentUser);
@@ -200,12 +223,16 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
                                 pass.putExtra("clickedChat", chat);
                                 pass.putExtra("previousActivity", previousActivity);
                                 startActivity(pass);
-                            } else {
+                            } else
+                            {
                                 db.collection("chats").document(post.getOwner().getUsername() + ", " + currentUser.getUsername())
-                                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>()
+                                {
                                     @Override
-                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                        if (document.exists()) {
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task)
+                                    {
+                                        if (document.exists())
+                                        {
                                             Intent pass = new Intent(PostActivity.this, ChatActivity.class);
                                             Chat chat = new Chat(currentUser, post.getOwner(), post.getOwner().getUsername() + ", " + currentUser.getUsername());
                                             pass.putExtra("currentUser", currentUser);
@@ -215,7 +242,8 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
                                             pass.putExtra("clickedChat", chat);
                                             pass.putExtra("previousActivity", previousActivity);
                                             startActivity(pass);
-                                        } else {
+                                        } else
+                                        {
                                             Intent pass = new Intent(PostActivity.this, ChatActivity.class);
                                             Chat chat = new Chat(currentUser, post.getOwner(), post.getOwner().getUsername() + ", " + currentUser.getUsername());
                                             Map<String, Object> chatData = new HashMap<>();
@@ -238,7 +266,8 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
                                     }
                                 });
                             }
-                        } else {
+                        } else
+                        {
                             Toast chatError = Toast.makeText(PostActivity.this, "Something is wrong. Please check your Internet connection.", Toast.LENGTH_LONG);
                         }
                     }
@@ -248,34 +277,43 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         });
 
 
-        adminDeleteButton.setOnClickListener(new View.OnClickListener() {
+        adminDeleteButton.setOnClickListener(new View.OnClickListener()
+        {
             /**
              * Admin delete button is created so that admins can delete any post if they see it as problematic.
              * If the post gets deleted, this method takes necessary actions in order to update the database.
              * @param v view of the current screen
              */
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 AlertDialog.Builder builder = new AlertDialog.Builder(PostActivity.this);
 
                 builder.setTitle("Admin Delete Panel");
                 builder.setMessage("Are you sure that you want to delete the Post of this user?");
 
-                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener()
+                {
 
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
 
 
-                        db.collection("posts").whereEqualTo("id", post.getId()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        db.collection("posts").whereEqualTo("id", post.getId()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+                        {
                             @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            public void onComplete(@NonNull Task<QuerySnapshot> task)
+                            {
 
-                                (task.getResult().getDocuments().get(0).getReference()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                (task.getResult().getDocuments().get(0).getReference()).delete().addOnSuccessListener(new OnSuccessListener<Void>()
+                                {
                                     @Override
-                                    public void onSuccess(Void aVoid) {
+                                    public void onSuccess(Void aVoid)
+                                    {
 
                                         Intent pass = new Intent(PostActivity.this, PostListActivity.class);
-                                        for (int i = 0; postList.getPostArray().size() > i; i++) {
+                                        for (int i = 0; postList.getPostArray().size() > i; i++)
+                                        {
                                             if (postList.getPostArray().get(i).getId().equals(post.getId()))
                                                 postList.getPostArray().remove(i);
                                         }
@@ -294,10 +332,12 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
                     }
                 });
 
-                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener()
+                {
 
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
 
                         dialog.dismiss();
                     }
@@ -313,7 +353,8 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
     /**
      * This method is created in order to create a pop up dialog using ReportDialog class.
      */
-    public void openPostReportDialog() {
+    public void openPostReportDialog()
+    {
         ReportDialog dialog = new ReportDialog();
         dialog.show(getSupportFragmentManager(), "");
     }
@@ -322,25 +363,30 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
      * When the report dialog is created, the listener inside the ReportDialog class will call this method and therefore
      * we will be able to access the description and the category from the post activity that was provided in the dialog
      * This method gets the necessary info and sends the report mail to our (Veni Vidi Code) mail.
-     * @param description the description provided by the user
-     * @param category category of the report (Abusive,Scam...)
      *
+     * @param description the description provided by the user
+     * @param category    category of the report (Abusive,Scam...)
      */
     @Override
-    public void applyTexts(String description, String category) {
+    public void applyTexts(String description, String category)
+    {
         post.report(description, category);
         String reportDetails = currentUser.getUsername() + " has reported the following post: \nPost ID: " + post.getId() + "\nPost Title: " + post.getTitle() + "\nPost Owner: "
                 + post.getOwner().getUsername() + "\nPost Picture: " + post.getPicture() + "\nPost Description: " + post.getDescription() + ".\n\nThis post has been reported in category "
                 + category + "\nwith the description: " + description;
         JavaMailAPI reportPost = new JavaMailAPI(PostActivity.this, "vvcbookurbook@gmail.com", post.getTitle() + " REPORT", reportDetails);
         reportPost.execute();
-        db.collection("users").whereEqualTo("username", post.getOwner().getUsername()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("users").whereEqualTo("username", post.getOwner().getUsername()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+        {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                for (DocumentSnapshot doc : task.getResult()) {
+            public void onComplete(@NonNull Task<QuerySnapshot> task)
+            {
+                for (DocumentSnapshot doc : task.getResult())
+                {
                     String reportedUserID = doc.getId();
                     List<String> reporters = (List<String>) doc.get("reporters");
-                    if (!reporters.contains(currentUser.getUsername())) {
+                    if (!reporters.contains(currentUser.getUsername()))
+                    {
                         reporters.add(currentUser.getUsername());
                     }
                     HashMap<String, Object> newData = new HashMap<>();
@@ -356,14 +402,17 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
      * This method creates a pop up dialog before entering the screen if the seller of the post
      * has been reported several times.
      */
-    public void badRepAlert() {
+    public void badRepAlert()
+    {
         AlertDialog.Builder builder = new AlertDialog.Builder(PostActivity.this);
         builder.setTitle("Attention");
         builder.setMessage("This user has been reported several times. Be careful with the user or the post.");
 
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener()
+        {
 
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(DialogInterface dialog, int which)
+            {
                 dialog.dismiss();
 
             }
@@ -376,7 +425,8 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
     /**
      * Sends the necessary intents according to the needs of the previous screen.
      */
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
         Intent pass;
         if (previousActivity == 1)
             pass = new Intent(PostActivity.this, PostListActivity.class);
@@ -396,7 +446,8 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
      * Is created in order to make the back arrow in toolbar use the code of the onBackPressed method.
      */
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         onBackPressed();
         return super.onOptionsItemSelected(item);
     }
