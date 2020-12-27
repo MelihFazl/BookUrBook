@@ -19,9 +19,14 @@ import com.example.bookurbook.models.PostList;
 import com.example.bookurbook.models.RegularUser;
 import com.example.bookurbook.models.User;
 import com.squareup.picasso.Picasso;
+/**
+ * This class connects between My Posts view and its adapter class, accessing and using data from database also updating them according to actions
+ */
 
-public class MyPostsActivity extends AppCompatActivity {
+public class MyPostsActivity extends AppCompatActivity
+{
 
+    //variables
     private ImageButton add;
     private Toolbar toolbar;
     private RecyclerView recyclerView;
@@ -32,41 +37,53 @@ public class MyPostsActivity extends AppCompatActivity {
     private User currentUser;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_posts);
-        toolbar = (Toolbar) findViewById(R.id.myPostsToolbar);
+        init(); //calling method to initialize variables
+    }
+
+    /**
+     * This method will initialize the variables of the view
+     */
+    public void init()
+    {
+        toolbar = (Toolbar) findViewById(R.id.myPostsToolbar); //setting toolbar to the view
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("My Posts");
-        setProperties();
-    }
 
-    /**
-     * set the properties from the view
-     */
-    public void setProperties() {
-        if (getIntent().getSerializableExtra("currentUser") instanceof Admin)
-            currentUser = (Admin) getIntent().getSerializableExtra("currentUser");
-        else
-            currentUser = (RegularUser) getIntent().getSerializableExtra("currentUser");
-
-        postList = (PostList) getIntent().getSerializableExtra("postlist");
-
-
+        //initializing view variables
         this.add = findViewById(R.id.addButton);
         this.username = findViewById(R.id.username);
         this.userType = findViewById(R.id.user_type);
         this.img = findViewById(R.id.profile_image);
         recyclerView = findViewById(R.id.recycler_id);
 
-        Picasso.get().load(currentUser.getAvatar()).into(img);
-        adp = new MyPostsAdapter(MyPostsActivity.this, postList.getPostArray());
+        //accessing current user from database
+        if(getIntent().getSerializableExtra("currentUser") instanceof Admin) //if current user is admin
+            currentUser = (Admin) getIntent().getSerializableExtra("currentUser");
+        else
+            currentUser = (RegularUser) getIntent().getSerializableExtra("currentUser"); //else he/she is regular user
+
+        postList = (PostList) getIntent().getSerializableExtra("postlist"); //accessing post list from database
+
+        Picasso.get().load(currentUser.getAvatar()).into(img); //getting user avatar from database
+
+        adp = new MyPostsAdapter(MyPostsActivity.this, postList.getPostArray()); //setting adapter for recycle view
         recyclerView.setAdapter(adp);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        setElements();
-        add.setOnClickListener(new View.OnClickListener() {
+
+        username.setText(currentUser.getUsername());
+        if(currentUser instanceof RegularUser)
+            userType.setText("Regular User");
+        else
+            userType.setText("Admin User");
+
+        add.setOnClickListener(new View.OnClickListener()
+        {  //when add button is clicked
             @Override
             public void onClick(View v) {
                 addPost();
@@ -75,20 +92,11 @@ public class MyPostsActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * set the properties according to the currentUser
-     */
-    public void setElements() {
-        username.setText(currentUser.getUsername());
-        if (currentUser instanceof RegularUser)
-            userType.setText("Regular User");
-        else
-            userType.setText("Admin User");
-    }
-    //for now
+
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
         Intent pass = new Intent(MyPostsActivity.this, MainMenuActivity.class);
         pass.putExtra("currentUser", currentUser);
         startActivity(pass);
@@ -96,19 +104,21 @@ public class MyPostsActivity extends AppCompatActivity {
     }
 
     /**
-     * This method will be called when ad button is clicked
+     * This method will be called when add button is clicked
      */
-    public void addPost() {
+    public void addPost()
+    {
         Intent intent = new Intent(getBaseContext(), CreatePostActivity.class);
         intent.putExtra("currentUser", currentUser);
         intent.putExtra("postlist", postList);
         intent.putExtra("fromPostList", false);
         startActivity(intent);
         finish();
-    }
+     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         onBackPressed();
         return super.onOptionsItemSelected(item);
     }
