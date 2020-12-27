@@ -72,9 +72,12 @@ and updating whenever a change occurs in database.
 -> Designed Filter screen so that the user can filter de Post List results.
 -> Designing My Chats screen in Android Studio and building an adapter for the recycler view.
 -> Designing Chat screen in Android Studio and building an adapter for the recycler view.
--> Making the connection between the database and the user interface of some classes.
--> Creating dialog pop up for user interraction.
-
+-> Creating pop up screen for filtering the post list.
+-> Worked on notification with Melih and Kerem.
+-> Fixed bugs with recycler view so that the view do not get pushed up when opening the keyboard
+-> GUI changes with post list for a better user experience
+-> Addition of crown icon for free posts and changing the visibility when the price is changed.
+-> Bug fixing with friends.
 
 ---Kerem Şahin---
 ->Creation of Model Classes and implementation of their methods.
