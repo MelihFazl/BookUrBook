@@ -38,8 +38,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
     Context context;
 
     // constructor
-    public PostListAdapter(Context c, PostList list, User user)
-    {
+    public PostListAdapter(Context c, PostList list, User user) {
         currentUser = user;
         this.list = list;
         postListHolder = list.getPostArray();
@@ -58,10 +57,14 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
 
     // to display the data at the specified position
     @Override
+<<<<<<< Updated upstream
     public void onBindViewHolder(@NonNull PostListViewHolder postListViewHolder, int i)
     {
         postListViewHolder.crown.setImageResource(R.drawable.crown_new);
         postListViewHolder.crown.setVisibility(View.VISIBLE);
+=======
+    public void onBindViewHolder(@NonNull PostListViewHolder postListViewHolder, int i) {
+>>>>>>> Stashed changes
         Post examplePost = postListHolder.get(i);
         postListViewHolder.title.setText(examplePost.getTitle());
         postListViewHolder.seller.setText(examplePost.getOwner().getUsername());
@@ -129,10 +132,14 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
             // update post list
             postListHolder = new ArrayList<>(filteredList.getPostArray());
             notifyDataSetChanged();
+<<<<<<< Updated upstream
         }
         else
         {
             // update post list by going back to default
+=======
+        } else {
+>>>>>>> Stashed changes
             postListHolder = new ArrayList<>(postListHolderFull);
             notifyDataSetChanged();
         }
@@ -149,18 +156,13 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
         protected FilterResults performFiltering(CharSequence charSequence) {
             List<Post> filteredList = new ArrayList<>();
 
-            if (charSequence == null || charSequence.length() == 0)
-            {
+            if (charSequence == null || charSequence.length() == 0) {
                 filteredList.addAll(postListHolderFull);
-            }
-            else
-            {
+            } else {
                 String filterInput = charSequence.toString().toLowerCase().trim();
 
-                for (Post p : postListHolderFull)
-                {
-                    if (p.getTitle().toLowerCase().contains(filterInput))
-                    {
+                for (Post p : postListHolderFull) {
+                    if (p.getTitle().toLowerCase().contains(filterInput)) {
                         filteredList.add(p);
                     }
                 }
@@ -181,9 +183,13 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
     };
 
 
+<<<<<<< Updated upstream
     /**
      * inner class to hold the properties as views
      */
+=======
+    // inner class for a view holder
+>>>>>>> Stashed changes
     public class PostListViewHolder extends RecyclerView.ViewHolder {
 
         // variables
@@ -201,6 +207,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
             picture = itemView.findViewById(R.id.postImageView);
             seller = itemView.findViewById(R.id.postSeller);
             price = itemView.findViewById(R.id.priceText);
+<<<<<<< Updated upstream
             layout = (LinearLayout)  itemView.findViewById(R.id.row_post);
             crown = itemView.findViewById(R.id.sold_crown);
         }
@@ -215,6 +222,13 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
      */
     public void filterResults(String uni, String course, int lowPrice, int highPrice)
     {
+=======
+            layout = (LinearLayout) itemView.findViewById(R.id.row_post);
+        }
+    }
+
+    public void filterResults(String uni, String course, int lowPrice, int highPrice) {
+>>>>>>> Stashed changes
         PostList filteredList = list;
 
         if (!uni.equals("Other")) {
