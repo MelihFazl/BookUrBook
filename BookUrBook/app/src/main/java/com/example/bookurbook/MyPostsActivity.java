@@ -18,7 +18,6 @@ import com.example.bookurbook.models.Admin;
 import com.example.bookurbook.models.PostList;
 import com.example.bookurbook.models.RegularUser;
 import com.example.bookurbook.models.User;
-import com.example.bookurbook.models.UserSpecPostList;
 import com.squareup.picasso.Picasso;
 
 public class MyPostsActivity extends AppCompatActivity {

@@ -98,10 +98,8 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.ViewHold
                 intent.putExtra("post", myPosts.get(position));
                 if (myPosts.get(position).getOwner() instanceof Admin) {
                     currentUser = (Admin) myPosts.get(position).getOwner();
-                    System.out.println("asagashsdhfdsssssssssss");
                 } else {
                     currentUser = (RegularUser) myPosts.get(position).getOwner();
-                    System.out.println("asagashsdhfdsssssssssasgadhweqrqqqqqss");
                 }
                 intent.putExtra("currentUser", currentUser);
                 intent.putExtra("previousActivity", 2);

@@ -52,7 +52,7 @@ import retrofit2.Response;
 
 /**
  * This class is created in order to manage the linkage between the model classes and the edit post
- * view, updating the informations of the database.
+ * view, updating the informations of the database when a post gets edited.
  */
 public class EditPostActivity extends AppCompatActivity {
     //instance variables
@@ -63,57 +63,58 @@ public class EditPostActivity extends AppCompatActivity {
     private FirebaseStorage storage;
     private Uri imageUri;
     private ImageView photoUpload;
-    Toolbar toolbar;
-    EditText postTitleEditText;
-    Spinner spinner;
-    Spinner spinner2;
-    EditText postPrice;
-    EditText postDescriptionEditText;
-    ImageButton homeButton;
-    ImageButton deleteButton;
-    ImageButton applyButton;
+    private Toolbar toolbar;
+    private EditText postTitleEditText;
+    private Spinner spinner;
+    private Spinner spinner2;
+    private EditText postPrice;
+    private EditText postDescriptionEditText;
+    private ImageButton homeButton;
+    private ImageButton deleteButton;
+    private ImageButton applyButton;
     private boolean picChanged;
     private APIService apiService;
-    String id;
+    private String id;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //variables
+        //method code
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_edit_post);
 
         picChanged = false;
-        //method code
+        //type casting in order to prevent issues related to only-admin features.
         post = (Post) getIntent().getSerializableExtra("post");
         if (getIntent().getSerializableExtra("currentUser") instanceof Admin) {
             currentUser = (Admin) getIntent().getSerializableExtra("currentUser");
         } else
             currentUser = (RegularUser) getIntent().getSerializableExtra("currentUser");
+
         postList = (PostList) getIntent().getSerializableExtra("postlist");
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
         apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
         id = post.getId();
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_post);
-
         toolbar = findViewById(R.id.toolbar_with_trashcan);
+        //sets toolbar as the action bar
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Edit Post");
 
         postTitleEditText = findViewById(R.id.postTitleEditText);
-
         spinner = findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(EditPostActivity.this, R.array.Universities, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        //creates the drawbar in the edit post
         spinner.setAdapter(adapter);
         for (int i = 0; i < spinner.getCount(); i++) {
             if (spinner.getItemAtPosition(i).toString().equals(post.getUniversity()))
                 spinner.setSelection(i);
         }
-
         spinner2 = findViewById(R.id.spinner2);
         ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(EditPostActivity.this, R.array.Courses, android.R.layout.simple_spinner_item);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -131,7 +132,6 @@ public class EditPostActivity extends AppCompatActivity {
         photoUpload = findViewById(R.id.photoUpload2);
         Picasso.get().load(post.getPicture()).into(photoUpload);
 
-
         photoUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -141,6 +141,10 @@ public class EditPostActivity extends AppCompatActivity {
 
         homeButton = findViewById(R.id.homeButton);
         homeButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Goes to the home screen and sends the necessary information as intents for the database
+             * to work correctly
+             */
             @Override
             public void onClick(View v) {
                 Intent startIntent = new Intent(EditPostActivity.this, MainMenuActivity.class);
@@ -150,6 +154,9 @@ public class EditPostActivity extends AppCompatActivity {
         });
         deleteButton = findViewById(R.id.deleteButton);
         deleteButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Creates a alert dialog,and if the user presses ok, the post gets deleted in the app.
+             */
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(EditPostActivity.this);
@@ -186,8 +193,6 @@ public class EditPostActivity extends AppCompatActivity {
 
                             }
                         });
-
-
                         //Then it will close the screen automatically!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                     }
                 });
@@ -207,6 +212,10 @@ public class EditPostActivity extends AppCompatActivity {
         });
         applyButton = findViewById(R.id.applyButton);
         applyButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Makes the necessary changes in order to update the edited datas on the database.
+             * @param v view of the current activity
+             */
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(EditPostActivity.this);
@@ -247,6 +256,9 @@ public class EditPostActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Opens the gallery of the used phone and then the user will select the image from there
+     */
     private void choosePicture() {
         Intent galleryOpen = new Intent();
         galleryOpen.setType("image/*");
@@ -266,6 +278,10 @@ public class EditPostActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Sets the necessary updates for the database such as editing the previous data of the post, alerting
+     * the postlist that the changes have been made.
+     */
     private void updateDatabase()
     {
         boolean priceChanged = post.getPrice() != Integer.parseInt(postPrice.getText().toString()); //if price has changed
@@ -296,7 +312,6 @@ public class EditPostActivity extends AppCompatActivity {
                 }
             });
         }
-
         if (picChanged) {
             StorageReference picRef = storage.getReference().child("posts/post_picture/" + post.getId());
             picRef.putFile(imageUri)
@@ -407,6 +422,9 @@ public class EditPostActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Sends the necessary intents according to the needs of the previous screen.
+     */
     @Override
     public void onBackPressed() {
         Intent pass = new Intent(EditPostActivity.this, MyPostsActivity.class);
@@ -416,6 +434,9 @@ public class EditPostActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * Is created in order to make the back arrow in toolbar use the code of the onBackPressed method.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         onBackPressed();
