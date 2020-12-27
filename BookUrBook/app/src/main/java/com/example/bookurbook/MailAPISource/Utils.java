@@ -2,9 +2,9 @@ package com.example.bookurbook.MailAPISource;
 
 public class Utils {
 
-    //This is your from email
+    //Setting the e-mail for verification and many many purposes.
     public static final String EMAIL = "vvcbookurbook@gmail.com";
 
-    //This is your from email password
+    ///Setting the e-mail password for verification and many many purposes.
     public static final String PASSWORD = "BilkentVVC1";
 }
