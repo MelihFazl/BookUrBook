@@ -14,12 +14,18 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+/**
+ * This class is created in order to create a report dialog in the desired screen.
+ */
 public class ReportDialog extends AppCompatDialogFragment {
     //instance variables
     private EditText descriptionEditText;
-    private ReportPostDialogListener listener;
+    private ReportPostDialogListener listener;//listener is created in order to send the data acquired in the dialog to the current activity (e.g. PostActivity, Chats activity)
     private Spinner spinner;
 
+    /**
+     * This method creates the dialog and does takes certain actions according to which button is pressed
+     */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -38,7 +44,10 @@ public class ReportDialog extends AppCompatDialogFragment {
             public void onClick(DialogInterface dialog, int which) {
                 String description = descriptionEditText.getText().toString();
                 String category = spinner.getSelectedItem().toString();
-                listener.applyTexts(description, category);
+                listener.applyTexts(description, category);//applyTexts method is overrided in the activities that use report and when the
+                                                            //dialog gets created in the activity, the activity is then able
+                                                            //to acquire the data that is entered in the dialog.
+
                 Toast.makeText(builder.getContext(), "Report sent!", Toast.LENGTH_LONG).show();
             }
         });

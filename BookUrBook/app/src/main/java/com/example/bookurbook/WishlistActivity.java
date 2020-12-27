@@ -16,8 +16,12 @@ import com.example.bookurbook.models.User;
 
 import java.util.ArrayList;
 
+/**
+ * This class connects between Wishlist view and model classes, updating them according to actions
+ */
 public class WishlistActivity extends AppCompatActivity {
-    //properties
+
+    //variables
     Toolbar toolbar;
     RecyclerView recyclerView;
     WishlistAdapter adapter;
@@ -29,26 +33,32 @@ public class WishlistActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wishlist);
+
+        init(); //calling the method to initialize variables
+    }
+
+    /**
+     * This method will set the properties according to the currentUser
+     */
+    public void init(){
+        //initializing variables
         toolbar = findViewById(R.id.wishlistToolbar);
+        recyclerView = findViewById(R.id.wishList);
+
+        //setting toolbar
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Wishlist");
-        setProperties();
-    }
-    /**
-     * This method will set the properties according to the currentUser
-     */
-    public void setProperties(){
+
+        //accessing current user from database
         if(getIntent().getSerializableExtra("currentUser") instanceof Admin)
             currentUser = (Admin)getIntent().getSerializableExtra("currentUser");
         else
             currentUser = (RegularUser)getIntent().getSerializableExtra("currentUser");
 
-
-        recyclerView = findViewById(R.id.wishList);
+        //setting adapter to recycler view
         adapter = new WishlistAdapter(WishlistActivity.this, currentUser.getWishList(), currentUser);
-
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -63,7 +73,8 @@ public class WishlistActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         onBackPressed();
         return super.onOptionsItemSelected(item);
     }

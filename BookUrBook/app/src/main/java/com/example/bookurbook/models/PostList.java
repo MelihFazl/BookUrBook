@@ -61,7 +61,6 @@ public class PostList implements Filterable, Sortable, Serializable {
         if (!owner.isBanned()) {
             Post post = new Post(description, title, university, course, price, picture, owner, id);
             this.addPost(post);
-            owner.getUserPostList().addPost(post);
         }
     }
 
@@ -75,6 +74,10 @@ public class PostList implements Filterable, Sortable, Serializable {
         post.setSold(true);
     }
 
+    /**
+     * This method sorts the posts in a collection according to their prices
+     * @param isLowToHigh if true sorts it from low to high, if false sorts it from high to low
+     */
     @Override
     public void sortByPrice(boolean isLowToHigh) {
         if (isLowToHigh) {
@@ -85,6 +88,10 @@ public class PostList implements Filterable, Sortable, Serializable {
         }
     }
 
+    /**
+     * This method sorts the posts in a collection according to their prices
+     * @param isAToZ if true sorts it according alphabetic order, if false sorts it in reverse alphabetic order
+     */
     @Override
     public void sortByLetter(boolean isAToZ) {
         if (isAToZ) {
@@ -95,6 +102,11 @@ public class PostList implements Filterable, Sortable, Serializable {
         }
     }
 
+    /**
+     * Filters the postlist that contains posts that is from a certain university and returns the newly created list.
+     * @param University desired university
+     * @return filtered postlist
+     */
     @Override
     public PostList filterByUniversity(String University) {
         PostList filtered = new PostList();
@@ -105,6 +117,11 @@ public class PostList implements Filterable, Sortable, Serializable {
         return filtered;
     }
 
+    /**
+     * Filters the postlist that contains posts that is from a course and returns the newly created list.
+     * @param course desired course
+     * @return filtered postlist
+     */
     @Override
     public PostList filterByCourse(String course) {
         PostList filtered = new PostList();
@@ -115,21 +132,18 @@ public class PostList implements Filterable, Sortable, Serializable {
         return filtered;
     }
 
+    /**
+     * Filters the postlist that contains posts that is in the price range and returns the newly created list.
+     * @param min min boundary of price
+     * @param max max boundary of price
+     * @return filtered postlist
+     *
+     */
     @Override
     public PostList filterByPrice(int min, int max) {
         PostList filtered = new PostList();
         for (Post post : postArray) {
             if (post.getPrice() <= max && min <= post.getPrice())
-                filtered.addPost(post);
-        }
-        return filtered;
-    }
-
-    @Override
-    public PostList filterByOwner(User owner) {
-        PostList filtered = new PostList();
-        for (Post post : postArray) {
-            if (post.getOwner().getEmail().equals(owner.getEmail()))
                 filtered.addPost(post);
         }
         return filtered;

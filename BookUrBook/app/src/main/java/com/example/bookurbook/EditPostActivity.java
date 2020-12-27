@@ -50,8 +50,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class EditPostActivity extends AppCompatActivity
-{
+/**
+ * This class is created in order to manage the linkage between the model classes and the edit post
+ * view, updating the informations of the database when a post gets edited.
+ */
+public class EditPostActivity extends AppCompatActivity {
     //instance variables
     private Post post;
     private PostList postList;
@@ -60,66 +63,63 @@ public class EditPostActivity extends AppCompatActivity
     private FirebaseStorage storage;
     private Uri imageUri;
     private ImageView photoUpload;
-    Toolbar toolbar;
-    EditText postTitleEditText;
-    Spinner spinner;
-    Spinner spinner2;
-    EditText postPrice;
-    EditText postDescriptionEditText;
-    ImageButton homeButton;
-    ImageButton deleteButton;
-    ImageButton applyButton;
+    private Toolbar toolbar;
+    private EditText postTitleEditText;
+    private Spinner spinner;
+    private Spinner spinner2;
+    private EditText postPrice;
+    private EditText postDescriptionEditText;
+    private ImageButton homeButton;
+    private ImageButton deleteButton;
+    private ImageButton applyButton;
     private boolean picChanged;
     private APIService apiService;
-    String id;
+    private String id;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
-        //variables
+    protected void onCreate(Bundle savedInstanceState) {
+        //method code
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_edit_post);
 
         picChanged = false;
-        //method code
+        //type casting in order to prevent issues related to only-admin features.
         post = (Post) getIntent().getSerializableExtra("post");
-        if (getIntent().getSerializableExtra("currentUser") instanceof Admin)
-        {
+        if (getIntent().getSerializableExtra("currentUser") instanceof Admin) {
             currentUser = (Admin) getIntent().getSerializableExtra("currentUser");
         } else
             currentUser = (RegularUser) getIntent().getSerializableExtra("currentUser");
+
         postList = (PostList) getIntent().getSerializableExtra("postlist");
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
         apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
         id = post.getId();
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_post);
-
         toolbar = findViewById(R.id.toolbar_with_trashcan);
+        //sets toolbar as the action bar
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Edit Post");
 
         postTitleEditText = findViewById(R.id.postTitleEditText);
-
         spinner = findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(EditPostActivity.this, R.array.Universities, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        //creates the drawbar in the edit post
         spinner.setAdapter(adapter);
-        for (int i = 0; i < spinner.getCount(); i++)
-        {
+        for (int i = 0; i < spinner.getCount(); i++) {
             if (spinner.getItemAtPosition(i).toString().equals(post.getUniversity()))
                 spinner.setSelection(i);
         }
-
         spinner2 = findViewById(R.id.spinner2);
         ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(EditPostActivity.this, R.array.Courses, android.R.layout.simple_spinner_item);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner2.setAdapter(adapter2);
-        for (int i = 0; i < spinner2.getCount(); i++)
-        {
+        for (int i = 0; i < spinner2.getCount(); i++) {
             if (spinner2.getItemAtPosition(i).toString().equals(post.getCourse()))
                 spinner2.setSelection(i);
         }
@@ -132,66 +132,59 @@ public class EditPostActivity extends AppCompatActivity
         photoUpload = findViewById(R.id.photoUpload2);
         Picasso.get().load(post.getPicture()).into(photoUpload);
 
-
-        photoUpload.setOnClickListener(new View.OnClickListener()
-        {
+        photoUpload.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 choosePicture();
             }
         });
 
         homeButton = findViewById(R.id.homeButton);
-        homeButton.setOnClickListener(new View.OnClickListener()
-        {
+        homeButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Goes to the home screen and sends the necessary information as intents for the database
+             * to work correctly
+             */
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 Intent startIntent = new Intent(EditPostActivity.this, MainMenuActivity.class);
                 startIntent.putExtra("currentUser", currentUser);
                 startActivity(startIntent);
             }
         });
         deleteButton = findViewById(R.id.deleteButton);
-        deleteButton.setOnClickListener(new View.OnClickListener()
-        {
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Creates a alert dialog,and if the user presses ok, the post gets deleted in the app.
+             */
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(EditPostActivity.this);
 
                 builder.setTitle("Confirm");
                 builder.setMessage("Are you sure that you want to delete the Post?");
 
-                builder.setPositiveButton("YES", new DialogInterface.OnClickListener()
-                {
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 
-                    public void onClick(DialogInterface dialog, int which)
-                    {
+                    public void onClick(DialogInterface dialog, int which) {
 
 
-                        db.collection("posts").whereEqualTo("id", post.getId()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
-                        {
+                        db.collection("posts").whereEqualTo("id", post.getId()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task)
-                            {
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-                                (task.getResult().getDocuments().get(0).getReference()).delete().addOnSuccessListener(new OnSuccessListener<Void>()
-                                {
+                                (task.getResult().getDocuments().get(0).getReference()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
-                                    public void onSuccess(Void aVoid)
-                                    {
+                                    public void onSuccess(Void aVoid) {
 
                                         Intent pass = new Intent(EditPostActivity.this, MyPostsActivity.class);
-                                        for (int i = 0; postList.getPostArray().size() > i; i++)
-                                        {
+                                        for (int i = 0; postList.getPostArray().size() > i; i++) {
                                             if (postList.getPostArray().get(i).getId().equals(post.getId()))
                                                 postList.getPostArray().remove(i);
                                         }
                                         pass.putExtra("currentUser", currentUser);
                                         pass.putExtra("postlist", postList);
-                                        Toast.makeText(EditPostActivity.this, "You have successfully deleted your Post!", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(EditPostActivity.this, "You have successfully deleted the Post!", Toast.LENGTH_LONG).show();
                                         dialog.dismiss();
                                         startActivity(pass);
                                         finish();
@@ -200,18 +193,14 @@ public class EditPostActivity extends AppCompatActivity
 
                             }
                         });
-
-
                         //Then it will close the screen automatically!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                     }
                 });
 
-                builder.setNegativeButton("NO", new DialogInterface.OnClickListener()
-                {
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
 
                     @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
+                    public void onClick(DialogInterface dialog, int which) {
 
                         dialog.dismiss();
                     }
@@ -222,30 +211,27 @@ public class EditPostActivity extends AppCompatActivity
             }
         });
         applyButton = findViewById(R.id.applyButton);
-        applyButton.setOnClickListener(new View.OnClickListener()
-        {
+        applyButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Makes the necessary changes in order to update the edited datas on the database.
+             * @param v view of the current activity
+             */
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(EditPostActivity.this);
 
                 builder.setTitle("Confirm");
                 builder.setMessage("Are you sure that you want to apply the changes?");
 
-                builder.setPositiveButton("YES", new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                        if (postTitleEditText.getText().toString().equals(""))
-                        {
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (postTitleEditText.getText().toString().equals("")) {
                             Toast.makeText(EditPostActivity.this, "You need to enter a title!", Toast.LENGTH_LONG).show();
                             dialog.dismiss();
-                        } else if (postPrice.getText().toString().equals(""))
-                        {
+                        } else if (postPrice.getText().toString().equals("")) {
                             Toast.makeText(EditPostActivity.this, "You need to enter the price!", Toast.LENGTH_LONG).show();
                             dialog.dismiss();
-                        } else
-                        {
+                        } else {
                             updateDatabase();
                             Toast.makeText(EditPostActivity.this, "You have successfully applied your changes!", Toast.LENGTH_LONG).show();
                             dialog.dismiss();
@@ -254,12 +240,10 @@ public class EditPostActivity extends AppCompatActivity
                     }
                 });
 
-                builder.setNegativeButton("NO", new DialogInterface.OnClickListener()
-                {
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
 
                     @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
+                    public void onClick(DialogInterface dialog, int which) {
 
                         dialog.dismiss();
                     }
@@ -272,8 +256,10 @@ public class EditPostActivity extends AppCompatActivity
 
     }
 
-    private void choosePicture()
-    {
+    /**
+     * Opens the gallery of the used phone and then the user will select the image from there
+     */
+    private void choosePicture() {
         Intent galleryOpen = new Intent();
         galleryOpen.setType("image/*");
         galleryOpen.setAction(Intent.ACTION_GET_CONTENT);
@@ -281,11 +267,9 @@ public class EditPostActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK && data != null)
-        {
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
             imageUri = data.getData();
             picChanged = true;
             Picasso.get().load(imageUri).into(photoUpload);
@@ -294,6 +278,10 @@ public class EditPostActivity extends AppCompatActivity
 
     }
 
+    /**
+     * Sets the necessary updates for the database such as editing the previous data of the post, alerting
+     * the postlist that the changes have been made.
+     */
     private void updateDatabase()
     {
         boolean priceChanged = post.getPrice() != Integer.parseInt(postPrice.getText().toString()); //if price has changed
@@ -314,8 +302,7 @@ public class EditPostActivity extends AppCompatActivity
                                 db.collection("tokens").document(doc.getId()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>()
                                 { //get the device token of that user
                                     @Override
-                                    public void onSuccess(DocumentSnapshot documentSnapshot)
-                                    {
+                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
                                         sendNotifications(documentSnapshot.get("token").toString(), "Price of a post in your wishlist has changed.", post.getTitle() + "'s price has changed.");
                                     }
                                 });
@@ -325,23 +312,17 @@ public class EditPostActivity extends AppCompatActivity
                 }
             });
         }
-
-        if (picChanged)
-        {
+        if (picChanged) {
             StorageReference picRef = storage.getReference().child("posts/post_picture/" + post.getId());
             picRef.putFile(imageUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>()
-                    {
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot)
-                        {
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             // Get a URL to the uploaded content
                             Toast.makeText(getApplicationContext(), "SUCCESS", Toast.LENGTH_LONG).show();
-                            picRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
-                            {
+                            picRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
-                                public void onSuccess(Uri uri)
-                                {
+                                public void onSuccess(Uri uri) {
 
                                     HashMap<String, Object> newData = new HashMap();
                                     post.setDescription(postDescriptionEditText.getText().toString());
@@ -356,14 +337,11 @@ public class EditPostActivity extends AppCompatActivity
                                     newData.put("university", post.getUniversity());
                                     newData.put("course", post.getCourse());
                                     newData.put("price", post.getPrice());
-                                    db.collection("posts").document(post.getId()).set(newData, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>()
-                                    {
+                                    db.collection("posts").document(post.getId()).set(newData, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
-                                        public void onSuccess(Void aVoid)
-                                        {
+                                        public void onSuccess(Void aVoid) {
                                             Intent pass = new Intent(EditPostActivity.this, MyPostsActivity.class);
-                                            for (int i = 0; postList.getPostArray().size() > i; i++)
-                                            {
+                                            for (int i = 0; postList.getPostArray().size() > i; i++) {
                                                 if (postList.getPostArray().get(i).getId().equals(id))
                                                     postList.getPostArray().remove(i);
                                             }
@@ -379,16 +357,13 @@ public class EditPostActivity extends AppCompatActivity
                             });
                         }
                     })
-                    .addOnFailureListener(new OnFailureListener()
-                    {
+                    .addOnFailureListener(new OnFailureListener() {
                         @Override
-                        public void onFailure(@NonNull Exception exception)
-                        {
+                        public void onFailure(@NonNull Exception exception) {
                             Toast.makeText(getApplicationContext(), "FAIL", Toast.LENGTH_LONG).show();
                         }
                     });
-        } else
-        {
+        } else {
             HashMap<String, Object> newData = new HashMap();
             post.setDescription(postDescriptionEditText.getText().toString());
             post.setTitle(postTitleEditText.getText().toString());
@@ -400,14 +375,11 @@ public class EditPostActivity extends AppCompatActivity
             newData.put("university", post.getUniversity());
             newData.put("course", post.getCourse());
             newData.put("price", post.getPrice());
-            db.collection("posts").document(post.getId()).set(newData, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>()
-            {
+            db.collection("posts").document(post.getId()).set(newData, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
-                public void onSuccess(Void aVoid)
-                {
+                public void onSuccess(Void aVoid) {
                     Intent pass = new Intent(EditPostActivity.this, MyPostsActivity.class);
-                    for (int i = 0; postList.getPostArray().size() > i; i++)
-                    {
+                    for (int i = 0; postList.getPostArray().size() > i; i++) {
                         if (postList.getPostArray().get(i).getId().equals(id))
                             postList.getPostArray().remove(i);
                     }
@@ -422,6 +394,7 @@ public class EditPostActivity extends AppCompatActivity
         }
     }
 
+
     /**
      * To send notification to other user by using database and SendNotificationPack
      * @param usertoken device token of  other user
@@ -432,31 +405,28 @@ public class EditPostActivity extends AppCompatActivity
     {
         Data data = new Data(title, message);
         NotificationSender sender = new NotificationSender(data, usertoken);
-        apiService.sendNotifcation(sender).enqueue(new Callback<MyResponse>()
-        {
+        apiService.sendNotifcation(sender).enqueue(new Callback<MyResponse>() {
             @Override
-            public void onResponse(Call<MyResponse> call, Response<MyResponse> response)
-            {
-                if (response.code() == 200)
-                {
-                    if (response.body().success != 1)
-                    {
+            public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
+                if (response.code() == 200) {
+                    if (response.body().success != 1) {
                         Toast.makeText(EditPostActivity.this, "Failed ", Toast.LENGTH_LONG);
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<MyResponse> call, Throwable t)
-            {
+            public void onFailure(Call<MyResponse> call, Throwable t) {
 
             }
         });
     }
 
+    /**
+     * Sends the necessary intents according to the needs of the previous screen.
+     */
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         Intent pass = new Intent(EditPostActivity.this, MyPostsActivity.class);
         pass.putExtra("currentUser", currentUser);
         pass.putExtra("postlist", postList);
@@ -464,9 +434,11 @@ public class EditPostActivity extends AppCompatActivity
         finish();
     }
 
+    /**
+     * Is created in order to make the back arrow in toolbar use the code of the onBackPressed method.
+     */
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
+    public boolean onOptionsItemSelected(MenuItem item) {
         onBackPressed();
         return super.onOptionsItemSelected(item);
     }

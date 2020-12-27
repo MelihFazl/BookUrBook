@@ -34,12 +34,12 @@
 
             <TextView
                 android:id="@+id/postText"
-                android:layout_width="wrap_content"
-                android:layout_height="41dp"
+                android:layout_width="190dp"
+                android:layout_height="53dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="10dp"
                 android:text="Post name"
                 android:textSize="20dp"
                 android:singleLine="true"
@@ -48,17 +48,19 @@
                 app:layout_constraintStart_toEndOf="@+id/postImageView"
                 app:layout_constraintTop_toTopOf="parent" />
 
+
             <TextView
                 android:id="@+id/postSeller"
-                android:layout_width="wrap_content"
-                android:layout_height="41dp"
+                android:layout_width="66dp"
+                android:layout_height="32dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_marginTop="1dp"
+                android:layout_marginTop="8dp"
                 android:text="Seller text"
                 android:textSize="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.493"
                 app:layout_constraintStart_toEndOf="@+id/postImageView"
                 app:layout_constraintTop_toBottomOf="@+id/postText" />
 
@@ -70,10 +72,10 @@
                 android:textSize="30dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.493"
                 app:layout_constraintStart_toEndOf="@+id/postImageView"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.82" />
-
+                app:layout_constraintVertical_bias="0.923" />
 
             <ImageView
                 android:id="@+id/like_btn"

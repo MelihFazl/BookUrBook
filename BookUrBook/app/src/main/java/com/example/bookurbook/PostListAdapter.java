@@ -46,7 +46,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
         postListHolderFull = new ArrayList<>(list.getPostArray());
         context = c;
     }
-    
+
     // used to represent a single item
     @NonNull
     @Override
@@ -114,15 +114,15 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostLi
             if (v.getId() == R.id.AtoZ_button)
                 filteredList.sortByLetter(true);
 
-            // sort by letter Z to A
+                // sort by letter Z to A
             else if (v.getId() == R.id.ZtoA_button)
                 filteredList.sortByLetter(false);
 
-            // sort by price low to high
+                // sort by price low to high
             else if (v.getId() == R.id.LtoH_price_button)
                 filteredList.sortByPrice(true);
 
-            // sort by price high to low
+                // sort by price high to low
             else if (v.getId() == R.id.HtoL_price_button)
                 filteredList.sortByPrice(false);
 
