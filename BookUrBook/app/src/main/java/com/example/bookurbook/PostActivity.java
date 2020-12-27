@@ -42,6 +42,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class manages the controls of the post activity and does necessary changes in order to update
+ * the database, view and model class datas.
+ */
 public class PostActivity extends AppCompatActivity implements ReportPostDialogListener {
 
     //instance variables
@@ -65,14 +69,14 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
     private ImageView postPic;
     private ImageView adminDeleteButton;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         //method code
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
+
         toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);//sets the toolbar as the action bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Post");
@@ -89,7 +93,7 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         postList = (PostList) getIntent().getSerializableExtra("postlist");
 
 
-        previousActivity = (Integer) getIntent().getExtras().get("previousActivity"); //does not get fromPostList intent? //Wishlist is also a case for us now.
+        previousActivity = (Integer) getIntent().getExtras().get("previousActivity");
 
         postPic = findViewById(R.id.postImageView);
         postTitleTextView = findViewById(R.id.postTitleTextView);
@@ -162,6 +166,9 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
             }
         });
 
+        /**
+         * Sends the necessary intents in order to go back to the main screen.
+         */
         homeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -240,7 +247,13 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
 
         });
 
+
         adminDeleteButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Admin delete button is created so that admins can delete any post if they see it as problematic.
+             * If the post gets deleted, this method takes necessary actions in order to update the database.
+             * @param v view of the current screen
+             */
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(PostActivity.this);
@@ -305,6 +318,14 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         dialog.show(getSupportFragmentManager(), "");
     }
 
+    /**
+     * When the report dialog is created, the listener inside the ReportDialog class will call this method and therefore
+     * we will be able to access the description and the category from the post activity that was provided in the dialog
+     * This method gets the necessary info and sends the report mail to our (Veni Vidi Code) mail.
+     * @param description the description provided by the user
+     * @param category category of the report (Abusive,Scam...)
+     *
+     */
     @Override
     public void applyTexts(String description, String category) {
         post.report(description, category);
@@ -352,6 +373,9 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
         alert.show();
     }
 
+    /**
+     * Sends the necessary intents according to the needs of the previous screen.
+     */
     public void onBackPressed() {
         Intent pass;
         if (previousActivity == 1)
@@ -368,6 +392,9 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
 
     }
 
+    /**
+     * Is created in order to make the back arrow in toolbar use the code of the onBackPressed method.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         onBackPressed();

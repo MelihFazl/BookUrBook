@@ -140,18 +140,23 @@ public class Post implements Reportable, Serializable {
      * @param picture     picture
      */
     public void editPost(String description, String title, String university, String course, int price, String picture) {
-        if (!description.replaceAll("\\s+", "").equals(""))
+        if (!description.replaceAll("\\s+", "").equals(""))//checks if the provided string is empty
             this.description = description;
-        if (!title.replaceAll("\\s+", "").equals(""))
+        if (!title.replaceAll("\\s+", "").equals(""))//checks if the provided string is empty
             this.description = description;
-        if (!university.replaceAll("\\s+", "").equals(""))
+        if (!university.replaceAll("\\s+", "").equals(""))//checks if the provided string is empty
             this.description = description;
-        if (!course.replaceAll("\\s+", "").equals(""))
+        if (!course.replaceAll("\\s+", "").equals(""))//checks if the provided string is empty
             this.description = description;
         this.price = price;
         this.picture = picture;
     }
 
+    /**
+     * This method creates a report and adds this report to the post
+     * @param description the description provided by the user
+     * @param category the category chosen by the user
+     */
     @Override
     public void report(String description, String category) {
         Report report = new Report(description, category, owner);

@@ -17,7 +17,6 @@ public abstract class User implements Reportable, Serializable {
     private ArrayList<Report> reports;
     private int reportNum;
     private String avatar;
-    private UserSpecPostList userPostList;
     private ArrayList<User> blockedUsers;
     private ArrayList<Post> wishList;
 
@@ -28,7 +27,6 @@ public abstract class User implements Reportable, Serializable {
         this.avatar = avatar;
         reports = new ArrayList<Report>();
         wishList = new ArrayList<Post>();
-        userPostList = new UserSpecPostList(this);
         blockedUsers = new ArrayList<User>();
         reportNum = 0;
     }
@@ -90,14 +88,6 @@ public abstract class User implements Reportable, Serializable {
         this.wishList = wishList;
     }
 
-    public UserSpecPostList getUserPostList() {
-        return userPostList;
-    }
-
-    public void setUserPostList(UserSpecPostList userPostList) {
-        this.userPostList = userPostList;
-    }
-
     public ArrayList<User> getBlockedUsers() {
         return blockedUsers;
     }
@@ -114,6 +104,11 @@ public abstract class User implements Reportable, Serializable {
         blockedUsers.add(user);
     }
 
+    /**
+     * This method creates a report and adds this report to the user
+     * @param description the description provided by the user
+     * @param category the category chosen by the user
+     */
     @Override
     public void report(String description, String category) {
         Report report = new Report(description, category, this);

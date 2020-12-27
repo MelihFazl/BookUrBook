@@ -334,6 +334,12 @@ public class SettingsActivity extends AppCompatActivity implements FeedbackDialo
         dialog.show(getSupportFragmentManager(), "");
     }
 
+    /**
+     * When the feedback dialog is created, the listener inside the FeedbackDialog class will call this method and therefore
+     * we will be able to access the description and the category from the post activity that was provided in the dialog.
+     * This method gets the necessary info and sends the feedback mail to our (Veni Vidi Code) mail.
+     * @param description the description of the feedback provided by the user
+     */
     @Override
     public void applyTexts(String description)
     {
