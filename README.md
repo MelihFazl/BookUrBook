@@ -13,9 +13,9 @@ Since school related materials are very expensive due to economic reasons, we th
 + **Implementation:** completed!
 + **Reflections:** completed!
 
-[Group Meetings Log](Project_Logs/Veni_Vidi_Code.txt)
-[Reflections](reflections.txt)
-[readme2.txt](readme2.txt)
++ [Group Log](Project_Logs/Veni_Vidi_Code.txt)
++ [Reflections](reflections.txt)
++ [readme2.txt](readme2.txt)
 
 #### Group Members
 - [Ferhat Korkmaz](Project_Logs/Ferhat_Korkmaz.txt)    
