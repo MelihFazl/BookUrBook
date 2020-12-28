@@ -13,10 +13,10 @@ Since school related materials are very expensive due to economic reasons, we th
 + **Implementation:** completed!
 + **Reflections:** will be completed!
 
-[Group Meetings Log](Project Logs/meetingslog.md)
+[Group Meetings Log](Project_Logs/Veni_Vidi_Code.txt)
 #### Group Members
-- [Ferhat Korkmaz](Project Logs/Ferhat Korkmaz.txt)    
-- [Kaan Tek](Project Logs/Kaan Tek.txt)
-- [Kerem Şahin](Project Logs/Kerem Şahin.txt)
-- [Melih Fazıl Keskin](Project Logs/Melih Fazıl Keskin.txt)
-- [Miray Ayerdem](Project Logs/Miray Ayerdem.txt)
+- [Ferhat Korkmaz](Project_Logs/Ferhat_Korkmaz.txt)    
+- [Kaan Tek](Project_Logs/Kaan_Tek.txt)
+- [Kerem Şahin](Project_Logs/Kerem_Sahin.txt)
+- [Melih Fazıl Keskin](Project_Logs/Melih_Fazil_Keskin.txt)
+- [Miray Ayerdem](Project_Logs/Miray_Ayerdem.txt)
