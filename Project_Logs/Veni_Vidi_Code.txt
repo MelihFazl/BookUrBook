@@ -23,3 +23,13 @@ We created UML diagram of model classes so we basically started to write classes
 
 16/12/2020
 Every member showed their codes related to their parts and every part has been pushed and combined in the main branch of the repository on GitHub. 
+
+17/12/2020
+We came together to fix bugs for the first code check point. After showing our code and working app, we listed remaining parts of our project (notification, admin panel, chat screen and the connection of the database to some classes) and continue to code.
+
+20/12/2020
+We met again to check our complete codes until this time, we completed some additional features and did some bug fixing after we pushed our codes to the main branch.
+
+27/12/2020
+We do final bug fixing. Now, we are ready to present our app and upload our project codes. Today, we are preparing a video which explains our goal and achievement in this project. We revised the detailed design report. 
+

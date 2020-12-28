@@ -79,7 +79,6 @@ public class PostList implements Filterable, Sortable, Serializable
      */
     public void postSold(Post post)
     {
-        deletePost(post);
         post.setSold(true);
     }
 

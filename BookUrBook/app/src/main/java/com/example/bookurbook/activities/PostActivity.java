@@ -315,7 +315,11 @@ public class PostActivity extends AppCompatActivity implements ReportPostDialogL
                                         for (int i = 0; postList.getPostArray().size() > i; i++)
                                         {
                                             if (postList.getPostArray().get(i).getId().equals(post.getId()))
-                                                postList.getPostArray().remove(i);
+                                            {
+                                                Admin admin = new Admin(currentUser.getUsername(), currentUser.getEmail(), currentUser.getAvatar());
+                                                admin.deletePost(postList.getPostArray().get(i), postList);
+                                                //postList.getPostArray().remove(i);
+                                            }
                                         }
                                         pass.putExtra("currentUser", currentUser);
                                         pass.putExtra("postlist", postList);

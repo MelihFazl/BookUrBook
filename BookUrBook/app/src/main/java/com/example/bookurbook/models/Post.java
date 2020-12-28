@@ -165,14 +165,10 @@ public class Post implements Reportable, Serializable
      */
     public void editPost(String description, String title, String university, String course, int price, String picture)
     {
-        if (!description.replaceAll("\\s+", "").equals(""))//checks if the provided string is empty
-            this.description = description;
-        if (!title.replaceAll("\\s+", "").equals(""))//checks if the provided string is empty
-            this.description = description;
-        if (!university.replaceAll("\\s+", "").equals(""))//checks if the provided string is empty
-            this.description = description;
-        if (!course.replaceAll("\\s+", "").equals(""))//checks if the provided string is empty
-            this.description = description;
+        this.description = description;
+        this.title = title;
+        this.university = university;
+        this.course = course;
         this.price = price;
         this.picture = picture;
     }

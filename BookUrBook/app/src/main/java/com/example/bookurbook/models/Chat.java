@@ -11,13 +11,13 @@ import java.util.Date;
 public class Chat implements Serializable, Comparable<Chat>
 {
     //variables
-    User user1;
-    User user2;
-    String lastMessageContentInDB;
-    Date date;
-    String chatID;
-    boolean readByUser1;
-    boolean readByUser2;
+    private User user1;
+    private User user2;
+    private String lastMessageContentInDB;
+    private Date date;
+    private String chatID;
+    private boolean readByUser1;
+    private boolean readByUser2;
 
     //constructor
     public Chat(User user1, User user2, String chatID)
