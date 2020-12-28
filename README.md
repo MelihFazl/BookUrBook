@@ -15,7 +15,7 @@ Since school related materials are very expensive due to economic reasons, we th
 
 #### Logs
 + [Group Log](Project_Logs/Veni_Vidi_Code.txt)
-+ [Reflections](reflections.txt)
++ [Reflections](Reflections.txt)
 + [readme2.txt](readme2.txt)
 
 #### Group Members
