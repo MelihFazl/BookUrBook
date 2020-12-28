@@ -52,10 +52,14 @@ Remaining screens will be created.
 -> After Login or Register, retrieving user information from database and generating User.(with Ferhat)
 -> Planning of the chat structure in database
 -> Creating Chat and Message model classes
--> In ChatActivity, retrieving the current user's chat data(not including all of the messages yet)
-and updating whenever a change occurs in database.
 -> Designing the application logo that appears on the initial screens.
-
+-> Implementation of MyChatsActiviy, ChatsActivity and MessageAdapter.
+-> Design of Chat Activity
+-> Block system (with Ferhat)
+-> Notification system in chat and wishlist (with Kaan and Kerem)
+-> Device token update in database for notifications
+-> New message icon implementation in MyChatsActivity
+-> Working on bug fixing, mostly in chat
 
 --- Miray Ayerdem---
 -> Adding some methods to model class related to Wishlist 
