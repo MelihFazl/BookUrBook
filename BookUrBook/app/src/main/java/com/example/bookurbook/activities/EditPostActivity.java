@@ -364,12 +364,9 @@ public class EditPostActivity extends AppCompatActivity
                                 {
 
                                     HashMap<String, Object> newData = new HashMap();
-                                    post.setDescription(postDescriptionEditText.getText().toString());
-                                    post.setTitle(postTitleEditText.getText().toString());
-                                    post.setUniversity(spinner.getSelectedItem().toString());
-                                    post.setCourse(spinner2.getSelectedItem().toString());
-                                    post.setPrice(Integer.parseInt(postPrice.getText().toString()));
-                                    post.setPicture(uri.toString());
+                                    post.editPost(postDescriptionEditText.getText().toString(),postTitleEditText.getText().toString()
+                                            ,spinner.getSelectedItem().toString(),spinner2.getSelectedItem().toString()
+                                            ,Integer.parseInt(postPrice.getText().toString()),uri.toString());
                                     newData.put("picture", uri.toString());
                                     newData.put("title", post.getTitle());
                                     newData.put("description", post.getDescription());
@@ -410,11 +407,9 @@ public class EditPostActivity extends AppCompatActivity
         } else
         {
             HashMap<String, Object> newData = new HashMap();
-            post.setDescription(postDescriptionEditText.getText().toString());
-            post.setTitle(postTitleEditText.getText().toString());
-            post.setUniversity(spinner.getSelectedItem().toString());
-            post.setCourse(spinner2.getSelectedItem().toString());
-            post.setPrice(Integer.parseInt(postPrice.getText().toString()));
+            post.editPost(postDescriptionEditText.getText().toString(), postTitleEditText.getText().toString()
+                    , spinner.getSelectedItem().toString(), spinner2.getSelectedItem().toString()
+                    , Integer.parseInt(postPrice.getText().toString()), post.getPicture());
             newData.put("title", post.getTitle());
             newData.put("description", post.getDescription());
             newData.put("university", post.getUniversity());

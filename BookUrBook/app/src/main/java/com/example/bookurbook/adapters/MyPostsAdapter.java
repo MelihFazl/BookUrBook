@@ -209,7 +209,9 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.ViewHold
                                 @Override
                                 public void onSuccess(Void aVoid)
                                 {
-                                    myPosts.get(position).setSold(true); //set the post in the arraylist
+                                    PostList postList = new PostList();
+                                    postList.setPostArray(myPosts);
+                                    postList.postSold(myPosts.get(position)); //set the post in the arraylist
                                     Toast.makeText(context, "You have successfully sold your Post!", Toast.LENGTH_SHORT).show();
                                     holder.soldPhoto.setImageResource(R.drawable.sold); //set the image as visible
                                     holder.soldPhoto.setVisibility(View.VISIBLE);

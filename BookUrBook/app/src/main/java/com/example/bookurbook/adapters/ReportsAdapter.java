@@ -12,9 +12,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookurbook.R;
+import com.example.bookurbook.models.Admin;
 import com.example.bookurbook.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -26,9 +30,10 @@ import java.util.HashMap;
 public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.ViewHolder>{
     //properties
     private ArrayList<User> reportedUsers;
-    private User user;
+    private Admin user;
     private Context context;
     private FirebaseFirestore db;
+    private FirebaseAuth auth;
 
     //constructor
     public ReportsAdapter(Context context, ArrayList<User> users) {
@@ -65,6 +70,7 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.ViewHold
     public void onBindViewHolder(@NonNull ReportsAdapter.ViewHolder holder, int position) {
         holder.username.setText(reportedUsers.get(position).getUsername());
         db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
         Picasso.get().load(reportedUsers.get(position).getAvatar()).into(holder.photo);
         holder.bannedView.setImageResource(R.drawable.banned);
 
@@ -108,15 +114,25 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.ViewHold
                     db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            String id;
+
                             for(QueryDocumentSnapshot doc : task.getResult())
                             {
                                 if(doc.getString("username").equals(reportedUsers.get(position).getUsername()))
                                 {
-                                    id = doc.getId();
-                                    HashMap<String, Object> newData = new HashMap<>();
-                                    newData.put("banned", true);
-                                    db.collection("users").document(id).set(newData, SetOptions.merge());
+                                    db.collection("users").document(auth.getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>()
+                                    {
+                                        String id;
+                                        @Override
+                                        public void onSuccess(DocumentSnapshot documentSnapshot)
+                                        {
+                                            id = doc.getId();
+                                            HashMap<String, Object> newData = new HashMap<>();
+                                            user = new Admin(documentSnapshot.getString("username"), documentSnapshot.getString("email"), documentSnapshot.getString("avatar"));
+                                            user.ban(reportedUsers.get(position));
+                                            newData.put("banned", true);
+                                            db.collection("users").document(id).set(newData, SetOptions.merge());
+                                        }
+                                    });
                                 }
                             }
                         }

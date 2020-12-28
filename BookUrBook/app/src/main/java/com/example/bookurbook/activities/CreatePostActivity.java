@@ -205,10 +205,10 @@ public class CreatePostActivity extends AppCompatActivity {
                                 public void onSuccess(Uri uri) {
 
                                     HashMap<String, Object> newData = new HashMap();
-                                    post = new Post(postDescriptionCreatePost.getText().toString(), postTitleCreatePost.getText().toString()
+                                    postList.createPost(postDescriptionCreatePost.getText().toString(), postTitleCreatePost.getText().toString()
                                             , spinner.getSelectedItem().toString(), spinner2.getSelectedItem().toString(), Integer.parseInt(postPrice.getText().toString())
                                             , uri.toString(), currentUser, randomKey);
-                                    post.setSold(false);
+                                    post = postList.getPostArray().get(postList.getPostArray().size() - 1);
                                     newData.put("picture", uri.toString());
                                     newData.put("title", post.getTitle());
                                     newData.put("description", post.getDescription());
@@ -226,7 +226,6 @@ public class CreatePostActivity extends AppCompatActivity {
                                                 pass = new Intent(CreatePostActivity.this, PostListActivity.class);
                                             else
                                                 pass = new Intent(CreatePostActivity.this, MyPostsActivity.class);
-                                            postList.addPost(post);
                                             pass.putExtra("currentUser", currentUser);
                                             pass.putExtra("postlist", postList);
                                             startActivity(pass);
@@ -245,10 +244,10 @@ public class CreatePostActivity extends AppCompatActivity {
                     });
         } else {
             HashMap<String, Object> newData = new HashMap();
-            post = new Post(postDescriptionCreatePost.getText().toString(), postTitleCreatePost.getText().toString()
+            postList.createPost(postDescriptionCreatePost.getText().toString(), postTitleCreatePost.getText().toString()
                     , spinner.getSelectedItem().toString(), spinner2.getSelectedItem().toString(), Integer.parseInt(postPrice.getText().toString())
                     , "https://i.pinimg.com/originals/2c/fc/93/2cfc93d7665f5d7728782700e50596e3.png", currentUser, randomKey);
-            post.setSold(false);
+            post = postList.getPostArray().get(postList.getPostArray().size() - 1);
             newData.put("picture", post.getPicture());
             newData.put("title", post.getTitle());
             newData.put("description", post.getDescription());
@@ -262,8 +261,6 @@ public class CreatePostActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(Void aVoid) {
                     Intent pass = new Intent(CreatePostActivity.this, MyPostsActivity.class);
-                    postList.addPost(post);
-                    ;
                     pass.putExtra("currentUser", currentUser);
                     pass.putExtra("postlist", postList);
                     startActivity(pass);

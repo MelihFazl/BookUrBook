@@ -9,11 +9,11 @@ import java.util.Date;
 public class Message implements Serializable, Comparable<Message>
 {
     //variables
-    String messageDate;
-    String messageTime;
-    String sentBy;
-    String content;
-    Date date;
+    private String messageDate;
+    private String messageTime;
+    private String sentBy;
+    private String content;
+    private Date date;
 
     //constructor
     public Message(String sentBy, String contentString, String messageDate, String messageTime)
