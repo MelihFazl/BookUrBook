@@ -58,7 +58,7 @@ and updating whenever a change occurs in database.
 
 
 --- Miray Ayerdem---
--> Adding and coding some methods to User and Post Classes
+-> Adding some methods to model class related to Wishlist 
 -> Creating some methods and designing it again Wishlist screen according to feedback
 -> Creating Wishlist screen layout in Android Studio using xml, its adapter and its activity class using Java
 -> Creating My Posts screen layout in Android Studio using xml, its adapter and its activity class using Java
@@ -68,7 +68,7 @@ and updating whenever a change occurs in database.
 -> Creating My Blocklist screen layout and its pop-ups in Android Studio using xml, its adapter and its activity class using Java
 -> Adding alert dialog to some of views like My Posts screen, My Blocklist Screen and Wishlist Screen to interact with users 
 -> Meeting Ferhat in order to connect between the objects, which are used in My Posts, Blocklist, and Wishlist activities, and database
--> Some changes in My Posts, Post Details, Main Menu and Settings Screens to try fixing layouts to support for most of the screen size
+-> Some changes in My Posts, Post Details, Main Menu and Settings Screens to try fixing layouts to support for some of the screen size
 
 
 
