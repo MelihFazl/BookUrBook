@@ -31,3 +31,10 @@ Then, I finally started to code some of the methods of the core classes (Wishlis
 I start to code classes like My Posts, My Blocklist, their pop-ups, their controllers and making connections between related core classes. 	
 Additionally, I code Wishlist Screen and change the design according to last feedback simultaneously. 
 Also, in order to learn to start one activity from another activity or update the screens I was continuing watching more tutorials so it is a challenging week for me.
+
+~ 21 - 27 December ~
+This week is the last week of our project so I tried to fulfil my duties. I finished Admin Panel Activity class, its view and its adapter.
+I added dialog pop-up to My Posts and Blocklist views for user interaction.
+Then, I came together with Ferhat to do database connection on Wishlist, Blocklist and My Posts classes and bug fixing on these classes. 
+Also, I tried to fix layouts to support different screen sizes which is successful for nearly most screens except too small phones. 
+

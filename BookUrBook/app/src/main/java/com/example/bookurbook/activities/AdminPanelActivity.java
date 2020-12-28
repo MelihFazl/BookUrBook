@@ -16,8 +16,12 @@ import com.example.bookurbook.models.User;
 
 import java.util.ArrayList;
 
-public class AdminPanelActivity extends AppCompatActivity {
-    //properties
+/**
+ * This class connects between Admin Panel view and its adapter class(Reports Adapter), accessing and using data from database also updating them according to actions
+ */
+public class AdminPanelActivity extends AppCompatActivity
+{
+    //variables
     private RecyclerView recyclerView;
     private ReportsAdapter adapter;
     private User currentUser;
@@ -27,24 +31,35 @@ public class AdminPanelActivity extends AppCompatActivity {
     //method code
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_panel);
+
+        init();
+
+    }
+
+    /**
+     * This method will construct the variables of the class
+     */
+    public void init()
+    {
+        //setting variables
+        this.recyclerView = findViewById(R.id.reportList);
+
+        //setting toolbar
         toolbar = findViewById(R.id.toolbarblocklist);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Reported Users");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        setProperties();
 
-    }
-    public void setProperties()
-    {
+        //accessing user from database
         currentUser = (Admin) getIntent().getSerializableExtra("currentUser");
         reportedUsers = (ArrayList<User>) getIntent().getSerializableExtra("userlist");
-        this.recyclerView = findViewById(R.id.reportList);
         adapter = new ReportsAdapter(getBaseContext(), reportedUsers);
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter); //setting adapter for the recycler view
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
     }
@@ -60,7 +75,8 @@ public class AdminPanelActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         onBackPressed();
         return super.onOptionsItemSelected(item);
     }
