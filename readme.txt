@@ -40,7 +40,7 @@ Remaining screens will be created.
 -> Connecting the admin panel with database.
 -> Developing a proper report system for the posts and chats (with Kerem)
 -> Block system (With Melih)
--> Eliminating banned and blocked (by the current user) users' posts from the postlist and wishlist screens.
+-> Eliminating banned and blocked (by the current user) users' posts from the postlist and wishlist screens (with Miray)
 -> While registering, it checks more. (Alphanumerical email, password, and username)
 -> Feedback system by using JavaMailAPI.
 -> Resetting password for the users.
@@ -59,11 +59,18 @@ and updating whenever a change occurs in database.
 
 --- Miray Ayerdem---
 -> Adding and coding some methods to User and Post Classes
--> Creating Wishlist Class as a model class and designing it again Wishlist screen according to feedback
+-> Creating some methods and designing it again Wishlist screen according to feedback
 -> Creating Wishlist screen layout in Android Studio using xml, its adapter and its activity class using Java
 -> Creating My Posts screen layout in Android Studio using xml, its adapter and its activity class using Java
 -> Creating My Blocklist screen layout and its pop-ups in Android Studio using xml, its adapter and its activity class using Java
 -> Designing Settings screen layout in Android Studio using xml
+-> Also Creating Admin Panel screen layout in Android Studio using xml, its adapter and its activity class using Java
+-> Creating My Blocklist screen layout and its pop-ups in Android Studio using xml, its adapter and its activity class using Java
+-> Adding alert dialog to some of views like My Posts screen, My Blocklist Screen and Wishlist Screen to interact with users 
+-> Meeting Ferhat in order to connect between the objects, which are used in My Posts, Blocklist, and Wishlist activities, and database
+-> Some changes in My Posts, Post Details, Main Menu and Settings Screens to try fixing layouts to support for most of the screen size
+
+
 
 
 --- Kaan Tek---
