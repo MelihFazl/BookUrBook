@@ -13,6 +13,7 @@ Since school related materials are very expensive due to economic reasons, we th
 + **Implementation:** completed!
 + **Reflections:** completed!
 
+#### Logs
 + [Group Log](Project_Logs/Veni_Vidi_Code.txt)
 + [Reflections](reflections.txt)
 + [readme2.txt](readme2.txt)
