@@ -133,3 +133,4 @@ unwanted posts on Post screen.
 ->Revisions on the report system with Ferhat.
 ->Creation of different toolbars for different screens and the connection of the toolbar buttons with the activity classes.
 ->Providing linkage between different screens using back arrow, home button and providing the necessary intents.
+->Bug fixes for connection of model classes.
